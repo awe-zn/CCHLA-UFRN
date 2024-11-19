@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+header{
+    background-color: var(--secundary);
+    padding: 0rem 9.125rem;
+}
