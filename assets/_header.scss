@@ -1,14 +1,15 @@
 header{    
-    background: var(--secundary);
+    background: url('./imgs/background-blue-logo.svg') no-repeat var(--secundary);
+    background-position-x: left;
     div.logo-style{
         position: relative;
     }
-    figure.contrast-background{
-        background-color: var(--primary);
-        z-index: 11;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-    }
+    // figure.contrast-background{
+    //     background-color: var(--primary);
+    //     z-index: 11;
+    //     position: absolute;
+    //     width: 100%;
+    //     height: 100%;
+    //     left: 0;
+    // }
 }
