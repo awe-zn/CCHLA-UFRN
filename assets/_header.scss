@@ -1,15 +1,25 @@
-header{    
-    background: url('./imgs/background-blue-logo.svg') no-repeat var(--secundary);
-    background-position-x: left;
-    div.logo-style{
-        position: relative;
+.home-content{   
+    .header{ 
+        background: linear-gradient(to right, #011144, #011144 49%, var(--primary-main) 50%, var(--primary-main));
+        .logo-style{
+            position: absolute;
+            top: 0;
+            background: url(./imgs/background-blue-logo.svg) no-repeat;
+            background-size: 50%;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        .bg-cchla{
+        }
+        // figure.contrast-background{
+        //     background-color: var(--primary);
+        //     z-index: 11;
+        //     position: absolute;
+        //     width: 100%;
+        //     height: 100%;
+        //     left: 0;
+        // }
     }
-    // figure.contrast-background{
-    //     background-color: var(--primary);
-    //     z-index: 11;
-    //     position: absolute;
-    //     width: 100%;
-    //     height: 100%;
-    //     left: 0;
-    // }
 }
