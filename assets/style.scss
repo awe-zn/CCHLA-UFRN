@@ -20,6 +20,10 @@
     --neutral-500: #68686E;
     --neutral-600: #7C7C83;
     --neutral-700: #DFDFE0;
+
+    --gray-scale-10: #656565;
+    --gray-scale-20: #848484;
+    --gray-scale-30: #2A2739;
     
     --alert-yellow-bg: #D8AC39;
     --alert-yel-red-color: #F0ECDF;
@@ -54,12 +58,17 @@
 .neutral-600{color: var(--neutral-600);} 
 .neutral-700{color: var(--neutral-700);} 
 
+.gray-scale-10{color: var(--gray-scale-10);}
+.gray-scale-20{color: var(--gray-scale-20);}
+.gray-scale-30{color: var(--gray-scale-30);}
+
 body{
     font-family: 'Inter', sans-serif;
 }
 
 h1, h2, h3, h4, h5{
     line-height: 140%;
+    font-weight: 700;
 }
 
 h2{

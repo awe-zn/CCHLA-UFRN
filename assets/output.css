@@ -596,10 +596,6 @@ video {
   position: relative;
 }
 
-.z-10 {
-  z-index: 10;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -617,13 +613,34 @@ video {
   width: 50%;
 }
 
+.w-16 {
+  width: 4rem;
+}
+
+.w-20 {
+  width: 5rem;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-x-4 {
+  -moz-column-gap: 1rem;
+       column-gap: 1rem;
 }
 
 .gap-x-8 {
   -moz-column-gap: 2rem;
        column-gap: 2rem;
+}
+
+.gap-y-4 {
+  row-gap: 1rem;
 }
 
 .border-t {
@@ -634,9 +651,18 @@ video {
   padding: 0.125rem;
 }
 
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
 .py-3\.5 {
   padding-top: 0.875rem;
   padding-bottom: 0.875rem;
+}
+
+.pb-1 {
+  padding-bottom: 0.25rem;
 }
 
 .pb-5 {
@@ -653,6 +679,14 @@ video {
 
 .text-right {
   text-align: right;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-light {
+  font-weight: 300;
 }
 
 .text-white {
@@ -678,6 +712,9 @@ video {
   --neutral-500: #68686E;
   --neutral-600: #7C7C83;
   --neutral-700: #DFDFE0;
+  --gray-scale-10: #656565;
+  --gray-scale-20: #848484;
+  --gray-scale-30: #2A2739;
   --alert-yellow-bg: #D8AC39;
   --alert-yel-red-color: #F0ECDF;
   --alert-red: #F97474;
@@ -754,12 +791,25 @@ video {
   color: var(--neutral-700);
 }
 
+.gray-scale-10 {
+  color: var(--gray-scale-10);
+}
+
+.gray-scale-20 {
+  color: var(--gray-scale-20);
+}
+
+.gray-scale-30 {
+  color: var(--gray-scale-30);
+}
+
 body {
   font-family: "Inter", sans-serif;
 }
 
 h1, h2, h3, h4, h5 {
   line-height: 140%;
+  font-weight: 700;
 }
 
 h2 {
@@ -806,21 +856,24 @@ a {
   display: inline-block;
 }
 
-.home-content .header {
-  background: linear-gradient(to right, #011144, #011144 49%, var(--primary-main) 50%, var(--primary-main));
+.header {
+  background: linear-gradient(to right, #011144, #011144 19%, var(--primary-main) 20%, var(--primary-main));
 }
 
-.home-content .header .logo-style {
+.header .logo-style {
   position: absolute;
   top: 0;
-  background: url(./imgs/background-blue-logo.svg) no-repeat;
-  background-size: 50%;
-  width: 100%;
-  height: 100%;
+  right: 107px;
+  max-width: -moz-max-content;
+  max-width: max-content;
 }
 
 .alert-message-yellow {
   color: var(--alert-yel-red-color);
   background-color: var(--alert-yellow-bg);
+}
+
+.separator {
+  border: 2px solid var(--neutral-200);
 }
 /*# sourceMappingURL=output.css.map */
