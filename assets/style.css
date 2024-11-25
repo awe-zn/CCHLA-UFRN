@@ -181,4 +181,12 @@ a {
 
 .separator {
   border: 2px solid var(--neutral-200);
+}
+
+.sec-services .cards-services {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.sec-services .cards-services .content-services p > button {
+  color: #2988CC;
 }/*# sourceMappingURL=style.css.map */
