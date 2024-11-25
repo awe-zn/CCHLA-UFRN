@@ -164,7 +164,7 @@ a {
 }
 
 .header {
-  background: linear-gradient(to right, #011144, #011144 19%, var(--primary-main) 20%, var(--primary-main));
+  background: linear-gradient(to right, #011144, #011144 1%, var(--primary-main) 20%, var(--primary-main));
 }
 .header .logo-style {
   position: absolute;
