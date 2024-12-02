@@ -163,6 +163,14 @@ a {
   display: inline-block;
 }
 
+.border-primary-lighter {
+  border: 2px solid var(--primary-lighter);
+}
+
+.border-desactive {
+  border: 2px solid var(--neutral-700);
+}
+
 .header {
   background: linear-gradient(to right, #011144, #011144 1%, var(--primary-main) 20%, var(--primary-main));
 }
