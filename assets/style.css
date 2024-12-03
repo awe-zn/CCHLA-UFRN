@@ -76,6 +76,10 @@
   color: var(--primary-lightest);
 }
 
+.soft-color {
+  color: var(--primary-soft);
+}
+
 .neutral-100 {
   color: var(--neutral-100);
 }
@@ -213,7 +217,10 @@ a {
   color: #2988CC;
 }
 
-.noticia-cchla .list-noticia .card-noticia {
+.noticia-cchla .btn-destaque, .more-notices .btn-destaque {
+  background-color: var(--azul-dark);
+}
+.noticia-cchla .list-noticia .card-noticia, .more-notices .list-noticia .card-noticia {
   flex: auto 1 0;
   width: 30%;
 }/*# sourceMappingURL=style.css.map */

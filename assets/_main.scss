@@ -18,11 +18,15 @@
     }
 }
 
-.noticia-cchla{
+.noticia-cchla, .more-notices{
+    .btn-destaque{
+        background-color: var(--azul-dark);   
+    }
     .list-noticia{
         .card-noticia{
             flex: auto 1 0;
             width: 30%;
         }
+        
     }
 }
