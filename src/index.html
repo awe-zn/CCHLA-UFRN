@@ -43,7 +43,7 @@
                 </div>
             </section>
 
-            <section class="hero-noticias flex gap-x-8 py-10 container mx-auto">
+            <section class="hero-noticias flex gap-x-8 py-10 container mx-auto pb-16">
                 <a href="" class="card-noticia destaque w-1/2">
                     <img src="../assets/imgs/noticia-destaque.svg" alt="">
                     <div class="content-noticia">
@@ -89,7 +89,7 @@
 
             </section>
 
-            <section class="sec-services container mx-auto">
+            <section class="sec-services container mx-auto py-16">
                 <div class="header-section flex flex-col gap-y-4 pb-10">
                     <p class="fs-small tight">EXTENSÃO</p>
                     <div class="separator w-20"></div>
@@ -99,11 +99,11 @@
 
                 <div class="">
                     <ul class="cards-services overflow-x-scroll flex gap-x-5 pb-6">
-                        <li>
+                        <li class="flex-auto">
                             <a class="p-4 border-primary-lighter rounded-lg" href="">
                                 <img class="pb-4" src="../assets/imgs/SEPA.svg" alt="">
                                 <article class="content-services w-72 flex flex-col gap-y-2">
-                                    <header>
+                                    <header class="">
                                         <h5>SEPA</h5>
                                     </header>
                                     <p>Serviço de acolhimento psicológico para adolescentes e adultos.</p>
@@ -111,7 +111,7 @@
                                 </article>
                             </a>
                         </li>
-                        <li>
+                        <li class="flex-auto">
                             <a class="p-4 border-primary-lighter rounded-lg" href="">
                                 <img class="pb-4" src="../assets/imgs/Ágora.svg" alt="">
                                 <article class="content-services w-72 flex flex-col gap-y-2">
@@ -123,7 +123,7 @@
                                 </article>
                             </a>
                         </li>
-                        <li>
+                        <li class="flex-auto">
                             <a class="p-4 border-primary-lighter rounded-lg" href="">
                                 <img class="pb-4" src="../assets/imgs/climatológica.svg" alt="">
                                 <article class="content-services w-72 flex flex-col gap-y-2">
@@ -135,7 +135,7 @@
                                 </article>
                             </a>
                         </li>
-                        <li>
+                        <li class="flex-auto">
                             <a class="p-4 border-primary-lighter rounded-lg" href="">
                                 <img class="pb-4" src="../assets/imgs/biblioteca.svg" alt="">
                                 <article class="content-services w-72 flex flex-col gap-y-2">
@@ -161,11 +161,84 @@
                 
             </section>
 
-            <section class="">
-                <div class="">
+            <section class="noticia-cchla py-16 bg-gray-scale-30">
+                <div class="container mx-auto">
                     <p class="small">FIQUE POR DENTRO</p>
-                    <rect class="inline-block w-20 h-0.5 border-primary-lighter"/>
-                    <h2>Notícias no CCHLA</h2>
+                    <rect class="inline-block w-20 h-0.5 border-primary-lighter"/></rect>
+                    <div class="flex justify-between items-center pb-10">
+                        <h2 class="font-normal">Notícias no CCHLA</h2>
+                        <a class="azul-dark-color flex font-bold" href="">Acesse mais notícias <img class="h-max ps-2" src="../assets/imgs/arrow-up-right.svg" alt=""></a>
+                    </div>
+
+                    <ul class="list-noticia flex flex-wrap gap-x-6 gap-y-14 gray-scale-30">
+                        <li class="card-noticia">
+                            <a class="" href="">
+                                <img class="pb-4 " src="../assets/imgs/noticia-programacao-3.svg" alt="">
+                                <article class="flex flex-col px-4">
+                                    <header class="pb-4">
+                                        <h5>Primeiro Seminário Internacional sobre Multirriscos acontece em Natal</h5>
+                                    </header>
+                                    <p class="fs-small">Hoje, 17:35</p>
+                                </article>
+                            </a>
+                        </li>
+                        <li class="card-noticia">
+                            <a href="">
+                                <img class="pb-4 w-full" src="../assets/imgs/mascaramento.svg" alt="">
+                                <article class="flex flex-col px-4">
+                                    <header class="pb-4">
+                                        <h5>Projeto “Mascaramento em Espaços Urbanos” retorna às atividades em 2024</h5>
+                                    </header>
+                                    <p class="fs-small">Hoje, 17:35</p>
+                                </article>
+                            </a>
+                        </li>
+                        <li class="card-noticia">
+                            <a href="">
+                                <img class="pb-4 w-full" src="../assets/imgs/filosofia.svg" alt="">
+                                <article class="flex flex-col px-4">
+                                    <header class="pb-4">
+                                        <h5>Departamento de Filosofia da lança nova edição do curso “Pensadorxs Brasileirxs”</h5>
+                                    </header>
+                                    <p class="fs-small">Hoje, 17:35</p>
+                                </article>
+                            </a>
+                        </li>
+                        <li class="card-noticia">
+                            <a class="flex gap-x-2 items-start" href="">
+                                <img class="rounded-md" src="../assets/imgs/convenio.svg" pb-4 alt="">
+                                <article class="flex flex-col-reverse gap-y-2 px-4">
+                                    <header class="">
+                                        <h6>UFRN assina convênio com Secretaria Municipal de Direitos Humanos</h6>
+                                    </header>
+                                    <p class="fs-small">COOPERAÇÃO</p>
+                                </article>
+                            </a>
+                        </li>
+                        <li class="card-noticia">
+                            <a class="flex gap-x-2 items-start" href="">
+                                <img class="rounded-md" src="../assets/imgs/cooperacao.svg" pb-4 alt="">
+                                <article class="flex flex-col-reverse gap-y-2 px-4">
+                                    <header class="">
+                                        <h6>UFRN elabora plano para prevenção de desastres em Natal</h6>
+                                    </header>
+                                    <p class="fs-small">COOPERAÇÃO</p>
+                                </article>
+                            </a>
+                        </li>
+                        <li class="card-noticia">
+                            <a class="flex gap-x-2 items-start" href="">
+                                <img class="rounded-md" src="../assets/imgs/Dia da Poesia.svg" pb-4 alt="">
+                                <article class="flex flex-col-reverse gap-y-2 px-4">
+                                    <header class="">
+                                        <h6>UFRN celebra o Dia da Poesia em evento especial no Departamento de Letras</h6>
+                                    </header>
+                                    <p class="fs-small">EXTENSÃO</p>
+                                </article>
+                            </a>
+                        </li>
+                    </ul>
+
                 </div>
 
             </section>
