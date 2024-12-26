@@ -21,6 +21,7 @@
     --neutral-500: #68686E;
     --neutral-600: #7C7C83;
     --neutral-700: #DFDFE0;
+    --neutral-800: #F2F2F2;
     
     --gray-scale-10: #656565;
     --gray-scale-20: #848484;
@@ -61,6 +62,7 @@
 .neutral-500{color: var(--neutral-500);} 
 .neutral-600{color: var(--neutral-600);} 
 .neutral-700{color: var(--neutral-700);} 
+.neutral-800{color: var(--neutral-800);} 
 
 .gray-scale-10{color: var(--gray-scale-10);}
 .gray-scale-20{color: var(--gray-scale-20);}
@@ -120,8 +122,12 @@ p{
     font-size: .75rem;
 }
 
-a{
-    display: inline-block
+a, span{
+    display: inline-block;
+}
+
+li{
+    list-style: none;
 }
 
 .border-primary-lighter{
@@ -137,3 +143,4 @@ a{
 
 @import './header.scss';
 @import './main.scss';
+@import './footer.scss';

@@ -30,3 +30,26 @@
         
     }
 }
+
+.especial_cchla{
+    background-color: var(--primary-medium);
+    .btn-destaque{
+        border: solid 1px var(--primary-lighting);
+    }
+    .more-especial{
+        background-color: #153073;
+        .card-small{
+            .overlay-image{
+                background: linear-gradient(180deg, rgba(21, 48, 115, 0.00) 0%, rgba(21, 48, 115, 0.60) 100%) cover no-repeat;
+                height: 139px;
+            }
+        }
+        .all-especial{
+            .next-back>a{
+                color: #234FBF;
+                border: 1px solid #234FBF;
+            }
+        }
+    }
+    
+}

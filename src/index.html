@@ -9,14 +9,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" integrity="sha512-9xKTRVabjVeZmc+GUW8GgSmcREDunMM+Dt/GrzchfN8tkwHizc5RP4Ok/MXFFy5rIjJjzhndFScTceq5e6GvVQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Main</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Home</title>
 </head>
 <body>
     <div class="home-content">
         <header class="header">
             <div class="header-content container mx-auto flex justify-between">
                 <a href="" class="figure-cchla relative">
-                   <img src="../assets/imgs/background-blue-logo.svg" alt="" class="logo-style">
+                   <img class="logo-style h-full" src="../assets/imgs/background-blue-logo.svg" alt="">
                    <img class="py-3.5 relative cchla-logo" src="../assets/imgs/logo.svg" alt="">
                 </a>
                 
@@ -45,7 +46,7 @@
 
             <section class="hero-noticias flex gap-x-8 py-10 container mx-auto pb-16">
                 <a href="" class="card-noticia destaque w-1/2">
-                    <img src="../assets/imgs/noticia-destaque.svg" alt="">
+                    <img class="w-full" src="../assets/imgs/noticia-destaque.svg" alt="">
                     <div class="content-noticia">
                         <h5 class="medium-color">UFRN abre inscrições para seleção de Residência em Políticas Públicas e Inovação</h5>
                         <p class="fs-small">Universidade Federal do Rio Grande do Norte (UFRN) oferece programa de residência em parceria com a Secretaria de Igualdade Racial de Natal.</p>
@@ -321,7 +322,164 @@
 
             </section>
 
+            <section class="especial_cchla pt-12">
+                <div class="hero container mx-auto">
+                    <h2 class="neutral-700 font-light pb-2">Especial CCLHA</h2>
+                    <p class="lighting-color w-1/2">Conheça projetos do CCLHA que fazem a diferença na sociedade.</p>
+
+                    <div class="sec-description neutral-700 flex gap-x-6 pb-12">
+                        <video class="w-7/12" src="" controls poster="../assets/imgs/inclusiva.svg">
+                            <img src="../assets/imgs/" alt="">
+                        </video>
+                        <div class="description flex flex-col justify-between">
+                            <div class="content-description">
+                                <h4 class="mb-6">Comunicação Inclusiva: Acessibilidade para Todos</h4>
+                                <p class="">O projeto "Comunicação Inclusiva: Acessibilidade para Todos" visa promover a comunicação acessível para pessoas com deficiência, utilizando ferramentas e recursos que garantem o acesso à informação e a participação social de todos os cidadãos. <br> <br>
+                                Através de ações educativas, de sensibilização e da produção de materiais informativos, o projeto busca romper barreiras comunicacionais e construir uma sociedade mais justa e inclusiva.</p>
+                            </div>
+                            <a class="flex items-center spaced font-bold" href="">Acesse o link do projeto <img class="h-max ps-2" src="../assets/imgs/arrow-up-right-white.svg" alt=""></a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="more-especial py-16">
+                    <div class="cards-especial container mx-auto grid grid-cols-4 gap-8 mb-10">
+                        <a href="">
+                            <figure class="card-small relative">
+                                <img class="w-full rounded-lg mb-6" src="../assets/imgs/Transgeracionais.svg" alt="Diálogos Transgeracionais" class="pb-6">
+                                <span class="overlay-image h-32 w-full absolute top-0"></span>
+                                <figcaption>
+                                    <h5 class="lightest-color">Diálogos Transgeracionais: Comunicação para todas as idades</h5>
+                                </figcaption>
+                            </figure>
+                        </a>
+                        <a href="">
+                            <figure class="card-small relative">
+                                <img class="w-full rounded-lg mb-6" src="../assets/imgs/Educomunicação.svg" alt="" class="pb-6">
+                                <span class="overlay-image h-32 w-full absolute top-0"></span>
+                                <figcaption>
+                                    <h5 class="lightest-color">Educomunicação: Transformando Realidades Através da Comunicação</h5>
+                                </figcaption>
+                            </figure>
+                        </a>
+                        <a href="">
+                            <figure class="card-small relative">
+                                <img class="w-full rounded-lg mb-6" src="../assets/imgs/saude em foco.svg" alt="" class="pb-6">
+                                <span class="overlay-image h-32 w-full absolute top-0"></span>
+                                <figcaption>
+                                    <h5 class="lightest-color">Saúde em Foco: Comunicação para a Prevenção e o Bem-Estar</h5>
+                                </figcaption>
+                            </figure>
+                        </a>
+                        <a href="">
+                            <figure class="card-small relative">
+                                <img class="w-full rounded-lg mb-6" src="../assets/imgs/Narrativas Digitais.svg" alt="" class="pb-6">
+                                <span class="overlay-image h-32 w-full absolute top-0"></span>
+                                <figcaption>
+                                    <h5 class="lightest-color">Narrativas Digitais: Contando Histórias que Inspiram</h5>
+                                </figcaption>
+                            </figure>
+                        </a>
+                    </div>
+                    <div class="all-especial container mx-auto flex items-center justify-between">
+                        <a class="btn-destaque rounded-md fs-small soft-color px-6 py-3" href="">VER TODAS OS ESPECIAS<i class="ps-2 fa-solid fa-arrow-right"></i></a>
+                        <div class="next-back text-3xl flex justify-end gap-x-4">
+                            <a class="py-4 px-6 rounded-full" href=""><i class="fa-solid fa-chevron-left"></i></a>
+                            <a class="py-4 px-6 rounded-full" href=""><i class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </section>
+
         </main>
+
+        <footer class="footer-cchla flex flex-col gap-y-12 pt-12 neutral-800">
+            <section class="footer-map container mx-auto flex flex-wrap gap-x-6">
+                <article class="footer-information w-1/5 flex flex-col flex-auto gap-y-2">
+                    <header>
+                        <h4 class="tight">CCHLA</h4>
+                    </header>
+                    <p class="tight">Centro de Ciências Humanas, Letras e Artes</p>
+                    <div class="flex gap-x-4">
+                        <a class="icons-footer py-1 px-2 rounded-full" href=""><i class="bi bi-youtube text-base"></i></a>
+                        <a class="icons-footer py-1 px-2 rounded-full" href=""><i class="bi bi-twitter-x text-base"></i></a>
+                        <a class="icons-footer py-1 px-2 rounded-full" href=""><i class="bi bi-instagram text-base"></i></a>
+                    </div>
+                </article>
+
+                <article class="footer-information w-1/5 flex flex-col flex-auto gap-y-2">
+                    <header>
+                        <h6 class="tight font-normal">INSTITUCIONAL</h6>
+                    </header>
+                    <nav>
+                        <ul class="flex flex-col gap-y-2 tight">
+                            <li><a href="">Administração</a></li>
+                            <li><a href="">Documentos</a></li>
+                            <li><a href="">CONSEC</a></li>
+                            <li><a href="">Departamentos</a></li>
+                        </ul>
+                    </nav>
+                </article>
+
+                <article class="footer-information w-1/5 flex flex-col flex-auto gap-y-2">
+                    <header>
+                        <h6 class="tight font-normal">ACADÊMICO</h6>
+                    </header>
+                    <nav>
+                        <ul class="flex flex-col gap-y-2 tight">
+                            <li><a href="">Ensino</a></li>
+                            <li><a href="">Pesquisa</a></li>
+                            <li><a href="">Extensão</a></li>
+                            <li><a href="">Publicações</a></li>
+                        </ul>
+                    </nav>
+                </article>
+
+                <article class="footer-information w-1/5 flex flex-col flex-auto gap-y-2">
+                    <header>
+                        <h6 class="tight font-normal">IMPRENSA</h6>
+                    </header>
+                    <nav>
+                        <ul class="flex flex-col gap-y-2 tight">
+                            <li><a href="">Eventos</a></li>
+                            <li><a href="">Orçamento</a></li>
+                            <li><a href="">Notícias</a></li>
+                            <li><a href="">Especiais</a></li>
+                        </ul>
+                    </nav>
+                </article>
+            </section>
+
+            <div class="footer-separator"></div>
+            
+            <section>
+                <dl class="flex flex-col text-center gap-y-2">
+                    <li>
+                        <h6 class="mb-4">UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE</h6>
+                    </li>
+                    <li>
+                        <p>Centro de Ciências Humanas, Letras e Artes</p>
+                    </li>
+                    <li>
+                        <p>Av. Sen. Salgado Filho, S/n - Lagoa Nova, Natal - RN, 59078-970 </p>
+                    </li>
+                    <li class="font-bold">
+                        <p>E-mail: secretariacchla@gmail.com</p>
+                    </li>
+                    <li class="font-bold">
+                        <p>Telefone: (84) +55 84 3342-2243 / 84 99193-6154</p>
+                    </li>
+                </dl>
+            </section>
+
+            <div class="by-awe flex justify-center text-center py-6">
+                <img src="../assets/imgs/awe-logo.svg" alt="">
+            </div>
+        </footer>
 
 
     </div>
