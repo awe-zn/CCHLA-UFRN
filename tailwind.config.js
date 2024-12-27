@@ -3,10 +3,13 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     screens: {
-      'sm': '578px',
+      'sm': '640px',
       // => @media (min-width: 578px) { ... }
 
-      'lg': '768px',
+      'md': '768px',
+      // => @media (min-width: 768px) { ... }
+
+      'lg': '992px',
       // => @media (min-width: 768px) { ... }
 
       'xl': '1280px',
@@ -20,7 +23,8 @@ module.exports = {
       padding: {
         DEFAULT: '1rem',
         sm: '1rem',
-        lg: '2rem',
+        md: '1rem',
+        lg: '6.75rem',
         xl: '6.75rem',
         '2xl': '6.75rem',
       },

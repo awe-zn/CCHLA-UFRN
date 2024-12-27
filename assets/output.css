@@ -560,9 +560,9 @@ video {
   padding-left: 1rem;
 }
 
-@media (min-width: 578px) {
+@media (min-width: 640px) {
   .container {
-    max-width: 578px;
+    max-width: 640px;
     padding-right: 1rem;
     padding-left: 1rem;
   }
@@ -571,8 +571,16 @@ video {
 @media (min-width: 768px) {
   .container {
     max-width: 768px;
-    padding-right: 2rem;
-    padding-left: 2rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 992px;
+    padding-right: 6.75rem;
+    padding-left: 6.75rem;
   }
 }
 
@@ -825,10 +833,6 @@ video {
   border-width: 1px;
 }
 
-.border-t {
-  border-top-width: 1px;
-}
-
 .object-none {
   -o-object-fit: none;
      object-fit: none;
@@ -896,11 +900,6 @@ video {
   padding-bottom: 0.75rem;
 }
 
-.py-3\.5 {
-  padding-top: 0.875rem;
-  padding-bottom: 0.875rem;
-}
-
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -935,12 +934,12 @@ video {
   padding-bottom: 1rem;
 }
 
-.pb-5 {
-  padding-bottom: 1.25rem;
-}
-
 .pb-6 {
   padding-bottom: 1.5rem;
+}
+
+.ps-0 {
+  padding-inline-start: 0px;
 }
 
 .ps-2 {
@@ -951,20 +950,8 @@ video {
   padding-top: 3rem;
 }
 
-.pt-2\.5 {
-  padding-top: 0.625rem;
-}
-
-.pt-3 {
-  padding-top: 0.75rem;
-}
-
 .text-center {
   text-align: center;
-}
-
-.text-right {
-  text-align: right;
 }
 
 .text-3xl {
@@ -1212,20 +1199,36 @@ li {
 }
 
 .header {
-  background: linear-gradient(to right, #011144, #011144 50%, var(--primary-main) 60%, var(--primary-main));
-  background-color: var(--primary-main);
+  background: linear-gradient(to right, #002047, #002047 50%, var(--primary-main) 60%, var(--primary-main));
+}
+
+.header .icon-show {
+  display: none;
 }
 
 .header .header-content {
   background-color: var(--primary-main);
 }
 
-.header .logo-style {
-  position: absolute;
-  top: 0;
-  right: 107px;
-  max-width: -moz-max-content;
-  max-width: max-content;
+.header .header-content .logo-cchla {
+  padding-left: 6.75rem;
+  background-color: var(--primary-darker);
+}
+
+@media only screen and (max-width: 992px) {
+  .logo-cchla {
+    padding-left: 1rem !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .header .navegation-links {
+    display: none;
+  }
+
+  .header .icon-show {
+    display: block;
+  }
 }
 
 .alert-message-yellow {
@@ -1304,6 +1307,18 @@ li {
 
 .footer-cchla .by-awe {
   border: solid 1px var(--primary-medium);
+}
+
+@media screen and (max-width: 768px) {
+  .footer-cchla .footer-information {
+    width: 33.33333%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .footer-cchla .footer-information {
+    width: 50%;
+  }
 }
 
 .hover\:underline:hover {

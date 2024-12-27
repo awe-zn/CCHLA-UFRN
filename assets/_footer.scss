@@ -11,3 +11,19 @@
         border: solid 1px var(--primary-medium);
     }
 }
+
+@media screen and (max-width: 768px) {
+    .footer-cchla{
+        .footer-information{
+            width: 33.33333%;
+        }
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .footer-cchla{
+        .footer-information{
+            width: 50%;
+        }
+    }
+}
