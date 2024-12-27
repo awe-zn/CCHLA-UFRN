@@ -649,17 +649,21 @@ video {
   height: 8rem;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .h-max {
   height: -moz-max-content;
   height: max-content;
 }
 
-.h-full {
-  height: 100%;
-}
-
 .w-1\/2 {
   width: 50%;
+}
+
+.w-1\/4 {
+  width: 25%;
 }
 
 .w-1\/5 {
@@ -680,6 +684,11 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .flex-auto {
@@ -724,6 +733,10 @@ video {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
 }
 
 .gap-x-10 {
@@ -836,6 +849,11 @@ video {
 .py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .py-16 {
@@ -1175,7 +1193,7 @@ li {
 }
 
 .separator {
-  border: 2px solid var(--neutral-200);
+  border: 1px solid var(--neutral-200);
 }
 
 .sec-services .cards-services {
