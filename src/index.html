@@ -162,7 +162,7 @@
                 
             </section>
 
-            <section class="noticia-cchla py-16 bg-gray-scale-30">
+            <section class="noticia-cchla py-16 bg-gray-scale-40">
                 <div class="container mx-auto">
                     <p class="small">FIQUE POR DENTRO</p>
                     <rect class="inline-block w-20 h-0.5 border-primary-lighter"/></rect>
@@ -325,12 +325,15 @@
             <section class="especial_cchla pt-12">
                 <div class="hero container mx-auto">
                     <h2 class="neutral-700 font-light pb-2">Especial CCLHA</h2>
-                    <p class="lighting-color w-1/2">Conheça projetos do CCLHA que fazem a diferença na sociedade.</p>
+                    <p class="lighting-color w-1/2 mb-8">Conheça projetos do CCLHA que fazem a diferença na sociedade.</p>
 
                     <div class="sec-description neutral-700 flex gap-x-6 pb-12">
-                        <video class="w-7/12" src="" controls poster="../assets/imgs/inclusiva.svg">
-                            <img src="../assets/imgs/" alt="">
-                        </video>
+                        <div class="player-video-especial relative">
+                            <video class="object-none w-full" src="../assets/videos/CCHLA-SHORT.mp4" controls poster="../assets/imgs/especial-cchla.svg">
+                            </video>
+                            <span class="absolute center-absolute z-10"><i class="icon-player rounded-full neutral-800 py-6 px-7 text-4xl bi bi-play-fill"></i></span>
+                        </div>
+
                         <div class="description flex flex-col justify-between">
                             <div class="content-description">
                                 <h4 class="mb-6">Comunicação Inclusiva: Acessibilidade para Todos</h4>
@@ -403,71 +406,125 @@
                     <p class="gray-scale-10">Acompanhe as últimas publicações realizadas no nosso departamento.</p>
                 </div>
 
-                <ul class="flex flex-wrap gap-6 py-12">
-                    <li class="w-1/4 flex flex-auto">
-                        <a class="flex flex-col" href="">
+                <ul class="grid grid-cols-3 gap-6 py-16">
+                    <li class="">
+                        <a class="flex flex-col gap-y-2" href="">
                             <p class="fs-small">LIVRO</p>
                             <h5>Estórias ao redor do fogo [recurso eletrônico]</h5>
-                            <p>Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0</p>
-                            <div class="flex justify-between">
+                            <p class="mb-4">Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0</p>
+                            <div class="flex justify-between items-end">
                                 <img class="w-max" src="../assets/imgs/Estórias ao redor do fo.svg" alt="">
-                                <p class="">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></p>
+                                <span class="inline-flex items-center gap-x-2 azul-dark-color">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></span>
                             </div>
                         </a>
                     </li>
-                    <li class="w-1/4 flex flex-auto">
-                        <a class="flex flex-col" href="">
+
+                    
+                    <li class="">
+                        <a class="flex flex-col gap-y-2" href="">
                             <p class="fs-small">LIVRO</p>
-                            <h5>Estórias ao redor do fogo [recurso eletrônico]</h5>
-                            <p>Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0</p>
-                            <div class="flex justify-between">
-                                <img class="w-max" src="../assets/imgs/Estórias ao redor do fo.svg" alt="">
-                                <p class="">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></p>
+                            <h5>Sandowane: estórias que vêm do chão [recurso eletrônico]</h5>
+                            <p class="mb-4">Organizadores: Paulina Chiziane; Tânia Lima; Izabel Nascimento
+                                ISBN 978-65-5477-020-0 - (LIVRO VIRTUAL)</p>
+                            <div class="flex justify-between items-end">
+                                <img class="w-max" src="../assets/imgs/Sandowane.svg" alt="">
+                                <span class="inline-flex items-center gap-x-2 azul-dark-color">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></span>
                             </div>
                         </a>
                     </li>
-                    <li class="w-1/4 flex flex-auto">
-                        <a class="flex flex-col" href="">
-                            <p class="fs-small">LIVRO</p>
-                            <h5>Estórias ao redor do fogo [recurso eletrônico]</h5>
-                            <p>Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0</p>
-                            <div class="flex justify-between">
-                                <img class="w-max" src="../assets/imgs/Estórias ao redor do fo.svg" alt="">
-                                <p class="">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></p>
+                    <li class="">
+                        <a class="flex flex-col gap-y-2" href="">
+                            <p class="fs-small">REVISTA</p>
+                            <h5>v. 14 n. 22 (2021): Revista Bagoas - Estudos Gays: gênero e sexualidades</h5>
+                            <p class="mb-4">Revista Bagoas
+                                ISSN 2316-6185 (Periódico)</p>
+                            <div class="flex justify-between items-end">
+                                <img class="w-max" src="../assets/imgs/Revista Bag.svg" alt="">
+                                <span class="inline-flex items-center gap-x-2 azul-dark-color">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></span>
                             </div>
                         </a>
                     </li>
-                    <li class="w-1/4 flex flex-auto">
-                        <a class="flex flex-col" href="">
+                    <li class="">
+                        <a class="flex flex-col gap-y-2" href="">
                             <p class="fs-small">LIVRO</p>
-                            <h5>Estórias ao redor do fogo [recurso eletrônico]</h5>
-                            <p>Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0</p>
-                            <div class="flex justify-between">
-                                <img class="w-max" src="../assets/imgs/Estórias ao redor do fo.svg" alt="">
-                                <p class="">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></p>
+                            <h5>AFROLIC - Literatura Desigualdade Ensino</h5>
+                            <p class="mb-4">Organizadores: Rosilda Bezerra, Tânia Lima, Carmen Tindó Secco e Sávio Freitas. <span>ISBN 978-65-86643-84-8 - LIVRO VIRTUAL</span></p>
+                            <div class="flex justify-between items-end">
+                                <img class="w-max" src="../assets/imgs/AFROLIC.svg" alt="">
+                                <span class="inline-flex items-center gap-x-2 azul-dark-color">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></span>
                             </div>
                         </a>
                     </li>
-                    <li class="w-1/4 flex flex-auto">
-                        <a class="flex flex-col" href="">
+                    <li class="">
+                        <a class="flex flex-col gap-y-2" href="">
                             <p class="fs-small">LIVRO</p>
-                            <h5>Estórias ao redor do fogo [recurso eletrônico]</h5>
-                            <p>Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0</p>
-                            <div class="flex justify-between">
-                                <img class="w-max" src="../assets/imgs/Estórias ao redor do fo.svg" alt="">
-                                <p class="">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></p>
+                            <h5>CAMUS E OS ANTIGOS</h5>
+                            <p class="mb-4">Autor: Markus Figueira da Silva e Alice Bitencourt Haddad. Número de Páginas: 98. <span>ISBN 978-65-995185-2-2</span></p>
+                            <div class="flex justify-between items-end">
+                                <img class="w-max" src="../assets/imgs/camus e os antigos.svg" alt="">
+                                <span class="inline-flex items-center gap-x-2 azul-dark-color">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></span>
                             </div>
                         </a>
                     </li>
-                    <li class="w-1/4 flex flex-auto">
-                        <a class="flex flex-col" href="">
+                    <li class="">
+                        <a class="flex flex-col gap-y-2" href="">
                             <p class="fs-small">LIVRO</p>
-                            <h5>Estórias ao redor do fogo [recurso eletrônico]</h5>
-                            <p>Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0</p>
-                            <div class="flex justify-between">
-                                <img class="w-max" src="../assets/imgs/Estórias ao redor do fo.svg" alt="">
-                                <p class="">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></p>
+                            <h5>E-BOOK: O HABITAR E O INABITUAL</h5>
+                            <p class="mb-4">Org: (Oscar Federico Bauchwitz, Eduardo Pellejero e Gilvânio Moreira). Número de Páginas: 631. <span>ISBN 978-65-995185-1-5</span></p>
+                            <div class="flex justify-between items-end">
+                                <img class="w-max" src="../assets/imgs/habitar.svg" alt="">
+                                <span class="inline-flex items-center gap-x-2 azul-dark-color">Leia Mais<img src="../assets/imgs/arrow-up-right.svg" alt=""></span>
                             </div>
+                        </a>
+                    </li>
+                </ul>
+
+                <a class="azul-dark-color flex font-bold justify-end" href="">Acesse todas as publicações <img class="h-max ps-2" src="../assets/imgs/arrow-up-right.svg" alt=""></a>
+
+            </section>
+
+            <section class="sistemas-cchla bg-gray-scale-40 py-16">
+                <div class="header-sec container mx-auto flex flex-col gap-y-4 neutral-200 mb-6">
+                    <p class="fs-xsmall">ACESSO RÁPIDO</p>
+                    <div class="separator w-20"></div>
+                    <h2 class="font-light tight">Sistemas</h2>
+                </div>
+
+                <ul class="container mx-auto grid grid-cols-3 gap-y-4 gap-x-6 gray-scale-30">
+                    <li>
+                        <a href="" class="card-system w-full h-full rounded p-3">
+                            <h6 class="spaced">SIGAA</h6>
+                            <p class="gray-scale-10 spaced">Sistema Integrado de Gestão de Atividades Acadêmicas.</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="card-system w-full h-full rounded p-3">
+                            <h6 class="spaced">SIPAC</h6>
+                            <p class="gray-scale-10 spaced">Sistema Integrado de Patrimônio, Administração e Contratos.</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="card-system w-full h-full rounded p-3">
+                            <h6 class="spaced">SIG RH</h6>
+                            <p class="gray-scale-10 spaced">Sistema integrado de Gestão de Recursos Humanos.</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="card-system w-full h-full rounded p-3">
+                            <h6 class="spaced">GTI Chamados</h6>
+                            <p class="gray-scale-10 spaced">Sistema de chamados para Gestão de Tecnologia da Informação.</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="card-system w-full h-full rounded p-3">
+                            <h6 class="spaced">Espaço Físico Setor 2</h6>
+                            <p class="gray-scale-10 spaced">Visualizador dos espaços físicos disponíveis</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="card-system w-full h-full rounded p-3">
+                            <h6 class="spaced">Reserva CCHLA</h6>
+                            <p class="gray-scale-10 spaced">Sistema de reserva de auditório do CCHLA</p>
                         </a>
                     </li>
                 </ul>

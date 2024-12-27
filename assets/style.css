@@ -125,7 +125,7 @@
   color: var(--gray-scale-30);
 }
 
-.bg-gray-scale-30 {
+.bg-gray-scale-40 {
   background-color: var(--gray-scale-40);
 }
 
@@ -190,6 +190,12 @@ li {
   list-style: none;
 }
 
+.center-absolute {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .border-primary-lighter {
   border: 2px solid var(--primary-lighter);
 }
@@ -219,7 +225,7 @@ li {
 }
 
 .separator {
-  border: 1px solid var(--neutral-200);
+  border: 1px solid var(--neutral-400);
 }
 
 .sec-services .cards-services {
@@ -244,6 +250,12 @@ li {
 .especial_cchla .btn-destaque {
   border: solid 1px var(--primary-lighting);
 }
+.especial_cchla .player-video-especial {
+  min-width: 58.3333%;
+}
+.especial_cchla .player-video-especial .icon-player {
+  background-color: var(--azul-dark);
+}
 .especial_cchla .more-especial {
   background-color: #153073;
 }
@@ -254,6 +266,10 @@ li {
 .especial_cchla .more-especial .all-especial .next-back > a {
   color: #234FBF;
   border: 1px solid #234FBF;
+}
+
+.sistemas-cchla .card-system {
+  border: solid 2px #B2C8FF;
 }
 
 .footer-cchla {

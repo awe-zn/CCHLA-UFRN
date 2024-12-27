@@ -3,7 +3,7 @@
     background-color: var(--alert-yellow-bg);
 }
 .separator{
-    border: 1px solid var(--neutral-200);
+    border: 1px solid var(--neutral-400);
 }
 
 .sec-services{
@@ -36,6 +36,13 @@
     .btn-destaque{
         border: solid 1px var(--primary-lighting);
     }
+
+    .player-video-especial{
+        min-width: 58.3333%;
+        .icon-player{
+            background-color: var(--azul-dark);
+        }
+    }
     .more-especial{
         background-color: #153073;
         .card-small{
@@ -50,6 +57,11 @@
                 border: 1px solid #234FBF;
             }
         }
+    }   
+}
+
+.sistemas-cchla{
+    .card-system{
+        border: solid 2px #B2C8FF;
     }
-    
 }

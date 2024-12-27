@@ -67,7 +67,7 @@
 .gray-scale-10{color: var(--gray-scale-10);}
 .gray-scale-20{color: var(--gray-scale-20);}
 .gray-scale-30{color: var(--gray-scale-30);}
-.bg-gray-scale-30{background-color: var(--gray-scale-40);}
+.bg-gray-scale-40{background-color: var(--gray-scale-40);}
 
 body{
     font-family: 'Inter', sans-serif;
@@ -128,6 +128,12 @@ a, span{
 
 li{
     list-style: none;
+}
+
+.center-absolute{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .border-primary-lighter{
