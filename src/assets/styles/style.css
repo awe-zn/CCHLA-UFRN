@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
   --primary-darker: #002047;
   --primary-dark: #003270;
@@ -22,6 +21,7 @@
   --neutral-600: #7C7C83;
   --neutral-700: #DFDFE0;
   --neutral-800: #F2F2F2;
+  --neutral-900: #4D5054;
   --gray-scale-10: #656565;
   --gray-scale-20: #848484;
   --gray-scale-30: #2A2739;
@@ -114,6 +114,10 @@
   color: var(--neutral-800);
 }
 
+.neutral-900 {
+  color: var(--neutral-900);
+}
+
 .gray-scale-10 {
   color: var(--gray-scale-10);
 }
@@ -203,6 +207,17 @@ li {
 
 .border-desactive {
   border: 2px solid var(--neutral-700);
+}
+
+.name_page {
+  background: linear-gradient(180deg, rgba(227, 234, 252, 0.45) 0%, rgba(223, 230, 247, 0.85) 100%);
+}
+
+.line {
+  margin: 1rem 0 4rem;
+  border-top: 1px solid;
+  border-color: #093AB9;
+  opacity: 0.5;
 }
 
 .header {
@@ -308,4 +323,6 @@ li {
   .footer-cchla .footer-information {
     width: 50%;
   }
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */

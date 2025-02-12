@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  important: true,
   content: ["./src/**/*.{html,js}"],
   theme: {
     screens: {
@@ -29,10 +30,10 @@ module.exports = {
         '2xl': '6.75rem',
       },
 
-    extend: {},
-  },
-  plugins: [],
-}
+      extend: {},
+    },
+    plugins: [],
+  }
 }
 
 //npx tailwindcss -i ./assets/style.css -o ./assets/output.css --watch
