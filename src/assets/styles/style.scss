@@ -73,7 +73,7 @@
 // .bg-neutral-700{background-color: var(--neutral-700);}
 
 body{
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif !important;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -133,6 +133,10 @@ li{
     list-style: none;
 }
 
+.text-lg{
+    font-size: 1.125rem;
+}
+
 .center-absolute{
     left: 50%;
     top: 50%;
@@ -156,8 +160,13 @@ li{
     border-color: #093AB9;
     opacity: .5;
 }
+
 .highlight{
     background-color: #2567F2;
+}
+
+.article-publicacoes{
+    margin-bottom: 43.75rem;
 }
 
 @import './header.scss';
