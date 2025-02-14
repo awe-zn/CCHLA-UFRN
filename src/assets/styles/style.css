@@ -220,6 +220,10 @@ li {
   opacity: 0.5;
 }
 
+.highlight {
+  background-color: #2567F2;
+}
+
 .header {
   background: linear-gradient(to right, #002047, #002047 50%, var(--primary-main) 60%, var(--primary-main));
 }
