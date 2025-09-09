@@ -1,28 +1,34 @@
-.header{ 
+.header {
     background: linear-gradient(to right, #002047, #002047 50%, var(--primary-main) 60%, var(--primary-main));
-    .icon-show{
+
+    .icon-show {
         display: none;
     }
-    .header-content{
-       background-color: var(--primary-main); 
-       .logo-cchla{
-        padding-left: 6.75rem;
-        background-color: var(--primary-darker);
-       }
+
+    .header-content {
+        background-color: var(--primary-main);
+
+        .logo-cchla {
+            padding-left: 6.75rem;
+            background-color: var(--primary-darker);
+        }
     }
 }
+
 @media only screen and (max-width: 992px) {
-    .logo-cchla{
+    .logo-cchla {
         padding-left: 1rem !important;
     }
 }
+
 @media only screen and (max-width: 768px) {
-    
-    .header{
-        .navegation-links{
+
+    .header {
+        .navegation-links {
             display: none;
         }
-        .icon-show{
+
+        .icon-show {
             display: block;
         }
     }
