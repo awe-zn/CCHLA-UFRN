@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 :root {
   --primary-darker: #002047;
   --primary-dark: #003270;
