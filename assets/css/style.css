@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+/* =========================================================
+   TOKENS — ajuste fino das cores e espaçamentos do mock
+   (se tiver o guia oficial, plugue os HEX aqui e acabou)
+   ========================================================= */
+:root {
+  --ff-inter: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  /* Bootstrap override */
+  --bs-body-font-family: var(--ff-inter);
+  --bs-body-line-height: 1.5; /* Inter funciona bem entre 1.45–1.6 */
+  /* Header bipartido (imagem: esquerda bem navy, direita azul médio) */
+  --header-left: #00387f; /* navy escuro */
+  --header-right: #1f61b6; /* azul médio */
+
+  /* Navbar / barras claras (imagem: cinza-azulado claro) */
+  --bar-bg: #eef3fa; /* barra contextual + navbar clara */
+  --bar-border: #dee6f3;
+
+  /* Texto */
+  --text-900: #1f2a37; /* primário */
+  --text-700: #374151; /* secundário */
+  --text-600: #4b5563;
+
+  /* Ações (cards claros da coluna esquerda) */
+  --cta-bg: #edf3ff; /* azul clarinho */
+  --cta-border: #d9e4ff;
+  --cta-bg-ghost: #ffffff;
+  --cta-border-ghost: #e4e8f1;
+
+  /* Azul de destaque do “Oops....” (mais vivo na imagem) */
+  --brand: #2e63d6;
+
+  /* Footer (imagem: bloco azul escuro com variação) */
+  --footer-top: #0c2e5b;
+  --footer-bottom: #0b2a52;
+
+  /* Dimensões */
+  --brandbar-h: 64px; /* altura do topo bipartido */
+  --radius: 10px;
+  --shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+body {
+  font-family: var(--ff-inter);
+}
+
+/* Opcional: micro-refino de títulos (Inter é denso) */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: 0.015em;
+}
+.display-5 {
+  letter-spacing: 0.01em;
+}
+
+/* Melhora de renderização em Windows */
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* =========================================================
+   HEADER — brandbar bipartida + "puck" da logo
+   ========================================================= */
+main {
+  min-height: 50dvh;
+}
+.brandbar-split {
+  min-height: var(--brandbar-h);
+  background: linear-gradient(
+    90deg,
+    var(--header-left) 0%,
+    var(--header-left) 50%,
+    var(--header-right) 50%,
+    var(--header-right) 100%
+  );
+}
+.brand-logo {
+  /* já usamos utilitários Bootstrap (position, rounded, shadow, etc.)
+     aqui só garantimos borda/raio consistentes */
+  border: 1px solid rgba(230, 236, 255, 0.98) !important;
+  border-radius: var(--radius) !important;
+}
+
+/* Navbar: fundo claro e borda igual à imagem */
+.navbar.bg-body-tertiary {
+  background-color: var(--bar-bg) !important;
+}
+.navbar.border-bottom {
+  border-bottom: 1px solid var(--bar-border) !important;
+}
+/* Blindagem anti-wrap em desktop (mantendo colapso em lg) */
+.navbar .container {
+  flex-wrap: nowrap;
+}
+.navbar-nav {
+  flex-wrap: nowrap;
+}
+.navbar-nav .nav-item {
+  white-space: nowrap;
+}
+/* Densidade 992–1200px (onde geralmente “quebra”) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.45rem;
+    font-size: 0.95rem;
+  }
+  .navbar-nav.gap-lg-3 {
+    column-gap: 0.75rem;
+  }
+}
+/* Toggler visível sobre fundo claro */
+.navbar-toggler {
+  border-color: var(--bar-border);
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(31,42,55,0.85)' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* =========================================================
+   CONTEXT BAR — “Página não encontrada” (fica no MAIN)
+   ========================================================= */
+.bg-body-secondary {
+  background-color: var(--bar-bg) !important;
+}
+.border-bottom {
+  border-bottom-color: var(--bar-border) !important;
+}
+
+/* =========================================================
+   MAIN — tipografia, CTAs e ilustração
+   ========================================================= */
+h1.display-5 {
+  color: var(--brand);
+  line-height: 1.1;
+}
+.h3 {
+  color: var(--text-900);
+}
+.text-secondary {
+  color: var(--text-600) !important;
+}
+
+/* Cards-CTA como na imagem (azul clarinho com leve borda) */
+.card.bg-primary-subtle {
+  background-color: var(--cta-bg) !important;
+  border: 1px solid var(--cta-border) !important;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.card.border.shadow-0 {
+  background-color: var(--cta-bg-ghost);
+  border-color: var(--cta-border-ghost) !important;
+  border-radius: var(--radius);
+}
+.card .card-body {
+  padding: 1rem 1.25rem;
+} /* compacta para ficar fiel */
+
+/* Hover sutil sem deslocar layout */
+.card:hover {
+  box-shadow: 0 10px 22px rgba(19, 32, 68, 0.12);
+}
+
+/* =========================================================
+   FOOTER — gradiente + links claros
+   ========================================================= */
+footer {
+  background-color: #003e8c;
+}
+.footer-bottom {
+  border-top: 1px solid #084ea6;
+}
+.created-by {
+  background: #00387f;
+}
+footer h6 {
+  letter-spacing: 0.04em;
+}
+footer a.link-light:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   RESPONSIVO / ACESSIBILIDADE
+   ========================================================= */
+@media (max-width: 575.98px) {
+  :root {
+    --brandbar-h: 56px;
+  }
+  .brand-logo img {
+    height: 22px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
