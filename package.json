@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "sass": "^1.85.0"
-  },
-  "dependencies": {
-    "lucide": "^0.464.0"
-  }
-}
