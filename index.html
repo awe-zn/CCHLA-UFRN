@@ -4,87 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footer</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://kit.fontawesome.com/8c63b5e0f6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link para Font Awesome para os ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <footer class="flex flex-col bg-blue-700 m-auto lg: gap-20">
-        <div class="flex lg: justify-around lg: max-w-300">   
-            <div class="flex flex-col gap-4 lg: max-w-65">
-                <h4 class="lg: text-xl text-white">
+    <footer class="bg-blue-700">
+        <div>   
+            <div>
+                <h4 class="text-xl text-white">
                     CCHLA
                 </h4>
                 <p class="text-white">
                     Centro de Ciências Humanas, Letras e Artes
                 </p>
-                <div class="flex gap-4">
+                <div>
                     <button>
-                        <i class="fa-brands fa-twitter bg-white p-2 rounded-full text-blue-700"></i>
+                        <i class="fa-brands fa-twitter bg-white rounded-full text-blue-700 p-2"></i>
                     </button>
                     <button>
-                        <i class="fa-brands fa-instagram bg-white p-2 rounded-full text-blue-700"></i>
+                        <i class="fa-brands fa-instagram bg-white rounded-full text-blue-700 p-2"></i>
                     </button>
                     <button>
-                        <i class="fa-brands fa-youtube bg-white p-2 rounded-full text-blue-700"></i>
+                        <i class="fa-brands fa-youtube bg-white rounded-full text-blue-700 p-2"></i>
                     </button>
                 </div>
             </div>
-            <div class="flex flex-col gap-2">
-                <a href="" class="text-white font-bold">
-                    INSTITUCIONAL
-                </a>
-                <a href="" class="text-white">
-                    Administração
-                </a>
-                <a href="" class="text-white">
-                    Documentos
-                </a>
-                <a href="" class="text-white">
-                    CONSEC
-                </a>
-                <a href="" class="text-white">
-                    Departamentos
-                </a>
+
+            <div>
+                <ul>
+                    <li>
+                        <a href="" class="text-white font-bold">
+                            INSTITUCIONAL
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="text-white">
+                            Administração
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="text-white">
+                            Documentos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="text-white">
+                            CONSEC
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="text-white">
+                            Departamentos
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <div class="flex flex-col lg: gap-2">
-                <a href="" class="text-white font-bold">
-                    ACADÊMICO
-                </a>
-                <a href="" class="text-white">
-                    Ensino
-                </a>
-                <a href="" class="text-white">
-                    Pesquisa
-                </a>
-                <a href="" class="text-white">
-                    Extensão
-                </a>
-                <a href="" class="text-white">
-                    Publicações
-                </a>
+            <div>
+                <ul>
+                    <li>
+                        <a href="#" class="text-white font-bold uppercase tracking-wider">
+                            ACADÊMICO
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Ensino
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Pesquisa
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Extensão
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Publicações
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <div class="flex flex-col lg: gap-2">
-                <a href="" class="text-white font-bold">
-                    IMPRENSA
-                </a>
-                <a href="" class="text-white">
-                    Eventos
-                </a>
-                <a href="" class="text-white">
-                    Orçamento
-                </a>
-                <a href="" class="text-white">
-                    Notícias
-                </a>
-                <a href="" class="text-white">
-                    Especiais
-                </a>
+            <div>
+                <ul>
+                    <li>
+                        <a href="#" class="text-white font-bold uppercase tracking-wider">
+                            IMPRENSA
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Eventos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Orçamento
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Notícias
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            Especiais
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="flex justify-center items-center flex-col text-white lg: gap-5">
-            <div class="flex justify-center items-center flex-col">
+        <div class="text-white">
+            <div>
                 <h3>
                     UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE 
                 </h3>
@@ -92,20 +130,21 @@
                     Centro de Ciências Humanas, Letras e Artes
                 </p>
             </div>
-            <div class="flex justify-center items-center flex-col">
+            <div>
                 <p>
                     Av. Sen. Salgado Filho, S/n - Lagoa Nova, Natal - RN, 59078-970 
                 </p>
                 <p>
-                    Telefone: <strong>(84) +55 84 3342-2243 / 84 99193-6154</strong> | e-mail: <strong>secretariacchla@gmail.com</strong>
+                    Telefone: <strong>(84 ) +55 84 3342-2243 / 84 99193-6154</strong> | e-mail: <strong>secretariacchla@gmail.com</strong>
                 </p>
             </div>
         </div>
         <div class="bg-blue-900">
-            <figur class="flex justify-center items-center  lg: py-6">
+            <figure>
                 <img src="assets/img/logo.png" alt="">
             </figure>
         </div>
     </footer>
 </body>
 </html>
+
