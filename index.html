@@ -4,38 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hero</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="p-4 md:p-8"> <!-- Padding para visualização -->
     <main>
-        <section class="grid lg:flex gap-8">
-            <!-- Notícia principal -->
-            <article class="max-w-130 col-span-6 gap-4 mb-9">
-                <figure class="max-w-130">
-                    <img src="assets/img/image 1.png" alt="" class="rounded-lg">
+        <!-- 
+          ESTRUTURA PRINCIPAL:
+          - 'grid' e 'grid-cols-1' para mobile.
+          - 'lg:grid-cols-3' para criar a divisão de 2/3 + 1/3 em desktop.
+        -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- 
+              NOTÍCIA PRINCIPAL:
+              - Ocupa a largura total em mobile/tablet.
+              - Em desktop ('lg' ), ocupa 2 das 3 colunas.
+            -->
+            <article class="lg:col-span-2">
+                <figure>
+                    <!-- Substitua pelo seu asset -->
+                    <img src="assets/img/image 1.png" alt="Residência em Políticas Públicas" class="rounded-lg w-full">
                 </figure>
-                <h3 class="text-blue-700 font-bold text-lg">
+                <h3 class="text-blue-700 font-bold text-xl mt-4">
                     UFRN abre inscrições para seleção de Residência em Políticas Públicas e Inovação
                 </h3>
-                <p class="text-blue-950">
-                    Universidade Federal do Rio Grande do Norte (UFRN) oferece programa de residência em parceria com a Secretaria de Igualdade Racial de Natal.
+                <p class="text-blue-950 mt-2">
+                    Universidade Federal do Rio Grande do Norte (UFRN ) oferece programa de residência em parceria com a Secretaria de Igualdade Racial de Natal.
                 </p>
             </article>
 
-            <!-- Outros cards -->
-            <div class="flex w-130 overflow-x-auto gap-4 pb-4 snap-x snap-mandatory
-                        md:w-190 md:gap-6 md:overflow-visible
-                        sm:grid sm:grid-cols-2
-                        lg:col-span-6 lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible">
+            <!-- 
+              CONTAINER DOS CARDS SECUNDÁRIOS:
+              - MANTIDO: Carrossel horizontal em mobile ('flex', 'overflow-x-auto', 'snap-x').
+              - MANTIDO: Grid 2x2 em tablets ('md:grid', 'md:grid-cols-2').
+              - CORRIGIDO: Em desktop ('lg'), se torna uma coluna flexível ('lg:flex-col') para empilhar os cards.
+            -->
+            <div class="flex w-full overflow-x-auto gap-4 pb-4 snap-x snap-mandatory
+                        md:grid md:grid-cols-2 md:gap-6 md:overflow-visible
+                        lg:flex lg:flex-col lg:gap-4">
                 
+                <!-- 
+                  CARDS INDIVIDUAIS:
+                  - MANTIDO: Largura de 85% em mobile ('min-w-[85vw]').
+                  - MANTIDO: Layout de card vertical em mobile/tablet ('flex-col').
+                  - CORRIGIDO: Em desktop ('lg'), o card vira uma linha ('lg:flex-row') com imagem à esquerda e texto à direita.
+                -->
                 <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col
                                 md:min-w-0
-                                lg:flex-row lg:max-w-140 lg:items-center lg:col-span-2">
-                    <figure class="lg:w-40 lg:self-center">
-                        <img src="assets/img/image 2.png" alt="">
+                                lg:flex-row lg:items-center lg:gap-4">
+                    <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img src="assets/img/image 2.png" alt="" class="w-full h-full object-cover">
                     </figure>
-                    <div class="p-6 md:w-1/2 flex flex-col justify-center">
-                        <p class="text-sm text-gray-500 uppercase mb-2">Extensão - <span class="italic">14 de jan. 2024</span></p>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-500 uppercase mb-2">Ensino - <span class="italic">16 de jan. 2024</span></p>
                         <h2 class="text-lg font-bold text-blue-700 leading-tight">
                             UFRN sedia regional do maior congresso de comunicação da América Latina
                         </h2>
@@ -44,42 +65,42 @@
 
                 <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col
                                 md:min-w-0
-                                lg:flex-row lg:max-w-140 lg:items-center lg:col-span-2">
-                    <figure class="lg:w-40 lg:self-center">
-                        <img src="assets/img/image 3.png" alt="">
+                                lg:flex-row lg:items-center lg:gap-4">
+                    <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img src="assets/img/image 3.png" alt="" class="w-full h-full object-cover">
                     </figure>
-                    <div class="p-6 md:w-1/2 flex flex-col justify-center">
-                        <p class="text-sm text-gray-500 uppercase mb-2">Extensão - <span class="italic">14 de jan. 2024</span></p>
-                        <h2 class="text-lg md:text-xl font-bold text-blue-700 leading-tight">
-                            Programa de extensão beneficia comunidades locais
+                    <div class="p-4">
+                        <p class="text-sm text-gray-500 uppercase mb-2">Pesquisa e Extensão - <span class="italic">16 de jan. 2024</span></p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Projeto da UFRN explora tradições culturais da renda artesanal
                         </h2>
                     </div>
                 </article>
 
                 <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col
                                 md:min-w-0
-                                lg:flex-row lg:max-w-140 lg:items-center lg:col-span-2">
-                    <figure class="lg:w-40 lg:self-center">
-                        <img src="assets/img/image 4.png" alt="">
+                                lg:flex-row lg:items-center lg:gap-4">
+                    <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img src="assets/img/image 4.png" alt="" class="w-full h-full object-cover">
                     </figure>
-                    <div class="p-6 md:w-1/2 flex flex-col justify-center">
-                        <p class="text-sm text-gray-500 uppercase mb-2">Extensão - <span class="italic">14 de jan. 2024</span></p>
-                        <h2 class="text-lg md:text-xl font-bold text-blue-700 leading-tight">
-                            Programa de extensão beneficia comunidades locais
+                    <div class="p-4">
+                        <p class="text-sm text-gray-500 uppercase mb-2">Internacionalização - <span class="italic">16 de jan. 2024</span></p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Aula Inaugural do PPGe-UFRN marca o início das turmas
                         </h2>
                     </div>
                 </article>
 
                 <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col
                                 md:min-w-0
-                                lg:flex-row lg:max-w-140 lg:items-center lg:col-span-2">
-                    <figure class="sm:w-40 lg:self-center">
-                        <img src="assets/img/image 5.png" alt="">
+                                lg:flex-row lg:items-center lg:gap-4">
+                    <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img src="assets/img/image 5.png" alt="" class="w-full h-full object-cover">
                     </figure>
-                    <div class="p-6 md:w-1/2 flex flex-col justify-center">
-                        <p class="text-sm text-gray-500 uppercase mb-2">Extensão - <span class="italic">14 de jan. 2024</span></p>
-                        <h2 class="text-lg md:text-xl font-bold text-blue-700 leading-tight">
-                            Programa de extensão beneficia comunidades locais
+                    <div class="p-4">
+                        <p class="text-sm text-gray-500 uppercase mb-2">Extensão - <span class="italic">16 de jan. 2024</span></p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Primeiro Seminário Internacional sobre Multirriscos acontece em Natal
                         </h2>
                     </div>
                 </article>
