@@ -8,16 +8,9 @@
 </head>
 <body class="p-4 md:p-8 bg-gray-50">
     <main>
-        <!-- 
-          ESTRUTURA PRINCIPAL:
-          - Mobile: 'grid grid-cols-1' (um item abaixo do outro ).
-          - Desktop ('lg'): 'flex justify-center' para centralizar os dois blocos lado a lado.
-          - O layout de Tablet será controlado pelos filhos, não por esta section.
-        -->
-        <section class="grid grid-cols-1 lg:flex lg:justify-center lg:gap-8">
+        <section class="lg:flex lg:justify-center lg:gap-8">
             
-            <!-- NOTÍCIA PRINCIPAL -->
-            <article class="max-w-2xl  w-full mx-auto lg:mx-0">
+            <article class="max-w-2xl w-full mx-auto lg:mx-0">
                 <figure>
                     <img src="assets/img/image 1.png" alt="Residência em Políticas Públicas" class="rounded-lg w-full">
                 </figure>
@@ -29,37 +22,77 @@
                 </p>
             </article>
 
-            <!-- 
-              CONTAINER DOS CARDS SECUNDÁRIOS - A CORREÇÃO FINAL ESTÁ AQUI:
-              - Mobile: 'flex overflow-x-auto' (carrossel).
-              - Tablet ('md'): 'grid grid-cols-2'. Isso FORÇA o layout de grid 2x2, corrigindo o problema.
-              - Desktop ('lg'): 'flex flex-col', para empilhar os cards na coluna direita.
-            -->
             <div class="flex w-full overflow-x-auto gap-4 pb-4 snap-x snap-mandatory mt-8
                         md:grid md:grid-cols-2 md:gap-6 md:overflow-visible
                         lg:mt-0 lg:flex lg:flex-col lg:gap-4 lg:max-w-md">
                 
                 <!-- 
-                  CARDS INDIVIDUAIS:
-                  - As classes aqui já estavam corretas e se adaptam a cada breakpoint.
+                  MUDANÇA FINAL NOS CARDS:
+                  - Removido 'shadow-md'.
+                  - No <article>, 'lg:h-full' foi removido pois não é necessário. O card crescerá com o conteúdo.
+                  - No <figure>, 'lg:h-full' foi removido. A altura será definida pelo conteúdo de texto ao lado.
+                  - Na <img>, as classes 'w-full', 'h-full' e 'object-cover' garantem o preenchimento proporcional.
                 -->
-                <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col
+                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col
                                 md:min-w-0
-                                lg:flex-row lg:items-center lg:gap-4">
+                                lg:flex-row lg:items-stretch lg:gap-4">
                     <figure class="lg:w-32 lg:flex-shrink-0">
                         <img src="assets/img/image 2.png" alt="" class="w-full h-full object-cover">
                     </figure>
-                    <div class="p-4">
-                        <p class="text-sm text-gray-500 uppercase mb-2">Ensino - <span class="italic">16 de jan. 2024</span></p>
+                    <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Ensino - <span class="italic">16 de jan. 2024</span>
+                        </p>
                         <h2 class="text-lg font-bold text-blue-700 leading-tight">
                             UFRN sedia regional do maior congresso de comunicação da América Latina
                         </h2>
                     </div>
                 </article>
 
-                <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-center lg:gap-4"><figure class="lg:w-32 lg:flex-shrink-0"><img src="assets/img/image 3.png" alt="" class="w-full h-full object-cover"></figure><div class="p-4"><p class="text-sm text-gray-500 uppercase mb-2">Pesquisa e Extensão - <span class="italic">16 de jan. 2024</span></p><h2 class="text-lg font-bold text-blue-700 leading-tight">Projeto da UFRN explora tradições culturais da renda artesanal</h2></div></article>
-                <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-center lg:gap-4"><figure class="lg:w-32 lg:flex-shrink-0"><img src="assets/img/image 4.png" alt="" class="w-full h-full object-cover"></figure><div class="p-4"><p class="text-sm text-gray-500 uppercase mb-2">Internacionalização - <span class="italic">16 de jan. 2024</span></p><h2 class="text-lg font-bold text-blue-700 leading-tight">Aula Inaugural do PPGe-UFRN marca o início das turmas</h2></div></article>
-                <article class="min-w-[85vw] bg-white rounded-lg shadow-md overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-center lg:gap-4"><figure class="lg:w-32 lg:flex-shrink-0"><img src="assets/img/image 5.png" alt="" class="w-full h-full object-cover"></figure><div class="p-4"><p class="text-sm text-gray-500 uppercase mb-2">Extensão - <span class="italic">16 de jan. 2024</span></p><h2 class="text-lg font-bold text-blue-700 leading-tight">Primeiro Seminário Internacional sobre Multirriscos acontece em Natal</h2></div></article>
+                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col 
+                                md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
+                    <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img src="assets/img/image 3.png" alt="" class="w-full h-full object-cover">
+                    </figure>
+                    <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Pesquisa e Extensão - <span class="italic">16 de jan. 2024</span>
+                        </p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Projeto da UFRN explora tradições culturais da renda artesanal
+                        </h2>
+                    </div>
+                </article>
+
+                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col 
+                                md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
+                    <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img src="assets/img/image 4.png" alt="" class="w-full h-full object-cover">
+                    </figure>
+                    <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Internacionalização - <span class="italic">16 de jan. 2024</span>
+                        </p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Aula Inaugural do PPGe-UFRN marca o início das turmas
+                        </h2>
+                    </div>
+                </article>
+
+                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col 
+                                md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
+                    <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img src="assets/img/image 5.png" alt="" class="w-full h-full object-cover">
+                    </figure>
+                    <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Extensão - <span class="italic">16 de jan. 2024</span>
+                        </p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Primeiro Seminário Internacional sobre Multirriscos acontece em Natal
+                        </h2>
+                    </div>
+                </article>
             </div>
         </section>
     </main>
