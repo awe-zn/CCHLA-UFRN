@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Link para Font Awesome para os ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <footer class="bg-blue-700">
-        <div>   
-            <div>
-                <h4 class="text-xl text-white">
-                    CCHLA
-                </h4>
-                <p class="text-white">
-                    Centro de Ciências Humanas, Letras e Artes
-                </p>
-                <div>
+    <footer class="flex flex-col bg-blue-700 pt-18 gap-10 lg:items-center">
+        <div class="flex flex-col px-6 gap-10 md:gap-20 lg:flex-row lg:justify-between lg:gap-50">
+            <div class="flex flex-col h-39  justify-between  items-start md:text-center md:items-center lg:items-start">
+                <div class="flex flex-col gap-2 md:items-center lg:items-start">
+                    <h4 class="text-xl text-white">
+                        CCHLA
+                    </h4>
+                    <p class="text-white">
+                        Centro de Ciências Humanas, Letras e Artes
+                    </p>
+                </div>
+                <div class="flex gap-4">
                     <button>
                         <i class="fa-brands fa-twitter bg-white rounded-full text-blue-700 p-2"></i>
                     </button>
@@ -30,100 +32,102 @@
                     </button>
                 </div>
             </div>
+            <div class="flex flex-col md:flex-row md:h-39   gap-9">
+                <div class="md:w-65">
+                    <ul>
+                        <li>
+                            <a href="" class="text-white font-bold">
+                                INSTITUCIONAL
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="text-white">
+                                Administração
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="text-white">
+                                Documentos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="text-white">
+                                CONSEC
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="text-white">
+                                Departamentos
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div>
-                <ul>
-                    <li>
-                        <a href="" class="text-white font-bold">
-                            INSTITUCIONAL
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="text-white">
-                            Administração
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="text-white">
-                            Documentos
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="text-white">
-                            CONSEC
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="text-white">
-                            Departamentos
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                <div class="md:w-65">
+                    <ul>
+                        <li>
+                            <a href="#" class="text-white font-bold uppercase tracking-wider">
+                                ACADÊMICO
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white">
+                                Ensino
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white">
+                                Pesquisa
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white">
+                                Extensão
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white">
+                                Publicações
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div>
-                <ul>
-                    <li>
-                        <a href="#" class="text-white font-bold uppercase tracking-wider">
-                            ACADÊMICO
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Ensino
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Pesquisa
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Extensão
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Publicações
-                        </a>
-                    </li>
-                </ul>
+                <div class="md:w-65">
+                    <ul>
+                        <li>
+                            <a href="#" class="text-white font-bold uppercase tracking-wider">
+                                IMPRENSA
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white hover:text-white">
+                                Eventos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white hover:text-white">
+                                Orçamento
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white hover:text-white">
+                                Notícias
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white">
+                                Especiais
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
-            <div>
-                <ul>
-                    <li>
-                        <a href="#" class="text-white font-bold uppercase tracking-wider">
-                            IMPRENSA
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Eventos
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Orçamento
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Notícias
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            Especiais
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            
         </div>
-        <div class="text-white">
-            <div>
-                <h3>
+        <div class="text-white flex flex-col py-3 px-6 text-center gap-5">
+            <div class="flex flex-col">
+                <h3 class="font-bold">
                     UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE 
                 </h3>
                 <p>
@@ -139,7 +143,7 @@
                 </p>
             </div>
         </div>
-        <div class="bg-blue-900">
+        <div class="flex justify-center items-center py-6 bg-blue-900 lg:w-500">
             <figure>
                 <img src="assets/img/logo.png" alt="">
             </figure>
