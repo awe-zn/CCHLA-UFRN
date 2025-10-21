@@ -8,93 +8,135 @@
 </head>
 <body class="p-4 md:p-8 bg-gray-50">
     <main>
-        <section class="lg:flex lg:justify-center lg:gap-8">
-            
-            <article class="max-w-2xl w-full mx-auto lg:mx-0">
+        
+      <!--  -----------------------
+        TODO -> aqui devem constar links para a notícia equivalente ao post
+        -----------------------         -->
+      <section class="container mx-auto border max-w-360 lg:pl-10 px-5">
+        <section class="lg:grid lg:grid-cols-2 gap-20">
+            <article class="max-w-2xl w-full mx-auto lg:mx-0 lg:">
                 <figure>
-                    <img src="assets/img/image 1.png" alt="Residência em Políticas Públicas" class="rounded-lg w-full">
+                    <!--  TODO: aqui deve ser um link -->
+                    <img
+                    src="assets/img/image 1.png"
+                    alt="Residência em Políticas Públicas"
+                    class="rounded-lg w-full"
+                    />
                 </figure>
-                <h3 class="text-blue-700 font-bold text-xl mt-4">
-                    UFRN abre inscrições para seleção de Residência em Políticas Públicas e Inovação
-                </h3>
-                <p class="text-blue-950 mt-2">
-                    Universidade Federal do Rio Grande do Norte (UFRN ) oferece programa de residência em parceria com a Secretaria de Igualdade Racial de Natal.
-                </p>
-            </article>
 
-            <div class="flex w-full overflow-x-auto gap-4 pb-4 snap-x snap-mandatory mt-8
-                        md:grid md:grid-cols-2 md:gap-6 md:overflow-visible
-                        lg:mt-0 lg:flex lg:flex-col lg:gap-4 lg:max-w-md">
-                
+                <!--  TODO: aqui deve ser um link para o post -->
+                <a href="#" class="">
+                    <h3 class="text-blue-700 font-bold text-xl mt-4">
+                    UFRN abre inscrições para seleção de Residência em Políticas
+                    Públicas e Inovação
+                    </h3>
+                    <p class="text-blue-950 mt-2">
+                    Universidade Federal do Rio Grande do Norte (UFRN ) oferece
+                    programa de residência em parceria com a Secretaria de Igualdade
+                    Racial de Natal.
+                    </p>
+                </a>
+                </article>
+
+                <div
+                class="flex w-full overflow-x-auto gap-4 pb-4 snap-x snap-mandatory mt-8 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible lg:mt-0 lg:flex lg:flex-col lg:gap-4 lg:max-w-md"
+                >
                 <!-- 
-                  MUDANÇA FINAL NOS CARDS:
-                  - Removido 'shadow-md'.
-                  - No <article>, 'lg:h-full' foi removido pois não é necessário. O card crescerá com o conteúdo.
-                  - No <figure>, 'lg:h-full' foi removido. A altura será definida pelo conteúdo de texto ao lado.
-                  - Na <img>, as classes 'w-full', 'h-full' e 'object-cover' garantem o preenchimento proporcional.
-                -->
-                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col
-                                md:min-w-0
-                                lg:flex-row lg:items-stretch lg:gap-4">
-                    <figure class="lg:w-32 lg:flex-shrink-0">
-                        <img src="assets/img/image 2.png" alt="" class="w-full h-full object-cover">
-                    </figure>
-                    <div class="p-4 flex flex-col justify-center">
+                        MUDANÇA FINAL NOS CARDS:
+                        - Removido 'shadow-md'.
+                        - No <article>, 'lg:h-full' foi removido pois não é necessário. O card crescerá com o conteúdo.
+                        - No <figure>, 'lg:h-full' foi removido. A altura será definida pelo conteúdo de texto ao lado.
+                        - Na <img>, as classes 'w-full', 'h-full' e 'object-cover' garantem o preenchimento proporcional.
+                        -->
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
+                    >
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                        <!--  TODO: link para notícia -->
+                        <img
+                            src="assets/img/image 2.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
+
+                        <!-- TODO: link para notícia -->
+                        <div class="p-4 flex flex-col justify-center">
                         <p class="text-sm text-gray-500 uppercase mb-2">
                             Ensino - <span class="italic">16 de jan. 2024</span>
                         </p>
                         <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                            UFRN sedia regional do maior congresso de comunicação da América Latina
+                            UFRN sedia regional do maior congresso de comunicação da América
+                            Latina
                         </h2>
-                    </div>
-                </article>
+                        </div>
+                    </article>
 
-                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col 
-                                md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
-                    <figure class="lg:w-32 lg:flex-shrink-0">
-                        <img src="assets/img/image 3.png" alt="" class="w-full h-full object-cover">
-                    </figure>
-                    <div class="p-4 flex flex-col justify-center">
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
+                    >
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img
+                            src="assets/img/image 3.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
                         <p class="text-sm text-gray-500 uppercase mb-2">
-                            Pesquisa e Extensão - <span class="italic">16 de jan. 2024</span>
+                            Pesquisa e Extensão -
+                            <span class="italic">16 de jan. 2024</span>
                         </p>
                         <h2 class="text-lg font-bold text-blue-700 leading-tight">
                             Projeto da UFRN explora tradições culturais da renda artesanal
                         </h2>
-                    </div>
-                </article>
+                        </div>
+                    </article>
 
-                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col 
-                                md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
-                    <figure class="lg:w-32 lg:flex-shrink-0">
-                        <img src="assets/img/image 4.png" alt="" class="w-full h-full object-cover">
-                    </figure>
-                    <div class="p-4 flex flex-col justify-center">
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
+                    >
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img
+                            src="assets/img/image 4.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
                         <p class="text-sm text-gray-500 uppercase mb-2">
-                            Internacionalização - <span class="italic">16 de jan. 2024</span>
+                            Internacionalização -
+                            <span class="italic">16 de jan. 2024</span>
                         </p>
                         <h2 class="text-lg font-bold text-blue-700 leading-tight">
                             Aula Inaugural do PPGe-UFRN marca o início das turmas
                         </h2>
-                    </div>
-                </article>
+                        </div>
+                    </article>
 
-                <article class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col 
-                                md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
-                    <figure class="lg:w-32 lg:flex-shrink-0">
-                        <img src="assets/img/image 5.png" alt="" class="w-full h-full object-cover">
-                    </figure>
-                    <div class="p-4 flex flex-col justify-center">
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
+                    >
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img
+                            src="assets/img/image 5.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
                         <p class="text-sm text-gray-500 uppercase mb-2">
                             Extensão - <span class="italic">16 de jan. 2024</span>
                         </p>
                         <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                            Primeiro Seminário Internacional sobre Multirriscos acontece em Natal
+                            Primeiro Seminário Internacional sobre Multirriscos acontece em
+                            Natal
                         </h2>
-                    </div>
-                </article>
-            </div>
+                        </div>
+                    </article>
+                </div>
         </section>
+        
     </main>
 </body>
 </html>
