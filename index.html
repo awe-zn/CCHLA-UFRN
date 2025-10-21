@@ -11,90 +11,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 </head>
 <body class="font-[Inter]">
-    <header class="bg-linear-to-r from-[#002047] from-50% to-[#049] to-51% px-9 md:px-11.5 lg:px-28">
-        <div class="bg-[#004499] flex text-white justify-between items-center">
-            <img src="assets/imgs/logo.svg" alt="Logo CCHLA">
-            <nav class="hidden lg:flex lg:gap-4">
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">INSTITUCIONAL</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Administração</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Consec</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Orçamentos</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">ACADÊMICO</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Ensinos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">CAs</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Pesquisas</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">IMPRENSA</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Documentos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Obras</a></li>
-                    </ul>
-                </div>
-                <a href="#" class="font-semibold relative "><span class="after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300">CONTATOS</span></a>
-            </nav>
-            <nav class="block lg:hidden">
-                <button onclick="show_menu()" class="cursor-pointer">
-                    <i class="fa-solid fa-bars text-3xl"></i>
-                </button>
-            </nav>
-        </div>
-    </header>
-    <div class="bg-white hidden absolute w-full menu-mobile lg:hidden flex flex-col gap-2 py-3 shadow-md">
-        <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Institucional</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14 hidden">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Administração</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Consec</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Orçamentos</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Acadêmico</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="hidden drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Ensinos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">CAs</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Pesquisas</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Imprensa</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="hidden drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Documentos</a></li>
-                        <li class="border-l-2 border-[#002047] border-solid text-[#313135] text-sm hover:bg-[#E9E9E9] w-full px-2 py-1"><a href="#">Obras</a></li>
-                    </ul>
-                </div>
-                <a href="#" class="font-medium px-12 md:px-14">Contatos</a>
-    </div>
-
     <main class="mt-6">
-        <section class="px-4 py-10 md:px-8 xl:px-26 bg-[#F4F4F5]">
-            <div class="flex flex-col gap-7 sm:flex-row sm:justify-between items-start mb-9">
+        <section class="flex flex-col gap-10 px-4 py-10 md:px-11.5 xl:px-28 bg-[#F4F4F5]">
+            <div class="flex flex-col gap-7 sm:flex-row sm:justify-between items-start">
                 <div class="flex flex-col gap-2 sm:text-lg">
                     <h4 class="text-[#234FBF]">
                         FIQUE POR DENTRO
@@ -111,26 +30,55 @@
                     <img src="assets/vectors/arrow-up-right.svg" alt="Seta para cima e para direita" class="w-5 sm:w-6">
                 </button>
             </div>
-            <div class="grid grid-rows-3 gap-y-8 gap-x-1 sm:flex sm:flex-wrap justify-center sm:justify-between ">
-                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25 max-w-75 xl:max-w-85">
-                    <figure class=" flex flex-col gap-4">
+            <div class="flex gap-8 justify-between overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 xl:overflow-visible">
+                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
+                    <figure class=" flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
                         <img src="assets/imgs/noticia-1.png" alt="Imagem da notícia" class="rounded-lg">
                         <figcaption class="font-bold text-lg text-[#2A2739]">Primeiro Seminário Internacional sobre Multirriscos acontece em Natal</figcaption>
                         <figcaption class="text-[#313135] text-sm">Hoje, 17:35</figcaption>
                     </figure>
                 </a>
-                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25 max-w-75 xl:max-w-85">
-                    <figure class=" flex flex-col gap-4">
+                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
+                    <figure class=" flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
                         <img src="assets/imgs/noticia-2.png" alt="Imagem da notícia" class="rounded-lg">
                         <figcaption class="font-bold text-lg text-[#2A2739]">Projeto “Mascaramento em Espaços Urbanos” retorna às atividades em 2024</figcaption>
                         <figcaption class="text-[#313135] text-sm">Hoje, 17:35</figcaption>
                     </figure>
                 </a>
-                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25 max-w-75 xl:max-w-85">
-                    <figure class=" flex flex-col gap-4">
+                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
+                    <figure class=" flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
                         <img src="assets/imgs/noticia-3.png" alt="Imagem da notícia" class="rounded-lg">
                         <figcaption class="font-bold text-lg text-[#2A2739]">Departamento de Filosofia da lança nova edição do curso “Pensadorxs Brasileirxs”</figcaption>
                         <figcaption class="text-[#313135] text-sm">Hoje, 17:35</figcaption>
+                    </figure>
+                </a>
+            </div>
+            <div class="flex gap-8 justify-between overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 xl:overflow-visible">
+                <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
+                    <figure class="flex gap-2 w-70 sm:w-75 xl:w-full max-w-80 items-center">
+                        <img src="assets/imgs/img.png" alt="Imagem de noticia">
+                        <div class="flex flex-col justify-between">
+                            <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
+                            <p class="text-[#2A2739] text-sm font-semibold">UFRN assina convênio com Secretaria Municipal de Direitos Humanos</p>
+                        </div>
+                    </figure>
+                </a>
+                <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
+                    <figure class="flex gap-2 w-70 sm:w-75 items-center xl:w-full max-w-80">
+                        <img src="assets/imgs/img-1.png" alt="Imagem de noticia">
+                        <div class="flex flex-col justify-between">
+                            <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
+                            <p class="text-[#2A2739] text-sm font-semibold">UFRN elabora plano para prevenção de desastres em Natal</p>
+                        </div>
+                    </figure>
+                </a>
+                <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
+                    <figure class="flex gap-2 w-70 sm:w-75 items-center xl:w-full max-w-80">
+                        <img src="assets/imgs/img-2.png" alt="Imagem de noticia">
+                        <div class="flex flex-col justify-between">
+                            <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
+                            <p class="text-[#2A2739] text-sm font-semibold">UFRN celebra o Dia da Poesia em evento especial no Departamento de Letras</p>
+                        </div>
                     </figure>
                 </a>
             </div>
