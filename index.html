@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script defer src="assets/scripts/script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="font-[Inter]">
     <header class="bg-linear-to-r from-[#002047] from-50% to-[#049] to-51% pl-0 px-9 md:px-11.5 lg:px-28">
@@ -91,5 +91,74 @@
                 </div>
                 <a href="#" class="font-medium px-12 md:px-14">Contatos</a>
     </div>
+
+    <main>
+        <section class="mt-40">
+            <div class="bg-[#183AB3] text-[#DFEBF0]">
+                <div class="xl:max-w-300 xl:mx-auto px-4 py-10 bg-[url('assets/imgs/bg-textura.png')] flex flex-col gap-8">
+                    <div class="flex flex-col gap-4">
+                        <h2 class="text-4xl font-light">Especial CCLHA</h2>
+                        <h6 class="text-[#A1CBFF] text-base/5">Conheça projetos do CCLHA que fazem a diferença na sociedade.</h6>
+                    </div>
+                    <div class="flex flex-col gap-10">
+                        <video src="assets/videos/videoplayback.mp4" poster="assets/imgs/especial-video-tumb-1.png" controls></video>
+                        <div class="flex flex-col gap-4">
+                            <h3 class="text-2xl font-semibold">Comunicação Inclusiva: Acessibilidade para Todos</h3>
+                            <div class="flex flex-col text-lg/7 gap-4">
+                                <p>O projeto "Comunicação Inclusiva: Acessibilidade para Todos" visa promover a comunicação acessível para pessoas com deficiência, utilizando ferramentas e recursos que garantem o acesso à informação e a participação social de todos os cidadãos. </p>
+                                <p>Através de ações educativas, de sensibilização e da produção de materiais informativos, o projeto busca romper barreiras comunicacionais e construir uma sociedade mais justa e inclusiva.</p>
+                            </div>
+                            <a href="#" class="flex gap-4 font-bold">
+                                <span>Acesse o link do projeto</span>
+                                <img src="assets/imgs/arrow-up-right.svg" alt="Seta para cima e direita">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-linear-to-b from-[#183AB3] to-[#162556] text-[#B2C8FF]  flex flex-col gap-12 pb-9">
+                <div class=" overflow-x-hidden ">
+                    <div id="carrossel" class="flex gap-8 transition duration-500 ease-in-out px-4">
+                        <a href="#" class="min-w-full">
+                            <figure class="flex flex-col gap-6 font-semibold group">
+                                <img src="assets/imgs/especial-video-tumb-2.png" alt="Video Thumbnail">
+                                <figcaption class="group-hover:text-[#E5EDFF] transition duration-300">Diálogos Transgeracionais: Comunicação para todas as idades</figcaption>
+                            </figure>
+                        </a>
+                        <a href="#" class="min-w-full">
+                            <figure class=" flex flex-col gap-6 font-semibold group">
+                                <img src="assets/imgs/especial-video-tumb-3.png" alt="Video Thumbnail">
+                                <figcaption class="group-hover:text-[#E5EDFF] transition duration-300">Educomunicação: Transformando Realidades Através da Comunicação</figcaption>
+                            </figure>
+                        </a>
+                        <a href="#" class="min-w-full">
+                            <figure class=" flex flex-col gap-6 font-semibold group">
+                                <img src="assets/imgs/especial-video-tumb-4.png" alt="Video Thumbnail">
+                                <figcaption class="group-hover:text-[#E5EDFF] transition duration-300">Saúde em Foco: Comunicação para a Prevenção e o Bem-Estar</figcaption>
+                            </figure>
+                        </a>
+                        <a href="#" class="min-w-full">
+                            <figure class=" flex flex-col gap-6 font-semibold group">
+                                <img src="assets/imgs/especial-video-tumb-5.png" alt="Video Thumbnail">
+                                <figcaption class="group-hover:text-[#E5EDFF] transition duration-300">Narrativas Digitais: Contando Histórias que Inspiram</figcaption>
+                            </figure>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="px-4 flex justify-between items-center">
+                    <button class="text-xs text-[#EFEFF0] border-1 border-[#ACBCE6] px-3 py-3 rounded-md hover:bg-white hover:text-[#193CB8] hover:cursor-pointer transition duration-300 flex gap-4">
+                        <span>VER TODOS OS ESPECIAIS</span>
+                        <span class="hidden sm:block"><i class="fa-solid fa-arrow-right"></i></span>
+                        
+                    </button>
+                    <div class="flex gap-4 text-[#EFEFF0]">
+                        <button id="prevbtn" class="flex items-center justify-center px-5 py-5.5 border-1 border-[#EFEFF0] rounded-full hover:bg-white hover:text-[#193CB8] hover:cursor-pointer transition duration-300"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button id="nextbtn" class="flex items-center justify-center px-5 py-5.5 border-1 border-[#EFEFF0] rounded-full hover:bg-white hover:text-[#193CB8] hover:cursor-pointer transition duration-300"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
