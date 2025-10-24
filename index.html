@@ -10,219 +10,150 @@
     <script defer src="assets/scripts/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 </head>
+
 <body class="font-[Inter]">
-    <header class="bg-linear-to-r from-[#002047] from-50% to-[#049] to-51% px-9 md:px-11.5 lg:px-28">
-        <div class="bg-[#004499] flex text-white justify-between items-center">
-            <img src="assets/imgs/logo.svg" alt="Logo CCHLA">
-            <nav class="hidden lg:flex lg:gap-4">
-                <div class="relative">
-                    <button class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">INSTITUCIONAL</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Administração</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Consec</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Orçamentos</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">ACADÊMICO</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Ensinos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">CAs</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Pesquisas</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">IMPRENSA</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Documentos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Obras</a></li>
-                    </ul>
-                </div>
-                <a href="#" class="font-semibold relative "><span class="after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300">CONTATOS</span></a>
-            </nav>
-            <nav class="block lg:hidden">
-                <button onclick="show_menu()" class="cursor-pointer">
-                    <i class="fa-solid fa-bars text-3xl"></i>
-                </button>
-            </nav>
-        </div>
-    </header>
-    <div class="bg-white hidden absolute w-full menu-mobile lg:hidden flex flex-col gap-2 py-3 shadow-md">
-        <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Institucional</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14 hidden">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Administração</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Consec</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Orçamentos</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Acadêmico</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="hidden drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Ensinos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">CAs</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Pesquisas</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Imprensa</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="hidden drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Documentos</a></li>
-                        <li class="border-l-2 border-[#002047] border-solid text-[#313135] text-sm hover:bg-[#E9E9E9] w-full px-2 py-1"><a href="#">Obras</a></li>
-                    </ul>
-                </div>
-                <a href="#" class="font-medium px-12 md:px-14">Contatos</a>
-    </div>
+    <style>
+        * {
+            border: solid ;
+        }
+    </style>
     <main>
-      <!--  -----------------------
-        TODO -> aqui devem constar links para a notícia equivalente ao post
-        -----------------------         -->
-      <section class="container mx-auto max-w-360 lg:pl-10 px-5">
-        <section class="lg:grid lg:grid-cols-2 gap-20">
-            <article class="max-w-2xl w-full mx-auto lg:mx-0 lg:">
-                <a href="#">
-                    <!--  TODO: aqui deve ser um link -->
-                    <img
-                    src="assets/img/image 1.png"
-                    alt="Residência em Políticas Públicas"
-                    class="rounded-lg w-full"
-                    />
-                </a>
-
-                <!--  TODO: aqui deve ser um link para o post -->
-                <a href="#" class="">
-                    <h3 class="text-blue-700 font-bold text-xl mt-4">
-                    UFRN abre inscrições para seleção de Residência em Políticas
-                    Públicas e Inovação
-                    </h3>
-                    <p class="text-blue-950 mt-2">
-                    Universidade Federal do Rio Grande do Norte (UFRN ) oferece
-                    programa de residência em parceria com a Secretaria de Igualdade
-                    Racial de Natal.
-                    </p>
-                </a>
+        <section class="container mx-auto">
+            <div>
+                <p class="text-xs">
+                    PRODUÇÃO NO CCHLA 
+                </p>
+                <h3 class="text-[40px]">
+                    Publicações recentes do CCHLA
+                </h3>
+                <p>
+                    Acompanhe as últimas publicações realizadas no nosso departamento.
+                </p>
+            </div>
+            <div class="grid grid-cols-3 gap-6">
+                <article class="flex flex-col justify-between max-w-90">
+                    <a href="" class="flex flex-col gap-2">
+                        <span class="text-xs">
+                            LIVRO
+                        </span>
+                        <h3 class="font-medium">
+                            Estórias ao redor do fogo [recurso eletrônico]
+                        </h3>
+                        <p class="text-sm max-w-90">
+                            Organizadores: Tânia Lima; Izabel Nascimento. ISBN 978-65-5477-017-0
+                        </p>
+                        <div class="flex justify-between">
+                            <img src="assets/img/Rectangle 37.png" alt="">
+                            <a href="#" class="flex items-end">
+                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="max-w-5 max-h-5">
+                            </a>
+                        </div>
+                    </a>
                 </article>
+                <article  class="flex flex-col justify-between max-w-90">
+                    <a href="" class="flex flex-col gap-2">
+                        <span class="text-xs">
+                            LIVRO
+                        </span>
+                        <h3 class="font-medium">
+                            Sandowane: estórias que vêm do chão [recurso eletrônico]
+                        </h3>
+                        <p class="text-sm max-w-90">
+                            Organizadores: Paulina Chiziane; Tânia Lima; Izabel Nascimento | ISBN 978-65-5477-020-0  (LIVRO VIRTUAL)
+                        </p>
+                        <div class="flex justify-between">
+                            <img src="assets/img/Rectangle 37 (1).png" alt="">
+                            <a href="#" class="flex items-end">
+                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="max-w-5 max-h-5">
+                            </a>
+                        </div>
+                    </a>
+                </article>
+                <article class="flex flex-col justify-between max-w-90">
+                    <a href="" class="flex flex-col gap-2">
+                        <span class="text-xs">
+                            LIVRO
+                        </span>
+                        <h3 class="font-medium">
+                            v. 14 n. 22 (2021): Revista Bagoas - Estudos Gays: gênero e sexualidades
+                        </h3>
+                        <p class="text-sm max-w-90">
+                            Revista Bagoas ISSN 2316-6185 (Periódico)
+                        </p>
+                        <div class="flex justify-between">
+                            <img src="assets/img/Rectangle 37 (2).png" alt="">
+                            <a href="#" class="flex items-end">
+                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="max-w-5 max-h-5">
+                            </a>
+                        </div>
+                    </a>
+                </article>
+                <article class="flex flex-col justify-between max-w-90">
+                    <a href="" class="flex flex-col gap-2">
+                        <span class="text-xs">
+                            LIVRO
+                        </span>
+                        <h3 class="font-medium">
+                            AFROLIC - Literatura Desigualdade Ensino
+                        </h3>
+                        <p class="text-sm max-w-90">
+                            Organizadores: Rosilda Bezerra, Tânia Lima, Carmen Tindó Secco e Sávio Freitas ISBN 978-65-86643-84-8 - LIVRO VIRTUAL
+                        </p>
+                        <div class="flex justify-between">
+                            <img src="assets/img/Rectangle 37 (3).png" alt="">
+                            <a href="#" class="flex items-end">
+                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="max-w-5 max-h-5">
+                            </a>
+                        </div>
+                    </a>
+                </article>
+                <article class="flex flex-col justify-between max-w-90">
+                    <a href="" class="flex flex-col gap-2">
+                        <span class="text-xs">
+                            LIVRO
+                        </span>
+                        <h3 class="font-medium">
+                            CAMUS E OS ANTIGOS
+                        </h3>
+                        <p class="text-sm max-w-90">
+                            Autor: Markus Figueira da Silva e Alice Bitencourt Haddad. Número de Páginas: 98. ISBN 978-65-995185-2-2
+                        </p>
+                        <div class="flex justify-between">
+                            <img src="assets/img/Rectangle 38.png" alt="">
+                            <a href="#">
+                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="max-w-5 max-h-5">
+                            </a>
+                        </div>
+                    </a>
+                </article>
+                <article class="flex flex-col justify-between max-w-90">
+                    <a href="" class="flex flex-col gap-2">
+                        <span class="text-xs">
+                            LIVRO
+                        </span>
+                        <h3 class="font-medium">
+                            E-BOOK: O HABITAR E O INABITUAL
+                        </h3>
+                        <p class="text-sm max-w-90">
+                            Org: (Oscar Federico Bauchwitz, Eduardo Pellejero e Gilvânio Moreira). Número de Páginas: 631 ISBN 978-65-995185-1-5
+                        </p>
+                        <div class="flex justify-between">
+                            <img src="assets/img/Rectangle 37.svg" alt="">
+                            <a href="#">
+                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="max-w-5 max-h-5">
+                            </a>
+                        </div>
+                    </a>
+                </article>
+            </div>
+            <a href="">
 
-                <div
-                class="flex w-full overflow-x-auto gap-4 pb-4 snap-x snap-mandatory mt-8 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible lg:mt-0 lg:flex lg:flex-col lg:gap-4 lg:max-w-md"
-                >
-                <!-- 
-                        MUDANÇA FINAL NOS CARDS:
-                        - Removido 'shadow-md'.
-                        - No <article>, 'lg:h-full' foi removido pois não é necessário. O card crescerá com o conteúdo.
-                        - No <figure>, 'lg:h-full' foi removido. A altura será definida pelo conteúdo de texto ao lado.
-                        - Na <img>, as classes 'w-full', 'h-full' e 'object-cover' garantem o preenchimento proporcional.
-                        -->
-                    <article
-                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                    >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
-                        <!--  TODO: link para notícia -->
-                            <img
-                                src="assets/img/image 2.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
-
-                        <!-- TODO: link para notícia -->
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Ensino - <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                UFRN sedia regional do maior congresso de comunicação da América
-                                Latina
-                            </h2>
-                        </a>
-                    </article>
-
-                    <article
-                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                    >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
-                            <img
-                                src="assets/img/image 3.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
-
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Pesquisa e Extensão -
-                                <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                Projeto da UFRN explora tradições culturais da renda artesanal
-                            </h2>
-                        </a>
-                    </article>
-
-                    <article
-                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                    >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
-                            <img
-                                src="assets/img/image 4.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Internacionalização -
-                                <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                Aula Inaugural do PPGe-UFRN marca o início das turmas
-                            </h2>
-                        </a>
-                    </article>
-
-                    <article
-                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                    >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
-                            <img
-                                src="assets/img/image 5.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Extensão - <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                Primeiro Seminário Internacional sobre Multirriscos acontece em
-                                Natal
-                            </h2>
-                        </a>
-                    </article>
-                </div>
+            </a>
         </section>
+    </main>
         
       
-    </main>
-    <footer></footer>
+    
+    
 </body>
 </html>
