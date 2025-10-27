@@ -1,19 +1,21 @@
 {
-  "name": "CCHLA - UFRN",
+   "name": "CCHLA - UFRN",
   "short_name": "CCHLA",
+  "description": "Aplicação com funcionalidades do novo site do CCHLA",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#193CB8",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "/assets/icons/android-chrome-192x192.png",
+      "src": "assets/icons/apple-touch-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/icons/android-chrome-512x512.png",
+      "src": "assets/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "theme_color": "#193CB8",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  ]
 }
