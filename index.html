@@ -2,13 +2,49 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCHLA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CCHLA | Centro de Ciências Humanas, Letras e Artes – UFRN</title>
+    <meta name="description" content="Centro de Ciências Humanas, Letras e Artes da Universidade Federal do Rio Grande do Norte (UFRN) – cursos, pesquisa, cultura e extensão.">
+    
+    <!-- Ícone SVG (favicon) -->
+    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+    <!-- Fallback para navegadores que não suportam SVG -->
+    <link rel="alternate icon" href="/assets/icons/favicon.ico" sizes="any">
+    <!-- Ícone para dispositivos Apple / toque -->
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
+
+    
+    <!-- Manifesto PWA (se aplicável) -->
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Meta para cor da barra do navegador em mobile -->
+    <meta name="theme-color" content="#193CB8">
+    
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="CCHLA / UFRN">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CCHLA – UFRN">
+    <meta property="og:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN. Ensino, pesquisa e extensão.">
+    <meta property="og:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.cchla.ufrn.br/">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CCHLA – UFRN">
+    <meta name="twitter:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN.">
+    <meta name="twitter:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png">
+  
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script defer src="assets/scripts/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    
 </head>
 <body class="font-[Inter]">
     <header class="bg-linear-to-r from-[#002047] from-50% to-[#049] to-51% px-9 md:px-11.5 lg:px-28">
@@ -98,14 +134,14 @@
       <section class="container mx-auto max-w-360 lg:pl-10 px-5">
         <section class="lg:grid lg:grid-cols-2 gap-20">
             <article class="max-w-2xl w-full mx-auto lg:mx-0 lg:">
-                <a href="#">
+                <figure>
                     <!--  TODO: aqui deve ser um link -->
                     <img
                     src="assets/img/image 1.png"
                     alt="Residência em Políticas Públicas"
                     class="rounded-lg w-full"
                     />
-                </a>
+                </figure>
 
                 <!--  TODO: aqui deve ser um link para o post -->
                 <a href="#" class="">
@@ -134,92 +170,91 @@
                     <article
                         class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
                     >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
+                        <figure class="lg:w-32 lg:flex-shrink-0">
                         <!--  TODO: link para notícia -->
-                            <img
-                                src="assets/img/image 2.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
+                        <img
+                            src="assets/img/image 2.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
 
                         <!-- TODO: link para notícia -->
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Ensino - <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                UFRN sedia regional do maior congresso de comunicação da América
-                                Latina
-                            </h2>
-                        </a>
+                        <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Ensino - <span class="italic">16 de jan. 2024</span>
+                        </p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            UFRN sedia regional do maior congresso de comunicação da América
+                            Latina
+                        </h2>
+                        </div>
                     </article>
 
                     <article
                         class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
                     >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
-                            <img
-                                src="assets/img/image 3.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
-
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Pesquisa e Extensão -
-                                <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                Projeto da UFRN explora tradições culturais da renda artesanal
-                            </h2>
-                        </a>
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img
+                            src="assets/img/image 3.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Pesquisa e Extensão -
+                            <span class="italic">16 de jan. 2024</span>
+                        </p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Projeto da UFRN explora tradições culturais da renda artesanal
+                        </h2>
+                        </div>
                     </article>
 
                     <article
                         class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
                     >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
-                            <img
-                                src="assets/img/image 4.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Internacionalização -
-                                <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                Aula Inaugural do PPGe-UFRN marca o início das turmas
-                            </h2>
-                        </a>
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img
+                            src="assets/img/image 4.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Internacionalização -
+                            <span class="italic">16 de jan. 2024</span>
+                        </p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Aula Inaugural do PPGe-UFRN marca o início das turmas
+                        </h2>
+                        </div>
                     </article>
 
                     <article
                         class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
                     >
-                        <a class="lg:w-32 lg:flex-shrink-0" href="#">
-                            <img
-                                src="assets/img/image 5.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                        </a>
-                        <a class="p-4 flex flex-col justify-center" href="#">
-                            <p class="text-sm text-gray-500 uppercase mb-2">
-                                Extensão - <span class="italic">16 de jan. 2024</span>
-                            </p>
-                            <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                Primeiro Seminário Internacional sobre Multirriscos acontece em
-                                Natal
-                            </h2>
-                        </a>
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                        <img
+                            src="assets/img/image 5.png"
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
+                        <p class="text-sm text-gray-500 uppercase mb-2">
+                            Extensão - <span class="italic">16 de jan. 2024</span>
+                        </p>
+                        <h2 class="text-lg font-bold text-blue-700 leading-tight">
+                            Primeiro Seminário Internacional sobre Multirriscos acontece em
+                            Natal
+                        </h2>
+                        </div>
                     </article>
                 </div>
-            </section>
+        </section>
             
                     <!-- --
                     Adicionando section extensão
@@ -243,7 +278,7 @@
                 <div class="flex gap-5 max-lg:flex-col max-md:flex-col  max-lg:gap-8 max-lg:flex-col-reverse max-md:flex-col-reverse">
                     <article class="w-80 h-48 p-4 border rounded-lg ">
                         <figure class="mb-4">
-                            <img src="assets/img/icon.png" alt="">
+                            <img src="assets/img/icon.svg" alt="">
                         </figure>
                         
                         <strong class="mb-2">
@@ -274,7 +309,7 @@
                 <div class="flex gap-5 max-lg:flex-col  max-lg:gap-8 max-lg:flex-col-reverse">
                     <article class="w-80 h-48 p-4 border rounded-lg">
                         <figure class="mb-4">
-                            <img src="assets/img/icon.png" alt="">
+                            <img src="assets/img/icon.svg" alt="">
                         </figure>
                         <strong class="mb-2">
                             Estação Climatológica
@@ -288,7 +323,7 @@
                     </article>
                     <article class="w-80 h-48 p-4 border rounded-lg">
                         <figure class="mb-4">
-                            <img src="assets/img/icon(1).svg" alt="">
+                            <img src="assets/img/icon.svg" alt="">
                         </figure>
                         <strong class="mb-2">
                             Bibliotecas
