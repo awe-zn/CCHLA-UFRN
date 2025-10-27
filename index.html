@@ -682,9 +682,9 @@
 
         <!-- section | produção -->
 
-        <section class="bg-[#F4F6F9] pb-16 px-4 md:px-0 xl:px-0">
-            <div class="bg-[#EFF2FB] py-10">
-                <header class="max-w-screen-xl mx-auto space-y-4 md:px-10">
+        <section class="bg-[#F4F6F9] pb-16 md:px-0 xl:px-0">
+            <div class="bg-[#EFF2FB] py-10 border-b border-b-[#BAC6ED]">
+                <header class="max-w-screen-xl mx-auto space-y-4 px-4 md:px-10">
                     <p
                         class="text-xs text-gray-500 uppercase tracking-wider border-b border-gray-300 pb-1 inline-block">
                         Produção no CCHLA
@@ -697,10 +697,10 @@
                     </p>
                 </header>
             </div>
-            <div class="max-w-screen-xl mx-auto mt-16 md:px-10">
+            <div class="max-w-screen-xl mx-auto mt-16 px-4 md:px-10">
 
                 <!-- GRID FLUIDO -->
-                <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-10">
+                <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3  gap-10 sm:gap-6 md:gap-8">
 
                     <!-- CARD 1 -->
                     <a href="#"
@@ -898,188 +898,161 @@
 
 
         <!-- acesso rapido section-->
-        <section class="mx-auto max-w-screen-xl px-4 py-10">
-            <section class="container mx-auto">
-                <div class="max-md:px-9">
-                    <p class="flex flex-col font-light pb-2 after:border after:w-18 after:mt-2 max-w-35">
-                        ACESSO RÁPIDO
+
+        <section class="mx-auto max-w-screen-xl px-4 py-16">
+            <header class="mb-10 max-md:px-4">
+                <p class="text-gray-600 text-sm font-light pb-2 border-b border-blue-200 w-fit">ACESSO RÁPIDO</p>
+                <h2 class="text-4xl font-light mt-2">Sistemas</h2>
+            </header>
+
+            <div class="grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
+                <!-- ITEM -->
+                <a href="https://sigaa.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">SIGAA</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema Integrado de Gestão de Atividades Acadêmicas.
                     </p>
-                    <h3 class="text-4xl mb-10 font-light">Sistemas</h3>
-                    <div
-                        class="container mx-auto grid grid-cols-3 gap-x-8 gap-y-10 max-lg:grid-cols-2 max-md:grid-cols-1">
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> SIGAA </strong>
-                            <p class="text-sm">
-                                Sistema Integrado de Gestão de Atividades Acadêmicas.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> SIPAC </strong>
-                            <p class="text-sm">
-                                Sistema Integrado de Patrimônio, Administração e Contratos.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> SIG RH </strong>
-                            <p class="text-sm">
-                                Sistema integrado de Gestão de Recursos Humanos.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> GTI Chamados </strong>
-                            <p class="text-sm">
-                                Sistema de chamados para Gestão de Tecnologia da Informação.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> Espaço Físico Setor 2 </strong>
-                            <p class="text-sm">
-                                Visualizador dos espaços físicos disponíveis
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> Reserva CCHLA </strong>
-                            <p class="text-sm">Sistema de reserva de auditório do CCHLA</p>
-                        </article>
-                    </div>
-                </div>
-            </section>
+                </a>
+
+                <a href="https://sipac.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">SIPAC</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema Integrado de Patrimônio, Administração e Contratos.
+                    </p>
+                </a>
+
+                <a href="https://sigrh.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">SIGRH</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema Integrado de Gestão de Recursos Humanos.
+                    </p>
+                </a>
+
+                <a href="https://chamados.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">GTI Chamados</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema de chamados para Gestão de Tecnologia da Informação.
+                    </p>
+                </a>
+
+                <a href="https://espacos.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">Espaço Físico Setor
+                        2</strong>
+                    <p class="text-sm text-gray-600">
+                        Visualizador dos espaços físicos disponíveis.
+                    </p>
+                </a>
+
+                <a href="https://reserva.cchla.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">Reserva CCHLA</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema de reserva de auditório do CCHLA.
+                    </p>
+                </a>
+            </div>
         </section>
+
     </main>
     <!-- footer -->
-    <footer class="flex flex-col bg-blue-700 pt-18 gap-10 lg:items-center">
-        <div class="flex flex-col px-6 gap-10 md:gap-20 lg:flex-row lg:justify-between lg:gap-50">
-            <div class="flex flex-col h-39  justify-between  items-start md:text-center md:items-center lg:items-start">
-                <div class="flex flex-col gap-2 md:items-center lg:items-start">
-                    <h4 class="text-xl text-white">
-                        CCHLA
-                    </h4>
-                    <p class="text-white">Centro de Ciências Humanas, Letras e Artes</p>
-                </div>
-                <div class="flex gap-4">
-                    <a href="#"><i class="fa-brands fa-twitter bg-white rounded-full text-blue-700 p-2"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram bg-white rounded-full text-blue-700 p-2"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube bg-white rounded-full text-blue-700 p-2"></i></a>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row md:h-39   gap-9">
-                <div class="md:w-65">
-                    <ul>
-                        <li>
-                            <a href="" class="text-white font-bold">
-                                INSTITUCIONAL
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                Administração
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                Documentos
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                CONSEC
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                Departamentos
-                            </a>
-                        </li>
-                    </ul>
+    <footer class="bg-[#2E3CB9] text-white pt-16 pb-0">
+        <!-- GRID SUPERIOR -->
+        <div class="max-w-screen-xl mx-auto flex flex-col gap-12 px-6 lg:flex-row lg:justify-between">
+            <!-- BLOCO INSTITUCIONAL -->
+            <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                    <h4 class="text-xl font-semibold">CCHLA</h4>
+                    <p class="text-sm mt-2 md:text-center ">Centro de Ciências Humanas,<br>Letras e Artes</p>
                 </div>
 
-                <div class="md:w-65">
-                    <ul>
-                        <li>
-                            <a href="#" class="text-white font-bold uppercase tracking-wider">
-                                ACADÊMICO
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Ensino
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Pesquisa
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Extensão
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Publicações
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- REDES SOCIAIS -->
+                <nav aria-label="Redes sociais" class="flex gap-4 justify-start md:justify-center lg:justify-start">
+                    <a href="#" aria-label="Twitter"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-twitter text-[14px]" aria-hidden="true"></i>
+                    </a>
 
-                <div class="md:w-65">
-                    <ul>
-                        <li>
-                            <a href="#" class="text-white font-bold uppercase tracking-wider">
-                                IMPRENSA
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white hover:text-white">
-                                Eventos
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white hover:text-white">
-                                Orçamento
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white hover:text-white">
-                                Notícias
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Especiais
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                    <a href="#" aria-label="Instagram"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-instagram text-[14px]" aria-hidden="true"></i>
+                    </a>
+
+                    <a href="#" aria-label="YouTube"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-youtube text-[14px]" aria-hidden="true"></i>
+                    </a>
+                </nav>
             </div>
 
+            <!-- LINKS PRINCIPAIS -->
+            <nav aria-label="Mapa do site"
+                class="grid grid-cols-2 gap-10 md:grid-cols-3 text-sm md:text-center lg:text-left text-[16px] ">
+                <!-- COLUNA 1 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Institucional</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Administração</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Documentos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">CONSEC</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Departamentos</a></li>
+                </ul>
+
+                <!-- COLUNA 2 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Acadêmico</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Ensino</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Pesquisa</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Extensão</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Publicações</a></li>
+                </ul>
+
+                <!-- COLUNA 3 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Imprensa</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Eventos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Orçamento</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Notícias</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Especiais</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="text-white flex flex-col py-3 px-6 text-center gap-5">
-            <div class="flex flex-col">
-                <h3 class="font-bold">
-                    UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE
-                </h3>
-                <p>
-                    Centro de Ciências Humanas, Letras e Artes
-                </p>
-            </div>
-            <div>
-                <p>
-                    Av. Sen. Salgado Filho, S/n - Lagoa Nova, Natal - RN, 59078-970
-                </p>
-                <p>
-                    Telefone: <strong>(84 ) +55 84 3342-2243 / 84 99193-6154</strong> | e-mail:
-                    <strong>secretariacchla@gmail.com</strong>
-                </p>
-            </div>
+
+        <!-- LINHA DIVISÓRIA -->
+        <div class="border-t-1 border-[#3457CB] my-10 mx-6 lg:mx-auto max-w-screen-xl"></div>
+
+        <!-- BLOCO INFERIOR -->
+        <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px] ">
+            <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
+            <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
+
+            <p class="mt-4">
+                Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
+            </p>
+            <p class="mt-1">
+                Telefone:
+                <strong>(84) +55 84 3342-2243 / 84 99193-6154</strong>
+                |
+                E-mail:
+                <a href="mailto:secretariacchla@gmail.com" class="font-bold hover:underline focus:underline">
+                    secretariacchla@gmail.com
+                </a>
+            </p>
         </div>
-        <div class="flex flex-col px-6 text-center gap-5 bg-blue-900 py-6">
-            <a href="https://agenciaweb.ifrn.edu.br" target="_blank">
-                <img src="assets/img/logo-awe.svg" alt="">
+
+        <!-- RODAPÉ FINAL -->
+        <div class="bg-[#1D2E7A] py-6 text-center">
+            <a href="https://agenciaweb.ifrn.edu.br" target="_blank" rel="noopener noreferrer"
+                aria-label="Desenvolvido pela Agência Web do IFRN"
+                class="inline-block hover:opacity-90 focus:opacity-90 transition-opacity">
+                <img src="assets/img/logo-awe.svg" alt="Agência Web do IFRN" class="mx-auto w-8 h-auto">
             </a>
         </div>
     </footer>
+
 </body>
 
 </html>
