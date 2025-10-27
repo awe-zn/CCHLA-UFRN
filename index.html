@@ -1,87 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CCHLA | Centro de Ciências Humanas, Letras e Artes – UFRN</title>
-    <meta name="description" content="Centro de Ciências Humanas, Letras e Artes da Universidade Federal do Rio Grande do Norte (UFRN) – cursos, pesquisa, cultura e extensão.">
-    
+    <meta name="description"
+        content="Centro de Ciências Humanas, Letras e Artes da Universidade Federal do Rio Grande do Norte (UFRN) – cursos, pesquisa, cultura e extensão." />
     <!-- Ícone SVG (favicon) -->
-    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" />
     <!-- Fallback para navegadores que não suportam SVG -->
-    <link rel="alternate icon" href="/assets/icons/favicon.ico" sizes="any">
+    <link rel="alternate icon" href="/assets/icons/favicon.ico" sizes="any" />
     <!-- Ícone para dispositivos Apple / toque -->
-    <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png">
-
-    
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png" />
     <!-- Manifesto PWA (se aplicável) -->
-    <link rel="manifest" href="/assets/icons/site.webmanifest">
-    <meta name="theme-color" content="#193CB8">
-    
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="CCHLA / UFRN">
-    
+    <link rel="manifest" href="/assets/icons/site.webmanifest" />
+    <meta name="theme-color" content="#193CB8" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="CCHLA / UFRN" />
     <!-- Open Graph -->
-    <meta property="og:title" content="CCHLA – UFRN">
-    <meta property="og:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN. Ensino, pesquisa e extensão.">
-    <meta property="og:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.cchla.ufrn.br/">
-
+    <meta property="og:title" content="CCHLA – UFRN" />
+    <meta property="og:description"
+        content="Centro de Ciências Humanas, Letras e Artes – UFRN. Ensino, pesquisa e extensão." />
+    <meta property="og:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.cchla.ufrn.br/" />
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="CCHLA – UFRN">
-    <meta name="twitter:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN.">
-    <meta name="twitter:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png">
-  
-
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CCHLA – UFRN" />
+    <meta name="twitter:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN." />
+    <meta name="twitter:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script defer src="assets/scripts/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-
 </head>
+
 <body class="font-[Inter]">
     <header class="bg-linear-to-r from-[#002047] from-50% to-[#049] to-51% pl-0 px-9 md:px-11.5 lg:px-28">
         <div class="bg-[#004499] flex text-white justify-between items-center lg:max-w-300 lg:mx-auto w-full">
-            <img src="assets/imgs/logo.svg" alt="Logo CCHLA">
+            <img src="assets/img/logo.svg" alt="Logo CCHLA" />
             <nav class="hidden lg:flex lg:gap-4">
                 <div class="relative">
-                    <button " class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
+                    <button
+                        class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
                         <span class="font-semibold">INSTITUCIONAL</span>
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Administração</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Consec</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Orçamentos</a></li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">Administração</a>
+                        </li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">Consec</a>
+                        </li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">Orçamentos</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="relative">
-                    <button " class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
+                    <button
+                        class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
                         <span class="font-semibold">ACADÊMICO</span>
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Ensinos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">CAs</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Pesquisas</a></li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">Ensinos</a>
+                        </li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">CAs</a>
+                        </li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">Pesquisas</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="relative">
-                    <button " class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
+                    <button
+                        class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
                         <span class="font-semibold">IMPRENSA</span>
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Documentos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1"><a href="#">Obras</a></li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">Documentos</a>
+                        </li>
+                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
+                            <a href="#">Obras</a>
+                        </li>
                     </ul>
                 </div>
-                <a href="#" class="font-semibold relative "><span class="after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300">CONTATOS</span></a>
+                <a href="#" class="font-semibold relative"><span
+                        class="after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300">CONTATOS</span></a>
             </nav>
             <nav class="block lg:hidden">
                 <button onclick="show_menu()" class="cursor-pointer">
@@ -92,115 +111,124 @@
     </header>
     <div class="bg-white hidden absolute w-full menu-mobile lg:hidden flex flex-col gap-2 py-3 shadow-md">
         <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Institucional</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14 hidden">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Administração</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Consec</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Orçamentos</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Acadêmico</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="hidden drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Ensinos</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">CAs</a></li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Pesquisas</a></li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <button " class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                        <span class="font-medium">Imprensa</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                    <ul class="hidden drop font-medium flex flex-col gap-2  bg-white py-2 text-[#68686E] px-12 md:px-14">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]"><a href="#">Documentos</a></li>
-                        <li class="border-l-2 border-[#002047] border-solid text-[#313135] text-sm hover:bg-[#E9E9E9] w-full px-2 py-1"><a href="#">Obras</a></li>
-                    </ul>
-                </div>
-                <a href="#" class="font-medium px-12 md:px-14">Contatos</a>
+            <button
+                class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
+                <span class="font-medium">Institucional</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <ul class="drop font-medium flex flex-col gap-2 bg-white py-2 text-[#68686E] px-12 md:px-14 hidden">
+                <li
+                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
+                    <a href="#">Administração</a>
+                </li>
+                <li
+                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
+                    <a href="#">Consec</a>
+                </li>
+                <li
+                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
+                    <a href="#">Orçamentos</a>
+                </li>
+            </ul>
+        </div>
+        <div class="relative">
+            <button
+                class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
+                <span class="font-medium">Acadêmico</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <ul class="hidden drop font-medium flex flex-col gap-2 bg-white py-2 text-[#68686E] px-12 md:px-14">
+                <li
+                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
+                    <a href="#">Ensinos</a>
+                </li>
+                <li
+                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
+                    <a href="#">CAs</a>
+                </li>
+                <li
+                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
+                    <a href="#">Pesquisas</a>
+                </li>
+            </ul>
+        </div>
+        <div class="relative">
+            <button
+                class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
+                <span class="font-medium">Imprensa</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <ul class="hidden drop font-medium flex flex-col gap-2 bg-white py-2 text-[#68686E] px-12 md:px-14">
+                <li
+                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
+                    <a href="#">Documentos</a>
+                </li>
+                <li
+                    class="border-l-2 border-[#002047] border-solid text-[#313135] text-sm hover:bg-[#E9E9E9] w-full px-2 py-1">
+                    <a href="#">Obras</a>
+                </li>
+            </ul>
+        </div>
+        <a href="#" class="font-medium px-12 md:px-14">Contatos</a>
     </div>
     <main>
-      <!--  -----------------------
-        TODO -> aqui devem constar links para a notícia equivalente ao post
-        -----------------------         -->
+        <!--  -----------------------
+            TODO -> aqui devem constar links para a notícia equivalente ao post
+            -----------------------         -->
         <section class="container mx-auto max-w-360 lg:pl-10 px-5">
             <!-- hero section -->
             <section class="lg:grid lg:grid-cols-2 gap-20">
                 <article class="max-w-2xl w-full mx-auto lg:mx-0 lg:">
                     <figure>
                         <!--  TODO: aqui deve ser um link -->
-                        <img
-                        src="assets/img/image 1.png"
-                        alt="Residência em Políticas Públicas"
-                        class="rounded-lg w-full"
-                        />
+                        <img src="assets/img/image 1.png" alt="Residência em Políticas Públicas"
+                            class="rounded-lg w-full" />
                     </figure>
-
                     <!--  TODO: aqui deve ser um link para o post -->
                     <a href="#" class="">
                         <h3 class="text-blue-700 font-bold text-xl mt-4">
-                        UFRN abre inscrições para seleção de Residência em Políticas
-                        Públicas e Inovação
+                            UFRN abre inscrições para seleção de Residência em Políticas
+                            Públicas e Inovação
                         </h3>
                         <p class="text-blue-950 mt-2">
-                        Universidade Federal do Rio Grande do Norte (UFRN ) oferece
-                        programa de residência em parceria com a Secretaria de Igualdade
-                        Racial de Natal.
+                            Universidade Federal do Rio Grande do Norte (UFRN ) oferece programa de residência em
+                            parceria com a
+                            Secretaria de Igualdade Racial de Natal.
                         </p>
                     </a>
-                    </article>
-
-                    <div
-                    class="flex w-full overflow-x-auto gap-4 pb-4 snap-x snap-mandatory mt-8 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible lg:mt-0 lg:flex lg:flex-col lg:gap-4 lg:max-w-md"
-                    >
+                </article>
+                <div
+                    class="flex w-full overflow-x-auto gap-4 pb-4 snap-x snap-mandatory mt-8 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible lg:mt-0 lg:flex lg:flex-col lg:gap-4 lg:max-w-md">
                     <!-- 
-                            MUDANÇA FINAL NOS CARDS:
-                            - Removido 'shadow-md'.
-                            - No <article>, 'lg:h-full' foi removido pois não é necessário. O card crescerá com o conteúdo.
-                            - No <figure>, 'lg:h-full' foi removido. A altura será definida pelo conteúdo de texto ao lado.
-                            - Na <img>, as classes 'w-full', 'h-full' e 'object-cover' garantem o preenchimento proporcional.
-                            -->
-                        <article
-                            class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                        >
-                            <figure class="lg:w-32 lg:flex-shrink-0">
+                     MUDANÇA FINAL NOS CARDS:
+                     - Removido 'shadow-md'.
+                     - No <article>, 'lg:h-full' foi removido pois não é necessário. O card crescerá com o conteúdo.
+                     - No <figure>, 'lg:h-full' foi removido. A altura será definida pelo conteúdo de texto ao lado.
+                     - Na <img>, as classes 'w-full', 'h-full' e 'object-cover' garantem o preenchimento proporcional.
+                     -->
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
+                        <figure class="lg:w-32 lg:flex-shrink-0">
                             <!--  TODO: link para notícia -->
-                            <img
-                                src="assets/img/image 2.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                            </figure>
-
-                            <!-- TODO: link para notícia -->
-                            <div class="p-4 flex flex-col justify-center">
+                            <img src="assets/img/image 2.png" alt="" class="w-full h-full object-cover" />
+                        </figure>
+                        <!-- TODO: link para notícia -->
+                        <div class="p-4 flex flex-col justify-center">
                             <p class="text-sm text-gray-500 uppercase mb-2">
                                 Ensino - <span class="italic">16 de jan. 2024</span>
                             </p>
                             <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                UFRN sedia regional do maior congresso de comunicação da América
-                                Latina
+                                UFRN sedia regional do maior congresso de comunicação da
+                                América Latina
                             </h2>
-                            </div>
-                        </article>
-
-                        <article
-                            class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                        >
-                            <figure class="lg:w-32 lg:flex-shrink-0">
-                            <img
-                                src="assets/img/image 3.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                            </figure>
-                            <div class="p-4 flex flex-col justify-center">
+                        </div>
+                    </article>
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                            <img src="assets/img/image 3.png" alt="" class="w-full h-full object-cover" />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
                             <p class="text-sm text-gray-500 uppercase mb-2">
                                 Pesquisa e Extensão -
                                 <span class="italic">16 de jan. 2024</span>
@@ -208,20 +236,14 @@
                             <h2 class="text-lg font-bold text-blue-700 leading-tight">
                                 Projeto da UFRN explora tradições culturais da renda artesanal
                             </h2>
-                            </div>
-                        </article>
-
-                        <article
-                            class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                        >
-                            <figure class="lg:w-32 lg:flex-shrink-0">
-                            <img
-                                src="assets/img/image 4.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                            </figure>
-                            <div class="p-4 flex flex-col justify-center">
+                        </div>
+                    </article>
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                            <img src="assets/img/image 4.png" alt="" class="w-full h-full object-cover" />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
                             <p class="text-sm text-gray-500 uppercase mb-2">
                                 Internacionalização -
                                 <span class="italic">16 de jan. 2024</span>
@@ -229,266 +251,228 @@
                             <h2 class="text-lg font-bold text-blue-700 leading-tight">
                                 Aula Inaugural do PPGe-UFRN marca o início das turmas
                             </h2>
-                            </div>
-                        </article>
-
-                        <article
-                            class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4"
-                        >
-                            <figure class="lg:w-32 lg:flex-shrink-0">
-                            <img
-                                src="assets/img/image 5.png"
-                                alt=""
-                                class="w-full h-full object-cover"
-                            />
-                            </figure>
-                            <div class="p-4 flex flex-col justify-center">
+                        </div>
+                    </article>
+                    <article
+                        class="min-w-[85vw] bg-white rounded-lg overflow-hidden snap-center flex flex-col md:min-w-0 lg:flex-row lg:items-stretch lg:gap-4">
+                        <figure class="lg:w-32 lg:flex-shrink-0">
+                            <img src="assets/img/image 5.png" alt="" class="w-full h-full object-cover" />
+                        </figure>
+                        <div class="p-4 flex flex-col justify-center">
                             <p class="text-sm text-gray-500 uppercase mb-2">
                                 Extensão - <span class="italic">16 de jan. 2024</span>
                             </p>
                             <h2 class="text-lg font-bold text-blue-700 leading-tight">
-                                Primeiro Seminário Internacional sobre Multirriscos acontece em
-                                Natal
+                                Primeiro Seminário Internacional sobre Multirriscos acontece
+                                em Natal
                             </h2>
-                            </div>
-                        </article>
-                    </div>
+                        </div>
+                    </article>
+                </div>
             </section>
-        
         </section>
-          
         <!-- section | servicos a sociedade -->
-                    
         <section class="container mx-auto max-lg:px-11 max-md:px-4">
-            <div class="flex flex-col gap-2 mb-10 ">
+            <div class="flex flex-col gap-2 mb-10">
                 <p class="font-light pb-2 border-b max-w-18 max-md:self-start">
                     EXTENSÃO
                 </p>
-                <h3 class="text-4xl">
-                    Serviços à sociedade
-
-                </h3>
+                <h3 class="text-4xl">Serviços à sociedade</h3>
                 <p class="text-zinc-600">
                     Tenha acesso aos serviços ofertados pelo nosso departamento.
                 </p>
             </div>
             <div class="flex gap-5 max-md:flex-col max-lg:gap-8 max-md:justify-center max-md:items-center">
-                <div class="flex gap-5 max-lg:flex-col max-md:flex-col  max-lg:gap-8 max-lg:flex-col-reverse max-md:flex-col-reverse">
-                    <article class="w-80 h-48 p-4 border rounded-lg ">
+                <div
+                    class="flex gap-5 max-lg:flex-col max-md:flex-col max-lg:gap-8 max-lg:flex-col-reverse max-md:flex-col-reverse">
+                    <article class="w-80 h-48 p-4 border rounded-lg">
                         <figure class="mb-4">
-                            <img src="assets/img/icon.svg" alt="">
+                            <img src="assets/img/icon.svg" alt="" />
                         </figure>
-                        
-                        <strong class="mb-2">
-                            Estação Climatológica
-                        </strong>
+                        <strong class="mb-2"> Estação Climatológica </strong>
                         <p class="text-sm text-zinc-600 w-72 mb-2">
                             Desenvolve observação meteorológica, através convênio entre a UFRN e o INMET.
                         </p>
-                        <a href="" class="text-cyan-500 w-72 h-10">
-                            Leia mais ->
-                        </a>
+                        <a href="" class="text-cyan-500 w-72 h-10"> Leia mais -> </a>
                     </article>
                     <article class="w-80 h-48 p-4 border rounded-lg">
                         <figure class="mb-4">
-                            <img src="assets/img/icon.svg" alt="">
+                            <img src="assets/img/icon.svg" alt="" />
                         </figure>
-                        <strong class="mb-2">
-                            Ágora
-                        </strong>
-                        <p class="text-sm  text-zinc-600 w-72 mb-2">
+                        <strong class="mb-2"> Ágora </strong>
+                        <p class="text-sm text-zinc-600 w-72 mb-2">
                             Oferece curso de línguas estrangeiras para alunos, servidores técnicos e docentes.
                         </p>
-                        <a href="" class="text-cyan-500 w-72 h-10">
-                            Leia mais ->
-                        </a>
+                        <a href="" class="text-cyan-500 w-72 h-10"> Leia mais -> </a>
                     </article>
                 </div>
-                <div class="flex gap-5 max-lg:flex-col  max-lg:gap-8 max-lg:flex-col-reverse">
+                <div class="flex gap-5 max-lg:flex-col max-lg:gap-8 max-lg:flex-col-reverse">
                     <article class="w-80 h-48 p-4 border rounded-lg">
                         <figure class="mb-4">
-                            <img src="assets/img/icon.svg" alt="">
+                            <img src="assets/img/icon.svg" alt="" />
                         </figure>
-                        <strong class="mb-2">
-                            Estação Climatológica
-                        </strong>
-                        <p class="text-sm  text-zinc-600 w-72 mb-2">
+                        <strong class="mb-2"> Estação Climatológica </strong>
+                        <p class="text-sm text-zinc-600 w-72 mb-2">
                             Desenvolve observação meteorológica, através convênio entre a UFRN e o INMET.
                         </p>
-                        <a href="" class="text-cyan-500 w-72 h-10">
-                            Leia mais ->
-                        </a>
+                        <a href="" class="text-cyan-500 w-72 h-10"> Leia mais -> </a>
                     </article>
                     <article class="w-80 h-48 p-4 border rounded-lg">
                         <figure class="mb-4">
-                            <img src="assets/img/icon.svg" alt="">
+                            <img src="assets/img/icon.svg" alt="" />
                         </figure>
-                        <strong class="mb-2">
-                            Bibliotecas
-                        </strong>
-                        <p class="text-sm  text-zinc-600 w-72 mb-2">
-                            Tenha acesso ao acervo da  Biblioteca setorial do CCHLA.
+                        <strong class="mb-2"> Bibliotecas </strong>
+                        <p class="text-sm text-zinc-600 w-72 mb-2">
+                            Tenha acesso ao acervo da Biblioteca setorial do CCHLA.
                         </p>
-                        <a href="" class="text-cyan-500 w-72 h-10">
-                            Leia mais ->
-                        </a>
+                        <a href="" class="text-cyan-500 w-72 h-10"> Leia mais -> </a>
                     </article>
                 </div>
-                
             </div>
         </section>
-
         <!-- section | noticias -->
-
         <section class="flex flex-col gap-10 px-4 py-10 md:px-11.5 xl:px-28 bg-[#F4F4F5]">
             <section class="container mx-auto max-w-360 lg:pl-10 px-5">
-
                 <div class="flex flex-col gap-7 sm:flex-row sm:justify-between items-start">
-                <div class="flex flex-col gap-2 sm:text-lg">
-                    <h4 class="text-[#234FBF]">
-                        FIQUE POR DENTRO
-                    </h4>
-                    <hr class="border-1 rounded-full w-18 border-[#307FE2]">
-                    <h2 class="text-3xl sm:text-4xl font-light text-[#2A2739]">
-                        Notícias no CCHLA
-                    </h2>
+                    <div class="flex flex-col gap-2 sm:text-lg">
+                        <h4 class="text-[#234FBF]">FIQUE POR DENTRO</h4>
+                        <hr class="border-1 rounded-full w-18 border-[#307FE2]" />
+                        <h2 class="text-3xl sm:text-4xl font-light text-[#2A2739]">
+                            Notícias no CCHLA
+                        </h2>
+                    </div>
+                    <button class="flex gap-2 items-center text-[#0069A8] hover:cursor-pointer">
+                        <span class="font-bold text-xs sm:text-base">
+                            Acesse mais notícias
+                        </span>
+                        <img src="assets/img/arrow-up-right.svg" alt="Seta para cima e para direita"
+                            class="w-5 sm:w-6" />
+                    </button>
                 </div>
-                <button class="flex gap-2 items-center text-[#0069A8] hover:cursor-pointer">
-                    <span class="font-bold text-xs sm:text-base">
-                        Acesse mais notícias
-                    </span>
-                    <img src="assets/vectors/arrow-up-right.svg" alt="Seta para cima e para direita" class="w-5 sm:w-6">
-                </button>
-            </div>
-            <div class="flex gap-8 justify-between overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 xl:overflow-visible">
-                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
-                    <figure class=" flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
-                        <img src="assets/imgs/noticia-1.png" alt="Imagem da notícia" class="rounded-lg">
-                        <figcaption class="font-bold text-lg text-[#2A2739]">Primeiro Seminário Internacional sobre Multirriscos acontece em Natal</figcaption>
-                        <figcaption class="text-[#313135] text-sm">Hoje, 17:35</figcaption>
-                    </figure>
-                </a>
-                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
-                    <figure class=" flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
-                        <img src="assets/imgs/noticia-2.png" alt="Imagem da notícia" class="rounded-lg">
-                        <figcaption class="font-bold text-lg text-[#2A2739]">Projeto “Mascaramento em Espaços Urbanos” retorna às atividades em 2024</figcaption>
-                        <figcaption class="text-[#313135] text-sm">Hoje, 17:35</figcaption>
-                    </figure>
-                </a>
-                <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
-                    <figure class=" flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
-                        <img src="assets/imgs/noticia-3.png" alt="Imagem da notícia" class="rounded-lg">
-                        <figcaption class="font-bold text-lg text-[#2A2739]">Departamento de Filosofia da lança nova edição do curso “Pensadorxs Brasileirxs”</figcaption>
-                        <figcaption class="text-[#313135] text-sm">Hoje, 17:35</figcaption>
-                    </figure>
-                </a>
-            </div>
-            <div class="flex gap-8 justify-between overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 xl:overflow-visible">
-                <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
-                    <figure class="flex gap-2 w-70 sm:w-75 xl:w-full max-w-80 items-center">
-                        <img src="assets/imgs/img.png" alt="Imagem de noticia">
-                        <div class="flex flex-col justify-between">
-                            <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
-                            <p class="text-[#2A2739] text-sm font-semibold">UFRN assina convênio com Secretaria Municipal de Direitos Humanos</p>
-                        </div>
-                    </figure>
-                </a>
-                <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
-                    <figure class="flex gap-2 w-70 sm:w-75 items-center xl:w-full max-w-80">
-                        <img src="assets/imgs/img-1.png" alt="Imagem de noticia">
-                        <div class="flex flex-col justify-between">
-                            <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
-                            <p class="text-[#2A2739] text-sm font-semibold">UFRN elabora plano para prevenção de desastres em Natal</p>
-                        </div>
-                    </figure>
-                </a>
-                <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
-                    <figure class="flex gap-2 w-70 sm:w-75 items-center xl:w-full max-w-80">
-                        <img src="assets/imgs/img-2.png" alt="Imagem de noticia">
-                        <div class="flex flex-col justify-between">
-                            <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
-                            <p class="text-[#2A2739] text-sm font-semibold">UFRN celebra o Dia da Poesia em evento especial no Departamento de Letras</p>
-                        </div>
-                    </figure>
-                </a>
-            </div>
-
-            </section>            
+                <div
+                    class="flex gap-8 justify-between overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 xl:overflow-visible">
+                    <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
+                        <figure class="flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
+                            <img src="assets/img/noticia-1.png" alt="Imagem da notícia" class="rounded-lg" />
+                            <figcaption class="font-bold text-lg text-[#2A2739]">
+                                Primeiro Seminário Internacional sobre Multirriscos acontece em Natal
+                            </figcaption>
+                            <figcaption class="text-[#313135] text-sm">
+                                Hoje, 17:35
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
+                        <figure class="flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
+                            <img src="assets/img/noticia-2.png" alt="Imagem da notícia" class="rounded-lg" />
+                            <figcaption class="font-bold text-lg text-[#2A2739]">
+                                Projeto “Mascaramento em Espaços Urbanos” retorna às atividades em 2024
+                            </figcaption>
+                            <figcaption class="text-[#313135] text-sm">
+                                Hoje, 17:35
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="bg-white p-3 rounded-2xl shadow-md/25">
+                        <figure class="flex flex-col gap-4 w-70 sm:w-75 xl:w-full max-w-80">
+                            <img src="assets/img/noticia-3.png" alt="Imagem da notícia" class="rounded-lg" />
+                            <figcaption class="font-bold text-lg text-[#2A2739]">
+                                Departamento de Filosofia da lança nova edição do curso “Pensadorxs Brasileirxs”
+                            </figcaption>
+                            <figcaption class="text-[#313135] text-sm">
+                                Hoje, 17:35
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div
+                    class="flex gap-8 justify-between overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 xl:overflow-visible">
+                    <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
+                        <figure class="flex gap-2 w-70 sm:w-75 xl:w-full max-w-80 items-center">
+                            <img src="assets/img/img.png" alt="Imagem de noticia" />
+                            <div class="flex flex-col justify-between">
+                                <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
+                                <p class="text-[#2A2739] text-sm font-semibold">
+                                    UFRN assina convênio com Secretaria Municipal de Direitos Humanos
+                                </p>
+                            </div>
+                        </figure>
+                    </a>
+                    <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
+                        <figure class="flex gap-2 w-70 sm:w-75 items-center xl:w-full max-w-80">
+                            <img src="assets/img/img-1.png" alt="Imagem de noticia" />
+                            <div class="flex flex-col justify-between">
+                                <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
+                                <p class="text-[#2A2739] text-sm font-semibold">
+                                    UFRN elabora plano para prevenção de desastres em Natal
+                                </p>
+                            </div>
+                        </figure>
+                    </a>
+                    <a href="#" class="p-3 bg-white rounded-2xl shadow-md/25">
+                        <figure class="flex gap-2 w-70 sm:w-75 items-center xl:w-full max-w-80">
+                            <img src="assets/img/img-2.png" alt="Imagem de noticia" />
+                            <div class="flex flex-col justify-between">
+                                <h5 class="text-[#2E2B26] text-sm">COOPERAÇÃO</h5>
+                                <p class="text-[#2A2739] text-sm font-semibold">
+                                    UFRN celebra o Dia da Poesia em evento especial no Departamento de Letras
+                                </p>
+                            </div>
+                        </figure>
+                    </a>
+                </div>
+            </section>
         </section>
-            
-         <!-- acesso rapido section-->
-<section class="container mx-auto max-w-360 lg:pl-10 px-5">
-        <section class="container mx-auto">
-            <div class="max-md:px-9">
-                <p class="flex flex-col font-light pb-2 after:border after:w-18 after:mt-2  max-w-35">
-                    ACESSO RÁPIDO
-                </p>
-                
-                <h3 class="text-4xl mb-10 font-light">
-                    Sistemas
-                </h3>
-                <div class="container mx-auto grid grid-cols-3 gap-x-8 gap-y-10 max-lg:grid-cols-2 max-md:grid-cols-1">
-                        <article class="flex flex-col gap-2 p-4  border border-blue-200 rounded-sm">
-                            <strong>
-                                SIGAA
-                            </strong>
+        <!-- acesso rapido section-->
+        <section class="container mx-auto max-w-360 lg:pl-10 px-5">
+            <section class="container mx-auto">
+                <div class="max-md:px-9">
+                    <p class="flex flex-col font-light pb-2 after:border after:w-18 after:mt-2 max-w-35">
+                        ACESSO RÁPIDO
+                    </p>
+                    <h3 class="text-4xl mb-10 font-light">Sistemas</h3>
+                    <div
+                        class="container mx-auto grid grid-cols-3 gap-x-8 gap-y-10 max-lg:grid-cols-2 max-md:grid-cols-1">
+                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
+                            <strong> SIGAA </strong>
                             <p class="text-sm">
-
                                 Sistema Integrado de Gestão de Atividades Acadêmicas.
                             </p>
-
                         </article>
-                        <article class="flex flex-col gap-2 p-4  border border-blue-200 rounded-sm">
-                            <strong>
-                                SIPAC
-                            </strong>
+                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
+                            <strong> SIPAC </strong>
                             <p class="text-sm">
                                 Sistema Integrado de Patrimônio, Administração e Contratos.
                             </p>
                         </article>
-                        <article class="flex flex-col gap-2 p-4  border border-blue-200 rounded-sm">
-                            <strong>
-                                SIG RH
-                            </strong>
+                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
+                            <strong> SIG RH </strong>
                             <p class="text-sm">
                                 Sistema integrado de Gestão de Recursos Humanos.
                             </p>
                         </article>
-                    
-                    
-                        <article class="flex flex-col gap-2 p-4  border border-blue-200 rounded-sm">
-                            <strong>
-                                GTI Chamados
-                            </strong>
+                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
+                            <strong> GTI Chamados </strong>
                             <p class="text-sm">
                                 Sistema de chamados para Gestão de Tecnologia da Informação.
                             </p>
                         </article>
-                        <article class="flex flex-col gap-2 p-4  border border-blue-200 rounded-sm">
-                            <strong>
-                                Espaço Físico Setor 2
-                            </strong>
+                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
+                            <strong> Espaço Físico Setor 2 </strong>
                             <p class="text-sm">
                                 Visualizador dos espaços físicos disponíveis
                             </p>
                         </article>
-                        <article class="flex flex-col gap-2 p-4  border border-blue-200 rounded-sm">
-                            <strong>
-                                Reserva CCHLA
-                            </strong>
-                            <p class="text-sm">
-                                Sistema de reserva de auditório do CCHLA
-                            </p>
+                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
+                            <strong> Reserva CCHLA </strong>
+                            <p class="text-sm">Sistema de reserva de auditório do CCHLA</p>
                         </article>
-                    
+                    </div>
                 </div>
-                
-            </div>
-            
+            </section>
         </section>
-        
-      </section>
     </main>
     <footer></footer>
 </body>
+
 </html>
