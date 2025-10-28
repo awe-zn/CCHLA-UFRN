@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Página não encontrada | CCHLA</title>
+  <title>Insititucional 1 | CCHLA</title>
   <meta name="description"
     content="Centro de Ciências Humanas, Letras e Artes da Universidade Federal do Rio Grande do Norte (UFRN) – cursos, pesquisa, cultura e extensão." />
   <!-- Ícone SVG (favicon) -->
@@ -32,7 +32,9 @@
   <meta name="twitter:title" content="CCHLA – UFRN" />
   <meta name="twitter:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN." />
   <meta name="twitter:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap"
     rel="stylesheet" />
@@ -231,58 +233,98 @@
   </script>
 
   <!-- MAIN -->
-  <main class="min-h-screen flex flex-col bg-white text-gray-800">
-    <!-- Barra contextual -->
-    <div class="bg-gray-100 border-b">
-      <div class="container mx-auto text-sm text-gray-500 py-2 px-4">
-        Página não encontrada
+  <main class="bg-white text-gray-800 page-institucional">
+    <!-- Breadcrumb -->
+    <nav class="bg-gray-100 border-b" aria-label="breadcrumb">
+      <div class="container mx-auto px-4 py-2 text-sm text-gray-500">
+        <ol class="flex flex-wrap items-center space-x-1 sm:space-x-2">
+          <li>
+            <a href="/" class="hover:text-blue-600 transition-colors">Institucional</a>
+          </li>
+          <li>
+            <span class="text-gray-400">›</span>
+          </li>
+          <li aria-current="page" class="text-gray-700 font-medium">
+            Quem somos
+          </li>
+        </ol>
       </div>
-    </div>
+    </nav>
 
-    <!-- Área principal -->
-    <section class="flex-1 py-10 lg:py-16">
-      <div class="container mx-auto px-4">
-        <div class="flex flex-col lg:flex-row items-center gap-10">
-          <!-- Texto e CTAs -->
-          <div class="lg:w-1/2 text-center lg:text-left">
-            <h1 class="text-4xl font-bold text-blue-700 mb-1">Oops....</h1>
-            <p class="text-2xl font-semibold mb-3">Página não encontrada</p>
-            <p class="text-gray-500 mb-6">
-              A página que você está tentando acessar não existe ou foi removida.
-            </p>
+    <!-- Conteúdo principal -->
+    <section class="py-10 sm:py-12 lg:py-16">
+      <div class="container mx-auto px-4 max-w-4xl">
+        <!-- Título -->
+        <header class="mb-10">
+          <h1 class="text-4xl sm:text-5xl font-bold text-blue-700 mb-3">
+            Institucional
+          </h1>
+        </header>
 
-            <div class="flex flex-col gap-3 max-w-md mx-auto lg:mx-0">
-              <a href="/"
-                class="block rounded-lg bg-blue-50 hover:bg-blue-100 transition p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                <div class="font-semibold text-lg text-gray-900 mb-1">
-                  Acesse a nossa home
-                </div>
-                <p class="text-gray-600 text-sm">
-                  Acompanhe o nosso departamento e encontre o que precisa.
-                </p>
-              </a>
+        <!-- Conteúdo -->
+        <article class="prose prose-blue max-w-none">
+          <h2>Somos inquietos e queremos inovar na escola</h2>
+          <p>
+            O projeto visa acelerar o desenvolvimento das habilidades técnicas e interpessoais dos alunos, colocando-os
+            em um ambiente de imersão.
+            O foco está em auxiliar no desenvolvimento de profissionais mais preparados para um mercado exigente e em
+            constante mudança.
+            Por isso, é preciso trabalhar, além de habilidades técnicas, as habilidades interpessoais.
+          </p>
 
-              <a href="/noticias"
-                class="block rounded-lg bg-blue-50 hover:bg-blue-100 transition p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                <div class="font-semibold text-lg text-gray-900 mb-1">
-                  Notícias
-                </div>
-                <p class="text-gray-600 text-sm">
-                  Fique por dentro de tudo que acontece no CCHLA.
-                </p>
-              </a>
-            </div>
-          </div>
+          <h2>Por que surgiu?</h2>
+          <p>
+            No cenário atual, onde a escola anda num descompasso comparado ao mundo contemporâneo, a AWE busca ser o elo
+            entre a escola e o mercado de trabalho.
+            Buscamos aliar conhecimentos técnicos (<em>hard skills</em>) e habilidades interpessoais (<em>soft
+              skills</em>) em um ambiente desafiador que lida diretamente com resolução de problemas reais.
+            Todos os problemas surgem de clientes parceiros.
+          </p>
 
-          <!-- Imagem ilustrativa -->
-          <div class="lg:w-1/2 flex justify-center">
-            <img src="assets/img/img-404.png" alt="Erro 404 - Página não encontrada"
-              class="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full h-auto" />
-          </div>
-        </div>
+          <h2>O que nos guia?</h2>
+          <blockquote>
+            Assim como no mercado de trabalho, muito do que aprendemos aqui é a partir de desafios práticos que fazem
+            nos mover em direção às soluções inovadoras.
+          </blockquote>
+
+          <h2>Nossos pilares</h2>
+
+          <h3>Propósitos</h3>
+          <p>
+            Acreditamos que tudo que fazemos precisa ser relevante para nós, para o grupo e para a sociedade.
+            Por isso, buscamos alinhar os anseios dos alunos com os objetivos da AWE e a contribuição para a sociedade.
+          </p>
+
+          <h3>Autonomia</h3>
+          <p>
+            Incentivamos todos a se tornarem autogestionáveis.
+            As pessoas querem dirigir as próprias vidas, e na AWE buscamos fortalecer isso — seja por meio de mentorias
+            individualizadas, trabalho colaborativo ou através de cursos.
+          </p>
+
+          <h3>Afinidade</h3>
+          <p>
+            O trabalho em equipe não se restringe ao espaço da AWE, mas é essencial para toda a vida em sociedade.
+            Entendemos e compartilhamos a ideia de pensamento sistêmico, onde cada pessoa é parte de algo maior, e que
+            juntos somos capazes de construir grandes coisas.
+            O trabalho em grupo é uma habilidade trabalhada constantemente, desde a concepção de problemas simples até
+            decisões mais impactantes.
+          </p>
+
+          <h3>Mestria</h3>
+          <p>
+            Os desafios nos convidam a pesquisar e aprender mais.
+            Buscamos impactar e sempre trazer conhecimento aprofundado sobre determinada habilidade para solucionar
+            problemas de clientes.
+            Faz parte de nós: pesquisar, aprender, demonstrar, solucionar e compartilhar as habilidades aprendidas
+            durante nosso percurso.
+          </p>
+        </article>
       </div>
     </section>
   </main>
+
+
 
 
   <!-- footer -->

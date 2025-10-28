@@ -43,136 +43,203 @@
     <!-- Link para Font Awesome para os ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+    <style>
+        /* Padrão WebKit (Chrome, Edge, Safari, Opera) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #305CFF;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        /* Ao passar o mouse sobre o scroll */
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #1E3AFF;
+            /* tonalidade mais escura */
+            width: 12px;
+            /* efeito de expansão suave */
+        }
+
+        /* Ajuste visual do hover na área do scrollbar */
+        ::-webkit-scrollbar:hover {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #305CFF #f1f1f1;
+        }
+
+        /* Para Firefox não há width animável, mas podemos dar leve contraste no hover */
+        html:hover {
+            scrollbar-color: #1E3AFF #e6e6e6;
+        }
+    </style>
 </head>
 
 <body class="font-[Inter]">
-    <header class="bg-linear-to-r from-[#002047] from-50% to-[#049] to-51% pl-0 px-9 md:px-11.5 lg:px-28">
-        <div class="bg-[#004499] flex text-white justify-between items-center lg:max-w-300 lg:mx-auto w-full">
-            <img src="assets/img/logo.svg" alt="Logo CCHLA" />
-            <nav class="hidden lg:flex lg:gap-4">
-                <div class="relative">
+    <header class="bg-gradient-to-r from-[#002047] from-50% to-[#004499] text-white">
+        <div class="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4 lg:py-0">
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-2">
+                <img src="assets/img/logo.svg" alt="Logo do CCHLA" class="h-12" />
+            </a>
+
+            <!-- Menu Desktop -->
+            <nav class="hidden lg:flex items-center gap-8">
+                <div class="relative group">
                     <button
-                        class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">INSTITUCIONAL</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                        class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+                        aria-expanded="false" aria-controls="menu-inst">
+                        INSTITUCIONAL
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
                     </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">Administração</a>
+                    <ul id="menu-inst"
+                        class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+                        <li><a href="page-institucional.html"
+                                class="block px-4 py-2 hover:bg-gray-100">Administração</a></li>
+                        <li><a href="page-institucional-2.html" class="block px-4 py-2 hover:bg-gray-100">Consec</a>
                         </li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">Consec</a>
-                        </li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">Orçamentos</a>
+                        <li><a href="page-institucional-2.html" class="block px-4 py-2 hover:bg-gray-100">Orçamentos</a>
                         </li>
                     </ul>
                 </div>
-                <div class="relative">
+
+                <div class="relative group">
                     <button
-                        class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">ACADÊMICO</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                        class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+                        aria-expanded="false" aria-controls="menu-acad">
+                        ACADÊMICO
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
                     </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">Ensinos</a>
-                        </li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">CAs</a>
-                        </li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">Pesquisas</a>
-                        </li>
+                    <ul id="menu-acad"
+                        class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Ensino</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">CAs</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Pesquisas</a></li>
                     </ul>
                 </div>
-                <div class="relative">
+
+                <div class="relative group">
                     <button
-                        class="drop-down flex flex-none items-center gap-1 after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300 hover:cursor-pointer">
-                        <span class="font-semibold">IMPRENSA</span>
-                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                        class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+                        aria-expanded="false" aria-controls="menu-imp">
+                        IMPRENSA
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
                     </button>
-                    <ul class="drop flex flex-col gap-2 hidden absolute bg-white shadow py-2 text-[#68686E] top-8">
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">Documentos</a>
-                        </li>
-                        <li class="text-sm hover:bg-[#E9E9E9] w-full px-4 py-1">
-                            <a href="#">Obras</a>
-                        </li>
+                    <ul id="menu-imp"
+                        class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Documentos</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Obras</a></li>
                     </ul>
                 </div>
-                <a href="#" class="font-semibold relative"><span
-                        class="after:content-[''] after:bg-slate-300 after:absolute after:h-[2px] after:w-full after:left-0 after:bottom-[-2px] after:opacity-0 hover:after:opacity-100 after:transition after:duration-300">CONTATOS</span></a>
+
+                <a href="#" class="font-semibold hover:text-blue-200 transition-colors">CONTATOS</a>
             </nav>
-            <nav class="block lg:hidden">
-                <button onclick="show_menu()" class="cursor-pointer">
-                    <i class="fa-solid fa-bars text-3xl"></i>
-                </button>
-            </nav>
+
+            <!-- Botão Mobile -->
+            <button id="menu-toggle" aria-label="Abrir menu" aria-expanded="false"
+                class="lg:hidden text-2xl hover:text-blue-200 transition-colors">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
+
+        <!-- Menu Mobile -->
+        <nav id="mobile-menu"
+            class="hidden flex-col bg-white text-[#313135] shadow-lg lg:hidden transition-all duration-300">
+            <ul class="divide-y divide-gray-200">
+                <li>
+                    <button
+                        class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+                        onclick="toggleDropdown(this)">
+                        Institucional
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <ul class="hidden flex-col bg-gray-50">
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Administração</a>
+                        </li>
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Consec</a>
+                        </li>
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Orçamentos</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <button
+                        class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+                        onclick="toggleDropdown(this)">
+                        Acadêmico
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <ul class="hidden flex-col bg-gray-50">
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Ensino</a>
+                        </li>
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">CAs</a>
+                        </li>
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Pesquisas</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button
+                        class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+                        onclick="toggleDropdown(this)">
+                        Imprensa
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <ul class="hidden flex-col bg-gray-50">
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Documentos</a>
+                        </li>
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Obras</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="block px-6 py-4 font-medium hover:bg-gray-100 transition">Contatos</a>
+                </li>
+            </ul>
+        </nav>
     </header>
-    <div class="bg-white hidden absolute w-full menu-mobile lg:hidden flex flex-col gap-2 py-3 shadow-md">
-        <div class="relative">
-            <button
-                class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                <span class="font-medium">Institucional</span>
-                <i class="fa-solid fa-chevron-down text-xs"></i>
-            </button>
-            <ul class="drop font-medium flex flex-col gap-2 bg-white py-2 text-[#68686E] px-12 md:px-14 hidden">
-                <li
-                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
-                    <a href="#">Administração</a>
-                </li>
-                <li
-                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
-                    <a href="#">Consec</a>
-                </li>
-                <li
-                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
-                    <a href="#">Orçamentos</a>
-                </li>
-            </ul>
-        </div>
-        <div class="relative">
-            <button
-                class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                <span class="font-medium">Acadêmico</span>
-                <i class="fa-solid fa-chevron-down text-xs"></i>
-            </button>
-            <ul class="hidden drop font-medium flex flex-col gap-2 bg-white py-2 text-[#68686E] px-12 md:px-14">
-                <li
-                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
-                    <a href="#">Ensinos</a>
-                </li>
-                <li
-                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
-                    <a href="#">CAs</a>
-                </li>
-                <li
-                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
-                    <a href="#">Pesquisas</a>
-                </li>
-            </ul>
-        </div>
-        <div class="relative">
-            <button
-                class="drop-down flex flex-none items-center justify-between hover:cursor-pointer w-full px-12 md:px-14">
-                <span class="font-medium">Imprensa</span>
-                <i class="fa-solid fa-chevron-down text-xs"></i>
-            </button>
-            <ul class="hidden drop font-medium flex flex-col gap-2 bg-white py-2 text-[#68686E] px-12 md:px-14">
-                <li
-                    class="text-sm hover:bg-[#E9E9E9] w-full px-2 py-1 border-l-2 border-[#002047] border-solid text-[#313135]">
-                    <a href="#">Documentos</a>
-                </li>
-                <li
-                    class="border-l-2 border-[#002047] border-solid text-[#313135] text-sm hover:bg-[#E9E9E9] w-full px-2 py-1">
-                    <a href="#">Obras</a>
-                </li>
-            </ul>
-        </div>
-        <a href="#" class="font-medium px-12 md:px-14">Contatos</a>
-    </div>
+
+    <script>
+        // Toggle do menu mobile
+        const menuBtn = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            const expanded = menuBtn.getAttribute("aria-expanded") === "true";
+            menuBtn.setAttribute("aria-expanded", !expanded);
+            mobileMenu.classList.toggle("hidden");
+            menuBtn.innerHTML = expanded
+                ? '<i class="fa-solid fa-bars"></i>'
+                : '<i class="fa-solid fa-xmark"></i>';
+        });
+
+        // Toggle dos submenus no mobile
+        function toggleDropdown(button) {
+            const submenu = button.nextElementSibling;
+            const icon = button.querySelector("i");
+            submenu.classList.toggle("hidden");
+            icon.classList.toggle("rotate-180");
+        }
+    </script>
+
     <main>
         <!--  -----------------------
             TODO -> aqui devem constar links para a notícia equivalente ao post
@@ -679,448 +746,412 @@
                 if (e.key === "ArrowRight") carrossel.scrollBy({ left: scrollAmount, behavior: "smooth" });
             });
         </script>
-        <!-- section | publica -->
-        <section class="mx-auto max-w-screen-xl px-4 py-10">
 
-            <div class="flex flex-col gap-4 mb-20">
-                <p
-                    class="text-xs text-gray-500 uppercase tracking-wider flex flex-col gap-4 after:border after:max-w-[66px]">
-                    PRODUÇÃO NO CCHLA</p>
-                <h3 class="text-[40px] font-light max-sm:text-2xl">Publicações recentes do CCHLA</h3>
-                <p class="text-base text-gray-600">Acompanhe as últimas publicações realizadas no nosso departamento.
-                </p>
+        <!-- section | produção -->
+
+        <section class="bg-[#F4F6F9] pb-16 md:px-0 xl:px-0">
+            <div class="bg-[#EFF2FB] py-10 border-b border-b-[#BAC6ED]">
+                <header class="max-w-screen-xl mx-auto space-y-4 px-4 md:px-10">
+                    <p
+                        class="text-xs text-gray-500 uppercase tracking-wider border-b border-gray-300 pb-1 inline-block">
+                        Produção no CCHLA
+                    </p>
+                    <h2 class="text-4xl font-light text-gray-900 max-sm:text-2xl">
+                        Publicações recentes do CCHLA
+                    </h2>
+                    <p class="text-gray-600 text-base">
+                        Acompanhe as últimas publicações realizadas no nosso departamento.
+                    </p>
+                </header>
             </div>
+            <div class="max-w-screen-xl mx-auto mt-16 px-4 md:px-10">
 
+                <!-- GRID FLUIDO -->
+                <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3  gap-10 sm:gap-6 md:gap-8">
 
-            <div
-                class="grid grid-cols-3 gap-10 max-lg:grid-cols-2 max-lg:gap-8 max-lg:px-4 max-lg:gap-18 max-sm:hidden">
-                <article class="flex flex-col justify-between">
-                    <a href="#" class="flex flex-col gap-2 flex-1">
-                        <span class="text-xs  font-medium uppercase">LIVRO</span>
-                        <h3 class="font-medium text-lg">Estórias ao redor do fogo [recurso eletrônico]</h3>
-                        <p class="text-sm text-gray-600">Organizadores: Tânia Lima; Izabel Nascimento.</p>
-                        <p class="text-sm text-gray-500">ISBN 978-65-5477-017-0</p>
-                        <div class="flex justify-between items-end mt-auto">
-                            <img src="assets/img/Rectangle 37.png" alt="" class="w-24 h-32 object-cover rounded">
-                            <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                            </a>
+                    <!-- CARD 1 -->
+                    <a href="#"
+                        class="group flex flex-col justify-between bg-white rounded-md p-6 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase text-gray-600 font-medium tracking-wide">Livro</p>
+                            <h3 class="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                                Estórias ao redor do fogo [recurso eletrônico]
+                            </h3>
+                            <p class="text-sm text-gray-600">Organizadores: Tânia Lima; Izabel Nascimento.</p>
+                            <p class="text-sm text-gray-500">ISBN 978-65-5477-017-0</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4">
+                            <figure>
+                                <img src="assets/img/Rectangle 37.png" alt="Capa do livro Estórias ao redor do fogo"
+                                    class="w-24 h-32 object-cover rounded-md shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            </figure>
+                            <span
+                                class="flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:underline">
+                                Leia mais
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </span>
                         </div>
                     </a>
-                </article>
 
-
-                <article class="flex flex-col justify-between">
-                    <a href="#" class="flex flex-col gap-2 flex-1">
-                        <span class="text-xs  font-medium uppercase">LIVRO</span>
-                        <h3 class="font-medium text-lg">Sandowane: estórias que vêm do chão [recurso eletrônico]</h3>
-                        <p class="text-sm text-gray-600">Organizadores: Paulina Chiziane; Tânia Lima; Izabel Nascimento
-                        </p>
-                        <p class="text-sm text-gray-500">ISBN 978-65-5477-020-0 (LIVRO VIRTUAL)</p>
-                        <div class="flex justify-between items-end mt-auto">
-                            <img src="assets/img/Rectangle 37 (1).png" alt="" class="w-24 h-32 object-cover rounded">
-                            <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                            </a>
+                    <!-- CARD 2 -->
+                    <a href="#"
+                        class="group flex flex-col justify-between bg-white rounded-md p-6 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase text-gray-600 font-medium tracking-wide">Livro</p>
+                            <h3 class="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                                Sandowane: estórias que vêm do chão [recurso eletrônico]
+                            </h3>
+                            <p class="text-sm text-gray-600">Organizadores: Paulina Chiziane; Tânia Lima; Izabel
+                                Nascimento.</p>
+                            <p class="text-sm text-gray-500">ISBN 978-65-5477-020-0 – Livro virtual</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4">
+                            <figure>
+                                <img src="assets/img/Rectangle 37 (1).png" alt="Capa do livro Sandowane"
+                                    class="w-24 h-32 object-cover rounded-md shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            </figure>
+                            <span
+                                class="flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:underline">
+                                Leia mais
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </span>
                         </div>
                     </a>
-                </article>
 
-
-                <article class="flex flex-col justify-between">
-                    <a href="#" class="flex flex-col gap-2 flex-1">
-                        <span class="text-xs  font-medium uppercase">LIVRO</span>
-                        <h3 class="font-medium text-lg">v. 14 n. 22 (2021): Revista Bagoas - Estudos Gays: gênero e
-                            sexualidades</h3>
-                        <p class="text-sm text-gray-600">Revista Bagoas</p>
-                        <p class="text-sm text-gray-500">ISSN 2316-6185 (Periódico)</p>
-                        <div class="flex justify-between items-end mt-auto">
-                            <img src="assets/img/Rectangle 37 (2).png" alt="" class="w-24 h-32 object-cover rounded">
-                            <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                            </a>
+                    <!-- CARD 3 -->
+                    <a href="#"
+                        class="group flex flex-col justify-between bg-white rounded-md p-6 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase text-gray-600 font-medium tracking-wide">Livro</p>
+                            <h3 class="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                                v. 14 n. 22 (2021): Revista Bagoas - Estudos Gays: gênero e sexualidades
+                            </h3>
+                            <p class="text-sm text-gray-600">Revista Bagoas</p>
+                            <p class="text-sm text-gray-500">ISSN 2316-6185 (Periódico)</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4">
+                            <figure>
+                                <img src="assets/img/Rectangle 37 (2).png" alt="Capa da Revista Bagoas"
+                                    class="w-24 h-32 object-cover rounded-md shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            </figure>
+                            <span
+                                class="flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:underline">
+                                Leia mais
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </span>
                         </div>
                     </a>
-                </article>
 
-
-                <article class="flex flex-col justify-between">
-                    <a href="#" class="flex flex-col gap-2 flex-1">
-                        <span class="text-xs  font-medium uppercase">LIVRO</span>
-                        <h3 class="font-medium text-lg">AFROLIC - Literatura Desigualdade Ensino</h3>
-                        <p class="text-sm text-gray-600">Organizadores: Rosilda Bezerra, Tânia Lima, Carmen Tindó Secco
-                            e Sávio Freitas</p>
-                        <p class="text-sm text-gray-500">ISBN 978-65-86643-84-8 - LIVRO VIRTUAL</p>
-                        <div class="flex justify-between items-end mt-auto">
-                            <img src="assets/img/Rectangle 37 (3).png" alt="" class="w-24 h-32 object-cover rounded">
-                            <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                            </a>
+                    <!-- CARD 4 -->
+                    <a href="#"
+                        class="group flex flex-col justify-between bg-white rounded-md p-6 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase text-gray-600 font-medium tracking-wide">Livro</p>
+                            <h3 class="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                                AFROLIC - Literatura Desigualdade Ensino
+                            </h3>
+                            <p class="text-sm text-gray-600">
+                                Organizadores: Rosilda Bezerra, Tânia Lima, Carmen Tindó Secco e Sávio Freitas.
+                            </p>
+                            <p class="text-sm text-gray-500">ISBN 978-65-86643-84-8 – Livro virtual</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4">
+                            <figure>
+                                <img src="assets/img/Rectangle 37 (3).png" alt="Capa do livro AFROLIC"
+                                    class="w-24 h-32 object-cover rounded-md shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            </figure>
+                            <span
+                                class="flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:underline">
+                                Leia mais
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </span>
                         </div>
                     </a>
-                </article>
 
-
-                <article class="flex flex-col justify-between">
-                    <a href="#" class="flex flex-col gap-2 flex-1">
-                        <span class="text-xs  font-medium uppercase">LIVRO</span>
-                        <h3 class="font-medium text-lg">CAMUS E OS ANTIGOS</h3>
-                        <p class="text-sm text-gray-600">Autor: Markus Figueira da Silva e Alice Bitencourt Haddad.
-                            Número de Páginas: 98.</p>
-                        <p class="text-sm text-gray-500">ISBN 978-65-995185-2-2</p>
-                        <div class="flex justify-between items-end mt-auto">
-                            <img src="assets/img/Rectangle 38.png" alt="" class="w-24 h-32 object-cover rounded">
-                            <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                            </a>
+                    <!-- CARD 5 -->
+                    <a href="#"
+                        class="group flex flex-col justify-between bg-white rounded-md p-6 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase text-gray-600 font-medium tracking-wide">Livro</p>
+                            <h3 class="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                                CAMUS E OS ANTIGOS
+                            </h3>
+                            <p class="text-sm text-gray-600">
+                                Autores: Markus Figueira da Silva e Alice Bitencourt Haddad. Número de páginas: 98.
+                            </p>
+                            <p class="text-sm text-gray-500">ISBN 978-65-995185-2-2</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4">
+                            <figure>
+                                <img src="assets/img/Rectangle 38.png" alt="Capa do livro Camus e os Antigos"
+                                    class="w-24 h-32 object-cover rounded-md shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            </figure>
+                            <span
+                                class="flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:underline">
+                                Leia mais
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </span>
                         </div>
                     </a>
-                </article>
 
-
-                <article class="flex flex-col justify-between">
-                    <a href="#" class="flex flex-col gap-2 flex-1">
-                        <span class="text-xs  font-medium uppercase">LIVRO</span>
-                        <h3 class="font-medium text-lg">E-BOOK: O HABITAR E O INABITUAL</h3>
-                        <p class="text-sm text-gray-600">Org: (Oscar Federico Bauchwitz, Eduardo Pellejero e Gilvânio
-                            Moreira). Número de Páginas: 631</p>
-                        <p class="text-sm text-gray-500">ISBN 978-65-995185-1-5</p>
-                        <div class="flex justify-between items-end mt-auto">
-                            <img src="assets/img/Rectangle 37.svg" alt="" class="w-24 h-32 object-cover rounded">
-                            <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                            </a>
+                    <!-- CARD 6 -->
+                    <a href="#"
+                        class="group flex flex-col justify-between bg-white rounded-md p-6 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase text-gray-600 font-medium tracking-wide">Livro</p>
+                            <h3 class="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                                E-BOOK: O HABITAR E O INABITUAL
+                            </h3>
+                            <p class="text-sm text-gray-600">
+                                Organizadores: Oscar F. Bauchwitz, Eduardo Pellejero e Gilvânio Moreira. Número de
+                                páginas: 631.
+                            </p>
+                            <p class="text-sm text-gray-500">ISBN 978-65-995185-1-5</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4">
+                            <figure>
+                                <img src="assets/img/Rectangle 37.svg" alt="Capa do e-book O Habitar e o Inabitual"
+                                    class="w-24 h-32 object-cover rounded-md shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            </figure>
+                            <span
+                                class="flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:underline">
+                                Leia mais
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </span>
                         </div>
                     </a>
-                </article>
-            </div>
 
-
-            <div class="overflow-hidden max-sm:block hidden">
-                <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
-
-                    <div class="w-full flex-shrink-0 px-4">
-                        <article class="flex flex-col justify-between h-full">
-                            <a href="#" class="flex flex-col gap-2 flex-1">
-                                <span class="text-xs  font-medium uppercase">LIVRO</span>
-                                <h3 class="font-medium text-lg">Estórias ao redor do fogo [recurso eletrônico]</h3>
-                                <p class="text-sm text-gray-600">Organizadores: Tânia Lima; Izabel Nascimento.</p>
-                                <p class="text-sm text-gray-500">ISBN 978-65-5477-017-0</p>
-                                <div class="flex justify-between items-end mt-auto">
-                                    <img src="assets/img/Rectangle 37.png" alt=""
-                                        class="w-24 h-32 object-cover rounded">
-                                    <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                        Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                                    </a>
-                                </div>
-                            </a>
-                        </article>
-                    </div>
-
-
-                    <div class="w-full flex-shrink-0 px-4">
-                        <article class="flex flex-col justify-between h-full">
-                            <a href="#" class="flex flex-col gap-2 flex-1">
-                                <span class="text-xs  font-medium uppercase">LIVRO</span>
-                                <h3 class="font-medium text-lg">Sandowane: estórias que vêm do chão [recurso eletrônico]
-                                </h3>
-                                <p class="text-sm text-gray-600">Organizadores: Paulina Chiziane; Tânia Lima; Izabel
-                                    Nascimento</p>
-                                <p class="text-sm text-gray-500">ISBN 978-65-5477-020-0 (LIVRO VIRTUAL)</p>
-                                <div class="flex justify-between items-end mt-auto">
-                                    <img src="assets/img/Rectangle 37 (1).png" alt=""
-                                        class="w-24 h-32 object-cover rounded">
-                                    <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                        Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                                    </a>
-                                </div>
-                            </a>
-                        </article>
-                    </div>
-
-
-                    <div class="w-full flex-shrink-0 px-4">
-                        <article class="flex flex-col justify-between h-full">
-                            <a href="#" class="flex flex-col gap-2 flex-1">
-                                <span class="text-xs  font-medium uppercase">LIVRO</span>
-                                <h3 class="font-medium text-lg">v. 14 n. 22 (2021): Revista Bagoas - Estudos Gays:
-                                    gênero e sexualidades</h3>
-                                <p class="text-sm text-gray-600">Revista Bagoas</p>
-                                <p class="text-sm text-gray-500">ISSN 2316-6185 (Periódico)</p>
-                                <div class="flex justify-between items-end mt-auto">
-                                    <img src="assets/img/Rectangle 37 (2).png" alt=""
-                                        class="w-24 h-32 object-cover rounded">
-                                    <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                        Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                                    </a>
-                                </div>
-                            </a>
-                        </article>
-                    </div>
-
-
-                    <div class="w-full flex-shrink-0 px-4">
-                        <article class="flex flex-col justify-between h-full">
-                            <a href="#" class="flex flex-col gap-2 flex-1">
-                                <span class="text-xs  font-medium uppercase">LIVRO</span>
-                                <h3 class="font-medium text-lg">AFROLIC - Literatura Desigualdade Ensino</h3>
-                                <p class="text-sm text-gray-600">Organizadores: Rosilda Bezerra, Tânia Lima, Carmen
-                                    Tindó Secco e Sávio Freitas</p>
-                                <p class="text-sm text-gray-500">ISBN 978-65-86643-84-8 - LIVRO VIRTUAL</p>
-                                <div class="flex justify-between items-end mt-auto">
-                                    <img src="assets/img/Rectangle 37 (3).png" alt=""
-                                        class="w-24 h-32 object-cover rounded">
-                                    <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                        Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                                    </a>
-                                </div>
-                            </a>
-                        </article>
-                    </div>
-
-
-                    <div class="w-full flex-shrink-0 px-4">
-                        <article class="flex flex-col justify-between h-full">
-                            <a href="#" class="flex flex-col gap-2 flex-1">
-                                <span class="text-xs  font-medium uppercase">LIVRO</span>
-                                <h3 class="font-medium text-lg">CAMUS E OS ANTIGOS</h3>
-                                <p class="text-sm text-gray-600">Autor: Markus Figueira da Silva e Alice Bitencourt
-                                    Haddad. Número de Páginas: 98.</p>
-                                <p class="text-sm text-gray-500">ISBN 978-65-995185-2-2</p>
-                                <div class="flex justify-between items-end mt-auto">
-                                    <img src="assets/img/Rectangle 38.png" alt=""
-                                        class="w-24 h-32 object-cover rounded">
-                                    <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                        Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                                    </a>
-                                </div>
-                            </a>
-                        </article>
-                    </div>
-
-
-                    <div class="w-full flex-shrink-0 px-4">
-                        <article class="flex flex-col justify-between h-full">
-                            <a href="#" class="flex flex-col gap-2 flex-1">
-                                <span class="text-xs  font-medium uppercase">LIVRO</span>
-                                <h3 class="font-medium text-lg">E-BOOK: O HABITAR E O INABITUAL</h3>
-                                <p class="text-sm text-gray-600">Org: (Oscar Federico Bauchwitz, Eduardo Pellejero e
-                                    Gilvânio Moreira). Número de Páginas: 631</p>
-                                <p class="text-sm text-gray-500">ISBN 978-65-995185-1-5</p>
-                                <div class="flex justify-between items-end mt-auto">
-                                    <img src="assets/img/Rectangle 37.svg" alt=""
-                                        class="w-24 h-32 object-cover rounded">
-                                    <a href="#" class="text-[#0069A8] text-sm font-medium flex items-center gap-1">
-                                        Leia mais <img src="assets/img/arrow-up-right.png" alt="" class="w-5 h-5">
-                                    </a>
-                                </div>
-                            </a>
-                        </article>
-                    </div>
                 </div>
+
+                <!-- LINK FINAL -->
+                <div class="mt-12 flex justify-end">
+                    <a href="#"
+                        class="flex items-center gap-2 text-blue-700 font-semibold hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300 rounded">
+                        Acesse todas as publicações
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+
             </div>
+        </section>
 
 
-            <div class="flex justify-end gap-3 mt-6 px-4 max-sm:flex hidden">
-                <button id="prevBtn" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
-                    <i class="fa-solid fa-chevron-left text-[#0069A8]"></i>
-                </button>
-                <button id="nextBtn" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
-                    <i class="fa-solid fa-chevron-right text-[#0069A8]"></i>
-                </button>
-            </div>
+        <!-- acesso rapido section-->
 
+        <section class="mx-auto max-w-screen-xl px-4 py-16">
+            <header class="mb-10 max-md:px-4">
+                <p class="text-gray-600 text-sm font-light pb-2 border-b border-blue-200 w-fit">ACESSO RÁPIDO</p>
+                <h2 class="text-4xl font-light mt-2">Sistemas</h2>
+            </header>
 
-            <div class="px-9 pt-10 flex justify-end items-center max-sm:px-4">
-                <a href="#" class="flex gap-4 items-center text-[#0069A8] hover:underline">
-                    Acesse todas as publicações
-                    <i class="fa-solid fa-arrow-right"></i>
+            <div class="grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
+                <!-- ITEM -->
+                <a href="https://sigaa.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">SIGAA</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema Integrado de Gestão de Atividades Acadêmicas.
+                    </p>
+                </a>
+
+                <a href="https://sipac.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">SIPAC</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema Integrado de Patrimônio, Administração e Contratos.
+                    </p>
+                </a>
+
+                <a href="https://sigrh.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">SIGRH</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema Integrado de Gestão de Recursos Humanos.
+                    </p>
+                </a>
+
+                <a href="https://chamados.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">GTI Chamados</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema de chamados para Gestão de Tecnologia da Informação.
+                    </p>
+                </a>
+
+                <a href="https://espacos.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">Espaço Físico Setor
+                        2</strong>
+                    <p class="text-sm text-gray-600">
+                        Visualizador dos espaços físicos disponíveis.
+                    </p>
+                </a>
+
+                <a href="https://reserva.cchla.ufrn.br/" target="_blank" rel="noopener noreferrer"
+                    class="group flex flex-col gap-2 p-5 border border-blue-200 rounded-sm hover:bg-blue-50 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    <strong class="text-blue-900 group-hover:text-blue-700 transition-colors">Reserva CCHLA</strong>
+                    <p class="text-sm text-gray-600">
+                        Sistema de reserva de auditório do CCHLA.
+                    </p>
                 </a>
             </div>
         </section>
-        <!-- acesso rapido section-->
-        <section class="mx-auto max-w-screen-xl px-4 py-10">
-            <section class="container mx-auto">
-                <div class="max-md:px-9">
-                    <p class="flex flex-col font-light pb-2 after:border after:w-18 after:mt-2 max-w-35">
-                        ACESSO RÁPIDO
-                    </p>
-                    <h3 class="text-4xl mb-10 font-light">Sistemas</h3>
-                    <div
-                        class="container mx-auto grid grid-cols-3 gap-x-8 gap-y-10 max-lg:grid-cols-2 max-md:grid-cols-1">
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> SIGAA </strong>
-                            <p class="text-sm">
-                                Sistema Integrado de Gestão de Atividades Acadêmicas.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> SIPAC </strong>
-                            <p class="text-sm">
-                                Sistema Integrado de Patrimônio, Administração e Contratos.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> SIG RH </strong>
-                            <p class="text-sm">
-                                Sistema integrado de Gestão de Recursos Humanos.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> GTI Chamados </strong>
-                            <p class="text-sm">
-                                Sistema de chamados para Gestão de Tecnologia da Informação.
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> Espaço Físico Setor 2 </strong>
-                            <p class="text-sm">
-                                Visualizador dos espaços físicos disponíveis
-                            </p>
-                        </article>
-                        <article class="flex flex-col gap-2 p-4 border border-blue-200 rounded-sm">
-                            <strong> Reserva CCHLA </strong>
-                            <p class="text-sm">Sistema de reserva de auditório do CCHLA</p>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </section>
+
     </main>
     <!-- footer -->
-    <footer class="flex flex-col bg-blue-700 pt-18 gap-10 lg:items-center">
-        <div class="flex flex-col px-6 gap-10 md:gap-20 lg:flex-row lg:justify-between lg:gap-50">
-            <div class="flex flex-col h-39  justify-between  items-start md:text-center md:items-center lg:items-start">
-                <div class="flex flex-col gap-2 md:items-center lg:items-start">
-                    <h4 class="text-xl text-white">
-                        CCHLA
-                    </h4>
-                    <p class="text-white">Centro de Ciências Humanas, Letras e Artes</p>
-                </div>
-                <div class="flex gap-4">
-                    <a href="#"><i class="fa-brands fa-twitter bg-white rounded-full text-blue-700 p-2"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram bg-white rounded-full text-blue-700 p-2"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube bg-white rounded-full text-blue-700 p-2"></i></a>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row md:h-39   gap-9">
-                <div class="md:w-65">
-                    <ul>
-                        <li>
-                            <a href="" class="text-white font-bold">
-                                INSTITUCIONAL
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                Administração
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                Documentos
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                CONSEC
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="text-white">
-                                Departamentos
-                            </a>
-                        </li>
-                    </ul>
+    <footer class="bg-[#2E3CB9] text-white pt-16 pb-0">
+        <!-- GRID SUPERIOR -->
+        <div class="max-w-screen-xl mx-auto flex flex-col gap-12 px-6 lg:flex-row lg:justify-between">
+            <!-- BLOCO INSTITUCIONAL -->
+            <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                    <h4 class="text-xl font-semibold">CCHLA</h4>
+                    <p class="text-sm mt-2 md:text-center ">Centro de Ciências Humanas,<br>Letras e Artes</p>
                 </div>
 
-                <div class="md:w-65">
-                    <ul>
-                        <li>
-                            <a href="#" class="text-white font-bold uppercase tracking-wider">
-                                ACADÊMICO
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Ensino
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Pesquisa
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Extensão
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Publicações
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- REDES SOCIAIS -->
+                <nav aria-label="Redes sociais" class="flex gap-4 justify-start md:justify-center lg:justify-start">
+                    <a href="#" aria-label="Twitter"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-twitter text-[14px]" aria-hidden="true"></i>
+                    </a>
 
-                <div class="md:w-65">
-                    <ul>
-                        <li>
-                            <a href="#" class="text-white font-bold uppercase tracking-wider">
-                                IMPRENSA
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white hover:text-white">
-                                Eventos
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white hover:text-white">
-                                Orçamento
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white hover:text-white">
-                                Notícias
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">
-                                Especiais
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                    <a href="#" aria-label="Instagram"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-instagram text-[14px]" aria-hidden="true"></i>
+                    </a>
+
+                    <a href="#" aria-label="YouTube"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-youtube text-[14px]" aria-hidden="true"></i>
+                    </a>
+                </nav>
             </div>
 
+            <!-- LINKS PRINCIPAIS -->
+            <nav aria-label="Mapa do site"
+                class="grid grid-cols-2 gap-10 md:grid-cols-3 text-sm md:text-center lg:text-left text-[16px] ">
+                <!-- COLUNA 1 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Institucional</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Administração</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Documentos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">CONSEC</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Departamentos</a></li>
+                </ul>
+
+                <!-- COLUNA 2 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Acadêmico</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Ensino</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Pesquisa</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Extensão</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Publicações</a></li>
+                </ul>
+
+                <!-- COLUNA 3 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Imprensa</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Eventos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Orçamento</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Notícias</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Especiais</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="text-white flex flex-col py-3 px-6 text-center gap-5">
-            <div class="flex flex-col">
-                <h3 class="font-bold">
-                    UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE
-                </h3>
-                <p>
-                    Centro de Ciências Humanas, Letras e Artes
+
+        <!-- LINHA DIVISÓRIA -->
+        <div class="border-t-1 border-[#3457CB] my-10 mx-6 lg:mx-auto max-w-screen-xl"></div>
+
+        <!-- BLOCO INFERIOR -->
+        <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px] ">
+            <a id="linkMapa">
+                <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
+                <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
+                <p class="mt-4">
+                    Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
                 </p>
-            </div>
-            <div>
-                <p>
-                    Av. Sen. Salgado Filho, S/n - Lagoa Nova, Natal - RN, 59078-970
-                </p>
-                <p>
-                    Telefone: <strong>(84 ) +55 84 3342-2243 / 84 99193-6154</strong> | e-mail:
-                    <strong>secretariacchla@gmail.com</strong>
-                </p>
-            </div>
+            </a>
+
+            <script>
+                const link = document.getElementById("linkMapa");
+                const destino = "CCHLA - CENTRO DE CIÊNCIAS HUMANAS, LETRAS E ARTES - UFRN, Natal, RN";
+
+                // link web padrão (funciona em todos)
+                const urlWeb = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destino)}`;
+                // link mobile (abre o app direto)
+                const urlMobile = `geo:0,0?q=${encodeURIComponent(destino)}`;
+
+                // Verifica se é mobile
+                const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+                // Define comportamento no clique
+                link.addEventListener("click", function (e) {
+                    if (isMobile) {
+                        // tenta abrir o app do Maps
+                        window.location.href = urlMobile;
+                        // fallback pro link web se o app não abrir em 800ms
+                        setTimeout(() => {
+                            window.open(urlWeb, "_blank");
+                        }, 800);
+                    } else {
+                        // desktop: abre o maps na nova aba
+                        window.open(urlWeb, "_blank");
+                    }
+                });
+            </script>
+
+
+
+            <p class="mt-1">
+                Telefone:
+                <strong>(84) +55 84 3342-2243 / 84 99193-6154</strong>
+                |
+                E-mail:
+                <a href="mailto:secretariacchla@gmail.com" class="font-bold hover:underline focus:underline">
+                    secretariacchla@gmail.com
+                </a>
+            </p>
         </div>
-        <div class="flex flex-col px-6 text-center gap-5 bg-blue-900 py-6">
-            <a href="https://agenciaweb.ifrn.edu.br" target="_blank">
-                <img src="assets/img/logo-awe.svg" alt="">
+
+        <!-- RODAPÉ FINAL -->
+        <div class="bg-[#1D2E7A] py-6 text-center">
+            <a href="https://agenciaweb.ifrn.edu.br" target="_blank" rel="noopener noreferrer"
+                aria-label="Desenvolvido pela Agência Web do IFRN"
+                class="inline-block hover:opacity-90 focus:opacity-90 transition-opacity">
+                <img src="assets/img/logo-awe.svg" alt="Agência Web do IFRN" class="mx-auto w-8 h-auto">
             </a>
         </div>
     </footer>
+
 </body>
 
 </html>
