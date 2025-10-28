@@ -1094,12 +1094,31 @@
 
         <!-- BLOCO INFERIOR -->
         <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px] ">
-            <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
-            <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
+            <a id="linkMapa" title="Veja nossa localização no mapa">
+                <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
+                <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
+                <p class="mt-4">
+                    Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
+                </p>
+            </a>
 
-            <p class="mt-4">
-                Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
-            </p>
+            <script>
+                const link = document.getElementById("linkMapa");
+                const destino = "CCHLA - CENTRO DE CIÊNCIAS HUMANAS, LETRAS E ARTES - UFRN, Natal, RN";
+
+                // Detecta se é um dispositivo móvel
+                const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+
+                // Define o link de acordo com o dispositivo
+                if (isMobile) {
+                    link.href = `geo:0,0?q=${encodeURIComponent(destino)}`;
+                } else {
+                    link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destino)}`;
+                    link.target = "_blank"; // abre em nova aba no desktop
+                }
+            </script>
+
+
             <p class="mt-1">
                 Telefone:
                 <strong>(84) +55 84 3342-2243 / 84 99193-6154</strong>
