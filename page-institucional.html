@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Insititucional 1 | CCHLA</title>
+  <meta name="description"
+    content="Centro de Ciências Humanas, Letras e Artes da Universidade Federal do Rio Grande do Norte (UFRN) – cursos, pesquisa, cultura e extensão." />
+  <!-- Ícone SVG (favicon) -->
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" />
+  <!-- Fallback para navegadores que não suportam SVG -->
+  <link rel="alternate icon" href="/assets/icons/favicon.ico" sizes="any" />
+  <!-- Ícone para dispositivos Apple / toque -->
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png" />
+  <!-- Manifesto PWA (se aplicável) -->
+  <link rel="manifest" href="/assets/icons/site.webmanifest" />
+  <meta name="theme-color" content="#193CB8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="CCHLA / UFRN" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="CCHLA – UFRN" />
+  <meta property="og:description"
+    content="Centro de Ciências Humanas, Letras e Artes – UFRN. Ensino, pesquisa e extensão." />
+  <meta property="og:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.cchla.ufrn.br/" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CCHLA – UFRN" />
+  <meta name="twitter:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN." />
+  <meta name="twitter:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script defer src="assets/scripts/script.js"></script>
+  <!-- Link para Font Awesome para os ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+  <style>
+    /* Padrão WebKit (Chrome, Edge, Safari, Opera) */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      transition: all 0.3s ease;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #305CFF;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    /* Ao passar o mouse sobre o scroll */
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #1E3AFF;
+      /* tonalidade mais escura */
+      width: 12px;
+      /* efeito de expansão suave */
+    }
+
+    /* Ajuste visual do hover na área do scrollbar */
+    ::-webkit-scrollbar:hover {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #305CFF #f1f1f1;
+    }
+
+    /* Para Firefox não há width animável, mas podemos dar leve contraste no hover */
+    html:hover {
+      scrollbar-color: #1E3AFF #e6e6e6;
+    }
+  </style>
+</head>
+
+<body class="font-[Inter]">
+  <header class="bg-gradient-to-r from-[#002047] from-50% to-[#004499] text-white">
+    <div class="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4 lg:py-0">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2">
+        <img src="assets/img/logo.svg" alt="Logo do CCHLA" class="h-12" />
+      </a>
+
+      <!-- Menu Desktop -->
+      <nav class="hidden lg:flex items-center gap-8">
+        <div class="relative group">
+          <button
+            class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+            aria-expanded="false" aria-controls="menu-inst">
+            INSTITUCIONAL
+            <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
+          </button>
+          <ul id="menu-inst"
+            class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Administração</a></li>
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Consec</a></li>
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Orçamentos</a></li>
+          </ul>
+        </div>
+
+        <div class="relative group">
+          <button
+            class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+            aria-expanded="false" aria-controls="menu-acad">
+            ACADÊMICO
+            <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
+          </button>
+          <ul id="menu-acad"
+            class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Ensino</a></li>
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">CAs</a></li>
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Pesquisas</a></li>
+          </ul>
+        </div>
+
+        <div class="relative group">
+          <button
+            class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+            aria-expanded="false" aria-controls="menu-imp">
+            IMPRENSA
+            <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
+          </button>
+          <ul id="menu-imp"
+            class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Documentos</a></li>
+            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Obras</a></li>
+          </ul>
+        </div>
+
+        <a href="#" class="font-semibold hover:text-blue-200 transition-colors">CONTATOS</a>
+      </nav>
+
+      <!-- Botão Mobile -->
+      <button id="menu-toggle" aria-label="Abrir menu" aria-expanded="false"
+        class="lg:hidden text-2xl hover:text-blue-200 transition-colors">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Menu Mobile -->
+    <nav id="mobile-menu"
+      class="hidden flex-col bg-white text-[#313135] shadow-lg lg:hidden transition-all duration-300">
+      <ul class="divide-y divide-gray-200">
+        <li>
+          <button class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+            onclick="toggleDropdown(this)">
+            Institucional
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <ul class="hidden flex-col bg-gray-50">
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Administração</a>
+            </li>
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Consec</a>
+            </li>
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Orçamentos</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <button class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+            onclick="toggleDropdown(this)">
+            Acadêmico
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <ul class="hidden flex-col bg-gray-50">
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Ensino</a>
+            </li>
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">CAs</a>
+            </li>
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Pesquisas</a></li>
+          </ul>
+        </li>
+        <li>
+          <button class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+            onclick="toggleDropdown(this)">
+            Imprensa
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <ul class="hidden flex-col bg-gray-50">
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Documentos</a>
+            </li>
+            <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Obras</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" class="block px-6 py-4 font-medium hover:bg-gray-100 transition">Contatos</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <script>
+    // Toggle do menu mobile
+    const menuBtn = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    menuBtn.addEventListener("click", () => {
+      const expanded = menuBtn.getAttribute("aria-expanded") === "true";
+      menuBtn.setAttribute("aria-expanded", !expanded);
+      mobileMenu.classList.toggle("hidden");
+      menuBtn.innerHTML = expanded
+        ? '<i class="fa-solid fa-bars"></i>'
+        : '<i class="fa-solid fa-xmark"></i>';
+    });
+
+    // Toggle dos submenus no mobile
+    function toggleDropdown(button) {
+      const submenu = button.nextElementSibling;
+      const icon = button.querySelector("i");
+      submenu.classList.toggle("hidden");
+      icon.classList.toggle("rotate-180");
+    }
+  </script>
+
+  <!-- MAIN -->
+  <main class="min-h-screen flex flex-col bg-white text-gray-800">
+
+
+
+  </main>
+
+
+  <!-- footer -->
+  <footer class="bg-[#2E3CB9] text-white pt-16 pb-0">
+    <!-- GRID SUPERIOR -->
+    <div class="max-w-screen-xl mx-auto flex flex-col gap-12 px-6 lg:flex-row lg:justify-between">
+      <!-- BLOCO INSTITUCIONAL -->
+      <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+        <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+          <h4 class="text-xl font-semibold">CCHLA</h4>
+          <p class="text-sm mt-2 md:text-center ">Centro de Ciências Humanas,<br>Letras e Artes</p>
+        </div>
+
+        <!-- REDES SOCIAIS -->
+        <nav aria-label="Redes sociais" class="flex gap-4 justify-start md:justify-center lg:justify-start">
+          <a href="#" aria-label="Twitter"
+            class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="fa-brands fa-twitter text-[14px]" aria-hidden="true"></i>
+          </a>
+
+          <a href="#" aria-label="Instagram"
+            class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="fa-brands fa-instagram text-[14px]" aria-hidden="true"></i>
+          </a>
+
+          <a href="#" aria-label="YouTube"
+            class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="fa-brands fa-youtube text-[14px]" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </div>
+
+      <!-- LINKS PRINCIPAIS -->
+      <nav aria-label="Mapa do site"
+        class="grid grid-cols-2 gap-10 md:grid-cols-3 text-sm md:text-center lg:text-left text-[16px] ">
+        <!-- COLUNA 1 -->
+        <ul class="flex flex-col gap-2">
+          <li><span class="font-bold uppercase tracking-wide">Institucional</span></li>
+          <li><a href="#" class="hover:underline focus:underline">Administração</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Documentos</a></li>
+          <li><a href="#" class="hover:underline focus:underline">CONSEC</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Departamentos</a></li>
+        </ul>
+
+        <!-- COLUNA 2 -->
+        <ul class="flex flex-col gap-2">
+          <li><span class="font-bold uppercase tracking-wide">Acadêmico</span></li>
+          <li><a href="#" class="hover:underline focus:underline">Ensino</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Pesquisa</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Extensão</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Publicações</a></li>
+        </ul>
+
+        <!-- COLUNA 3 -->
+        <ul class="flex flex-col gap-2">
+          <li><span class="font-bold uppercase tracking-wide">Imprensa</span></li>
+          <li><a href="#" class="hover:underline focus:underline">Eventos</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Orçamento</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Notícias</a></li>
+          <li><a href="#" class="hover:underline focus:underline">Especiais</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- LINHA DIVISÓRIA -->
+    <div class="border-t-1 border-[#3457CB] my-10 mx-6 lg:mx-auto max-w-screen-xl"></div>
+
+    <!-- BLOCO INFERIOR -->
+    <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px] ">
+      <a id="linkMapa">
+        <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
+        <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
+        <p class="mt-4">
+          Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
+        </p>
+      </a>
+
+      <script>
+        const link = document.getElementById("linkMapa");
+        const destino = "CCHLA - CENTRO DE CIÊNCIAS HUMANAS, LETRAS E ARTES - UFRN, Natal, RN";
+
+        // link web padrão (funciona em todos)
+        const urlWeb = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destino)}`;
+        // link mobile (abre o app direto)
+        const urlMobile = `geo:0,0?q=${encodeURIComponent(destino)}`;
+
+        // Verifica se é mobile
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        // Define comportamento no clique
+        link.addEventListener("click", function (e) {
+          if (isMobile) {
+            // tenta abrir o app do Maps
+            window.location.href = urlMobile;
+            // fallback pro link web se o app não abrir em 800ms
+            setTimeout(() => {
+              window.open(urlWeb, "_blank");
+            }, 800);
+          } else {
+            // desktop: abre o maps na nova aba
+            window.open(urlWeb, "_blank");
+          }
+        });
+      </script>
+
+
+
+      <p class="mt-1">
+        Telefone:
+        <strong>(84) +55 84 3342-2243 / 84 99193-6154</strong>
+        |
+        E-mail:
+        <a href="mailto:secretariacchla@gmail.com" class="font-bold hover:underline focus:underline">
+          secretariacchla@gmail.com
+        </a>
+      </p>
+    </div>
+
+    <!-- RODAPÉ FINAL -->
+    <div class="bg-[#1D2E7A] py-6 text-center">
+      <a href="https://agenciaweb.ifrn.edu.br" target="_blank" rel="noopener noreferrer"
+        aria-label="Desenvolvido pela Agência Web do IFRN"
+        class="inline-block hover:opacity-90 focus:opacity-90 transition-opacity">
+        <img src="assets/img/logo-awe.svg" alt="Agência Web do IFRN" class="mx-auto w-8 h-auto">
+      </a>
+    </div>
+  </footer>
+
+</body>
+
+</html>
