@@ -1094,7 +1094,7 @@
 
         <!-- BLOCO INFERIOR -->
         <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px] ">
-            <a id="linkMapa" title="Veja nossa localização no mapa">
+            <a id="linkMapa">
                 <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
                 <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
                 <p class="mt-4">
@@ -1106,17 +1106,30 @@
                 const link = document.getElementById("linkMapa");
                 const destino = "CCHLA - CENTRO DE CIÊNCIAS HUMANAS, LETRAS E ARTES - UFRN, Natal, RN";
 
-                // Detecta se é um dispositivo móvel
-                const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+                // link web padrão (funciona em todos)
+                const urlWeb = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destino)}`;
+                // link mobile (abre o app direto)
+                const urlMobile = `geo:0,0?q=${encodeURIComponent(destino)}`;
 
-                // Define o link de acordo com o dispositivo
-                if (isMobile) {
-                    link.href = `geo:0,0?q=${encodeURIComponent(destino)}`;
-                } else {
-                    link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destino)}`;
-                    link.target = "_blank"; // abre em nova aba no desktop
-                }
+                // Verifica se é mobile
+                const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+                // Define comportamento no clique
+                link.addEventListener("click", function (e) {
+                    if (isMobile) {
+                        // tenta abrir o app do Maps
+                        window.location.href = urlMobile;
+                        // fallback pro link web se o app não abrir em 800ms
+                        setTimeout(() => {
+                            window.open(urlWeb, "_blank");
+                        }, 800);
+                    } else {
+                        // desktop: abre o maps na nova aba
+                        window.open(urlWeb, "_blank");
+                    }
+                });
             </script>
+
 
 
             <p class="mt-1">
