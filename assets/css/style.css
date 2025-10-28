@@ -1,205 +1,146 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+/* ==========================================================
+   BASE TIPOGRÁFICA – PAGE INSTITUCIONAL (CCHLA)
+   ----------------------------------------------------------
+   Aplica o padrão de legibilidade ideal a todos os textos da
+   página, incluindo parágrafos, listas, blockquotes e figuras.
+   Mantém compatibilidade com Tailwind.
+   ========================================================== */
 
-/* =========================================================
-   TOKENS — ajuste fino das cores e espaçamentos do mock
-   (se tiver o guia oficial, plugue os HEX aqui e acabou)
-   ========================================================= */
-:root {
-  --ff-inter: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", "Noto Color Emoji";
-  /* Bootstrap override */
-  --bs-body-font-family: var(--ff-inter);
-  --bs-body-line-height: 1.5; /* Inter funciona bem entre 1.45–1.6 */
-  /* Header bipartido (imagem: esquerda bem navy, direita azul médio) */
-  --header-left: #00387f; /* navy escuro */
-  --header-right: #1f61b6; /* azul médio */
-
-  /* Navbar / barras claras (imagem: cinza-azulado claro) */
-  --bar-bg: #eef3fa; /* barra contextual + navbar clara */
-  --bar-border: #dee6f3;
-
-  /* Texto */
-  --text-900: #1f2a37; /* primário */
-  --text-700: #374151; /* secundário */
-  --text-600: #4b5563;
-
-  /* Ações (cards claros da coluna esquerda) */
-  --cta-bg: #edf3ff; /* azul clarinho */
-  --cta-border: #d9e4ff;
-  --cta-bg-ghost: #ffffff;
-  --cta-border-ghost: #e4e8f1;
-
-  /* Azul de destaque do “Oops....” (mais vivo na imagem) */
-  --brand: #2e63d6;
-
-  /* Footer (imagem: bloco azul escuro com variação) */
-  --footer-top: #0c2e5b;
-  --footer-bottom: #0b2a52;
-
-  /* Dimensões */
-  --brandbar-h: 64px; /* altura do topo bipartido */
-  --radius: 10px;
-  --shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-}
-body {
-  font-family: var(--ff-inter);
-}
-
-/* Opcional: micro-refino de títulos (Inter é denso) */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  letter-spacing: 0.015em;
-}
-.display-5 {
-  letter-spacing: 0.01em;
-}
-
-/* Melhora de renderização em Windows */
-* {
+.page-institucional {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  color: #111827; /* text-gray-900 */
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-/* =========================================================
-   HEADER — brandbar bipartida + "puck" da logo
-   ========================================================= */
-main {
-  min-height: 50dvh;
-}
-.brandbar-split {
-  min-height: var(--brandbar-h);
-  background: linear-gradient(
-    90deg,
-    var(--header-left) 0%,
-    var(--header-left) 50%,
-    var(--header-right) 50%,
-    var(--header-right) 100%
-  );
-}
-.brand-logo {
-  /* já usamos utilitários Bootstrap (position, rounded, shadow, etc.)
-     aqui só garantimos borda/raio consistentes */
-  border: 1px solid rgba(230, 236, 255, 0.98) !important;
-  border-radius: var(--radius) !important;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Navbar: fundo claro e borda igual à imagem */
-.navbar.bg-body-tertiary {
-  background-color: var(--bar-bg) !important;
-}
-.navbar.border-bottom {
-  border-bottom: 1px solid var(--bar-border) !important;
-}
-/* Blindagem anti-wrap em desktop (mantendo colapso em lg) */
-.navbar .container {
-  flex-wrap: nowrap;
-}
-.navbar-nav {
-  flex-wrap: nowrap;
-}
-.navbar-nav .nav-item {
-  white-space: nowrap;
-}
-/* Densidade 992–1200px (onde geralmente “quebra”) */
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.45rem;
-    font-size: 0.95rem;
-  }
-  .navbar-nav.gap-lg-3 {
-    column-gap: 0.75rem;
-  }
-}
-/* Toggler visível sobre fundo claro */
-.navbar-toggler {
-  border-color: var(--bar-border);
-}
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(31,42,55,0.85)' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+/* Tipografia fluida */
+.page-institucional,
+.page-institucional p,
+.page-institucional li,
+.page-institucional blockquote,
+.page-institucional figcaption {
+  font-size: clamp(1rem, 1.6vw, 1.2rem); /* 16px → 20px */
 }
 
-/* =========================================================
-   CONTEXT BAR — “Página não encontrada” (fica no MAIN)
-   ========================================================= */
-.bg-body-secondary {
-  background-color: var(--bar-bg) !important;
-}
-.border-bottom {
-  border-bottom-color: var(--bar-border) !important;
+/* Largura ideal de leitura */
+.page-institucional main {
+  max-width: 42rem; /* ~672px para ~70 caracteres */
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* =========================================================
-   MAIN — tipografia, CTAs e ilustração
-   ========================================================= */
-h1.display-5 {
-  color: var(--brand);
-  line-height: 1.1;
-}
-.h3 {
-  color: var(--text-900);
-}
-.text-secondary {
-  color: var(--text-600) !important;
+/* Parágrafos */
+.page-institucional p {
+  margin-bottom: 1.2rem;
+  color: #374151; /* text-gray-700 */
 }
 
-/* Cards-CTA como na imagem (azul clarinho com leve borda) */
-.card.bg-primary-subtle {
-  background-color: var(--cta-bg) !important;
-  border: 1px solid var(--cta-border) !important;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+/* Títulos */
+.page-institucional h1,
+.page-institucional h2,
+.page-institucional h3,
+.page-institucional h4,
+.page-institucional h5,
+.page-institucional h6 {
+  color: #111827;
+  line-height: 1.3;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
 }
-.card.border.shadow-0 {
-  background-color: var(--cta-bg-ghost);
-  border-color: var(--cta-border-ghost) !important;
-  border-radius: var(--radius);
+.page-institucional h1 {
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  color: #1d4ed8; /* blue-700 */
 }
-.card .card-body {
-  padding: 1rem 1.25rem;
-} /* compacta para ficar fiel */
+.page-institucional h2 {
+  font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+}
+.page-institucional h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+}
+.page-institucional h4 {
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+}
 
-/* Hover sutil sem deslocar layout */
-.card:hover {
-  box-shadow: 0 10px 22px rgba(19, 32, 68, 0.12);
+/* Listas */
+.page-institucional ul,
+.page-institucional ol {
+  padding: 0;
+}
+.page-institucional li {
+  color: #374151;
+  font-size: 1.2rem;
 }
 
-/* =========================================================
-   FOOTER — gradiente + links claros
-   ========================================================= */
-footer {
-  background-color: #003e8c;
+.page-institucional li a{
+  display: block;
+  padding: .25em 0;
 }
-.footer-bottom {
-  border-top: 1px solid #084ea6;
+
+/* Citações */
+.page-institucional blockquote {
+  position: relative;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  margin: 2.5rem auto;
+  padding: 2rem;
+  max-width: 42rem;
+  background-color: #fff;
+  font-weight: 500;
+  color: #111827;
+  text-align: justify;
 }
-.created-by {
-  background: #00387f;
+.page-institucional blockquote::before,
+.page-institucional blockquote::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 120px;
+  height: 4px;
+  background-color: #3e72ff9c;
+  transform: translateX(-50%);
 }
-footer h6 {
-  letter-spacing: 0.04em;
+.page-institucional blockquote::before { top: -3px; }
+.page-institucional blockquote::after { bottom: -3px; }
+
+/* Imagens e figuras */
+.page-institucional img,
+.page-institucional figure {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border-radius: 0.5rem;
 }
-footer a.link-light:hover {
+.page-institucional figcaption {
+  text-align: center;
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/* Links */
+.page-institucional a {
+  color: #2563eb;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.page-institucional a:hover {
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
-/* =========================================================
-   RESPONSIVO / ACESSIBILIDADE
-   ========================================================= */
-@media (max-width: 575.98px) {
-  :root {
-    --brandbar-h: 56px;
+/* Responsividade refinada */
+@media (max-width: 768px) {
+  .page-institucional main {
+    max-width: 38rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
-  .brand-logo img {
-    height: 22px !important;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation: none !important;
+
+  .page-institucional blockquote::before,
+  .page-institucional blockquote::after {
+    width: 60px;
   }
 }
