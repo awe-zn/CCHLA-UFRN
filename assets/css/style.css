@@ -3,7 +3,6 @@
    ----------------------------------------------------------
    Aplica o padrão de legibilidade ideal a todos os textos da
    página, incluindo parágrafos, listas, blockquotes e figuras.
-   Mantém compatibilidade com Tailwind.
    ========================================================== */
 
 .page-institucional {
@@ -110,14 +109,14 @@
   display: block;
   max-width: 100%;
   height: auto;
-  margin: 2rem auto;
+  margin: 1rem auto;
   border-radius: 0.5rem;
 }
 .page-institucional figcaption {
-  text-align: center;
+  text-align: left;
   font-size: clamp(0.875rem, 1vw, 1rem);
   color: #6b7280;
-  margin-top: 0.5rem;
+  margin-left: 1rem;
 }
 
 /* Links */
