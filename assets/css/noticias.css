@@ -184,6 +184,10 @@
     .post-content blockquote::after {
         width: 60px;
     }
+
+    .container-news>header {
+        padding: 0 1rem;
+    }
 }
 
 /* Scrollbar customizada */
