@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Página não encontrada | CCHLA</title>
+    <meta name="description"
+        content="Centro de Ciências Humanas, Letras e Artes da Universidade Federal do Rio Grande do Norte (UFRN) – cursos, pesquisa, cultura e extensão." />
+    <!-- Ícone SVG (favicon) -->
+    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" />
+    <!-- Fallback para navegadores que não suportam SVG -->
+    <link rel="alternate icon" href="/assets/icons/favicon.ico" sizes="any" />
+    <!-- Ícone para dispositivos Apple / toque -->
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180.png" />
+    <!-- Manifesto PWA (se aplicável) -->
+    <link rel="manifest" href="/assets/icons/site.webmanifest" />
+    <meta name="theme-color" content="#193CB8" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="CCHLA / UFRN" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="CCHLA – UFRN" />
+    <meta property="og:description"
+        content="Centro de Ciências Humanas, Letras e Artes – UFRN. Ensino, pesquisa e extensão." />
+    <meta property="og:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.cchla.ufrn.br/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CCHLA – UFRN" />
+    <meta name="twitter:description" content="Centro de Ciências Humanas, Letras e Artes – UFRN." />
+    <meta name="twitter:image" content="https://www.cchla.ufrn.br/assets/icons/android-chrome-512x512.png" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script defer src="assets/scripts/script.js"></script>
+    <!-- Link para Font Awesome para os ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+    <style>
+        /* Animação suave para entrada */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Scrollbar customizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #305CFF;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #1E3AFF;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="font-[Inter]">
+    <header class="bg-gradient-to-r from-[#002047] from-50% to-[#004499] text-white">
+        <div class="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4 lg:py-0">
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-2">
+                <img src="assets/img/logo.svg" alt="Logo do CCHLA" class="h-12" />
+            </a>
+
+            <!-- Menu Desktop -->
+            <nav class="hidden lg:flex items-center gap-8">
+                <div class="relative group">
+                    <button
+                        class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+                        aria-expanded="false" aria-controls="menu-inst">
+                        INSTITUCIONAL
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <ul id="menu-inst"
+                        class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Administração</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Consec</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Orçamentos</a></li>
+                    </ul>
+                </div>
+
+                <div class="relative group">
+                    <button
+                        class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+                        aria-expanded="false" aria-controls="menu-acad">
+                        ACADÊMICO
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <ul id="menu-acad"
+                        class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Ensino</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">CAs</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Pesquisas</a></li>
+                    </ul>
+                </div>
+
+                <div class="relative group">
+                    <button
+                        class="flex py-10 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+                        aria-expanded="false" aria-controls="menu-imp">
+                        IMPRENSA
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <ul id="menu-imp"
+                        class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Documentos</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Obras</a></li>
+                    </ul>
+                </div>
+
+                <a href="#" class="font-semibold hover:text-blue-200 transition-colors">CONTATOS</a>
+            </nav>
+
+            <!-- Botão Mobile -->
+            <button id="menu-toggle" aria-label="Abrir menu" aria-expanded="false"
+                class="lg:hidden text-2xl hover:text-blue-200 transition-colors">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Menu Mobile -->
+        <nav id="mobile-menu"
+            class="hidden flex-col bg-white text-[#313135] shadow-lg lg:hidden transition-all duration-300">
+            <ul class="divide-y divide-gray-200">
+                <li>
+                    <button
+                        class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+                        onclick="toggleDropdown(this)">
+                        Institucional
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <ul class="hidden flex-col bg-gray-50">
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Administração</a>
+                        </li>
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Consec</a>
+                        </li>
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Orçamentos</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <button
+                        class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+                        onclick="toggleDropdown(this)">
+                        Acadêmico
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <ul class="hidden flex-col bg-gray-50">
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Ensino</a>
+                        </li>
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">CAs</a>
+                        </li>
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Pesquisas</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button
+                        class="w-full flex justify-between items-center px-6 py-4 font-medium text-left focus:outline-none"
+                        onclick="toggleDropdown(this)">
+                        Imprensa
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <ul class="hidden flex-col bg-gray-50">
+                        <li><a href="#"
+                                class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Documentos</a>
+                        </li>
+                        <li><a href="#" class="block px-8 py-2 hover:bg-gray-100 border-l-2 border-[#002047]">Obras</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="block px-6 py-4 font-medium hover:bg-gray-100 transition">Contatos</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <script>
+        // Toggle do menu mobile
+        const menuBtn = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            const expanded = menuBtn.getAttribute("aria-expanded") === "true";
+            menuBtn.setAttribute("aria-expanded", !expanded);
+            mobileMenu.classList.toggle("hidden");
+            menuBtn.innerHTML = expanded
+                ? '<i class="fa-solid fa-bars"></i>'
+                : '<i class="fa-solid fa-xmark"></i>';
+        });
+
+        // Toggle dos submenus no mobile
+        function toggleDropdown(button) {
+            const submenu = button.nextElementSibling;
+            const icon = button.querySelector("i");
+            submenu.classList.toggle("hidden");
+            icon.classList.toggle("rotate-180");
+        }
+    </script>
+
+    <!-- MAIN -->
+
+    <!-- Breadcrumb -->
+    <nav class="bg-[#F5F5F5] border-b border-gray-200" aria-label="Breadcrumb">
+        <div class="max-w-screen-xl mx-auto px-4 lg:px-6 py-3">
+            <ol class="flex items-center gap-2 text-xs text-gray-600">
+                <li>
+                    <a href="/"
+                        class="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 rounded">
+                        Home
+                    </a>
+                </li>
+                <li aria-hidden="true">
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </li>
+                <li>
+                    <span class="text-gray-900 font-medium">Nosso Blog</span>
+                </li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="bg-white py-8 lg:py-10">
+        <div class="max-w-screen-xl mx-auto px-4 lg:px-6">
+
+            <!-- Cabeçalho -->
+            <header class="mb-6">
+                <p class="text-[11px] uppercase tracking-wider text-gray-500 font-medium mb-2 letterspacing-wide">NOSSO
+                    BLOG</p>
+                <h1 class="text-3xl lg:text-4xl font-bold text-[#1B4D9E] mb-1">
+                    Acompanhe nossas notícias
+                </h1>
+            </header>
+
+            <!-- Filtros -->
+            <section class="mb-8" aria-label="Filtrar notícias por categoria">
+                <h2 class="text-[11px] uppercase tracking-wider text-gray-500 font-medium mb-3">
+                    FILTRAR POR CATEGORIAS
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                    <button
+                        class="px-4 py-2 text-xs font-semibold bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        data-filter="destaques">
+                        DESTAQUES
+                    </button>
+                    <button
+                        class="px-4 py-2 text-xs font-semibold bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        data-filter="ultimas">
+                        ÚLTIMAS NOTÍCIAS
+                    </button>
+                </div>
+            </section>
+
+            <!-- Cards de Destaque (Grid 3 colunas) -->
+            <section class="mb-10" aria-label="Notícias em destaque">
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+                    <!-- Card 1 -->
+                    <article
+                        class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 fade-in">
+                        <a href="/noticia/workshop-marketing-digital"
+                            class="block group focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-lg">
+                            <figure class="overflow-hidden">
+                                <img src="assets/img/noticia-4.jpg" alt="Banner Workshop de Marketing Digital"
+                                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                    loading="lazy">
+                            </figure>
+                            <div class="p-4">
+                                <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-2">
+                                    Publicado em 28 jul.2023
+                                </time>
+                                <h3
+                                    class="text-base font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                    Doutorando do PPGEM representa a UFRN em contato institutcional com a universidade
+                                    da Beira Interiio (Portugal)
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-3 line-clamp-3 leading-relaxed">
+                                    O doutorando Hélder Paulo, do Programa de Pós-Graduação em Estudos da Mídia
+                                    (PPGEM/UFRN), esteve pessoalmente na UBI, em Covilhã (Portugal), para reforçar o
+                                    interesse da UFRN na renovação do Acordo de Cooperação Internacional entre as duas
+                                    instituições
+                                </p>
+                                <span
+                                    class="text-blue-600 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                                    Continue lendo
+                                    <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article
+                        class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 fade-in"
+                        style="animation-delay: 0.1s">
+                        <a href="/noticia/workshop-marketing-digital-2"
+                            class="block group focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-lg">
+                            <figure class="overflow-hidden">
+                                <img src="assets/img/noticia-5.webp" alt="Banner Workshop de Marketing Digital"
+                                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                    loading="lazy">
+                            </figure>
+                            <div class="p-4">
+                                <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-2">
+                                    Publicado em 28 jul.2023
+                                </time>
+                                <h3
+                                    class="text-base font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                    Encontros dialógicos decoloniais: Vidas e Vozes que importam
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-3 line-clamp-3 leading-relaxed">
+                                    É amanhã: quarta-feira, 29 de outubro! Inscrições gratuitas no evento Fascismo Nunca
+                                    Mais, de cuja programação o Encontros Dialógicos Decoloniais deste semestre faz
+                                    parte, são pelo portal Sigaa-UFRN, menu Extensão, Eventos. Te esperamos nesse debate
+                                    tão necessário!
+                                </p>
+                                <span
+                                    class="text-blue-600 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                                    Continue lendo
+                                    <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Card 3 -->
+                    <article
+                        class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 fade-in"
+                        style="animation-delay: 0.2s">
+                        <a href="/noticia/selecao-bolsistas"
+                            class="block group focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-lg">
+                            <figure class="overflow-hidden">
+                                <img src="assets/img/noticia-6.webp" alt="Foto de bolsistas do projeto"
+                                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                    loading="lazy">
+                            </figure>
+                            <div class="p-4">
+                                <time datetime="2022-12-22" class="block text-[11px] text-gray-500 uppercase mb-2">
+                                    Publicado em 22 dez.2022
+                                </time>
+                                <h3
+                                    class="text-base font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                    O primeiro dos eventos desta semana do ciclo "Facismo nunca mais"
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-3 line-clamp-3 leading-relaxed">
+                                    nscrições gratuitas para o ciclo Fascismo Nunca Mais pelo portal Sigaa-UFRN, menu
+                                    Extensão, Eventos. Te esperamos lá!
+                                </p>
+                                <span
+                                    class="text-blue-600 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                                    Continue lendo
+                                    <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </article>
+
+                </div>
+            </section>
+
+            <!-- Divisor -->
+            <hr class="border-t border-gray-200 my-8">
+
+            <!-- Cabeçalho da Seção -->
+            <header class="mb-6">
+                <h2 class="text-xl font-bold text-[#1B4D9E] uppercase tracking-wide">
+                    Outras Notícias
+                </h2>
+            </header>
+
+            <!-- Grid de Cards: 3 colunas desktop, 2 colunas tablet, 1 coluna mobile -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Card 1 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2016-09-27" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 27.set.2016
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Projeto Agência Web Escolar conquista 1º lugar em premiação do Sebrae/RN
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 2 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-03-14" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 14.mar.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Agência Web Escolar divulga resultado de seleção de bolsista para o projeto
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação da Agência Web Escolar (AWE) divulgou, nesta quarta-feira (10) que trata da
+                            seleção para bolsista da AWE, projeto de extensão e prática...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 3 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 28.jul.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Extensão abre cadastro de interesse para Projeto Agência Web Escolar
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 4 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 28.jul.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Extensão abre cadastro de interesse para Projeto Agência Web Escolar
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 5 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 28.jul.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Extensão abre cadastro de interesse para Projeto Agência Web Escolar
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 6 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 28.jul.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Extensão abre cadastro de interesse para Projeto Agência Web Escolar
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 7 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 28.jul.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Extensão abre cadastro de interesse para Projeto Agência Web Escolar
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 8 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 28.jul.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Extensão abre cadastro de interesse para Projeto Agência Web Escolar
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+                <!-- Card 9 -->
+                <article
+                    class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow duration-300">
+                    <a href="#" class="block group">
+                        <time datetime="2023-07-28" class="block text-[11px] text-gray-500 uppercase mb-3 font-medium">
+                            Publicado em 28.jul.2023
+                        </time>
+                        <h3
+                            class="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                            Extensão abre cadastro de interesse para Projeto Agência Web Escolar
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+                            A Coordenação de Extensão abriu, de hoje (28) até o dia 5 de agosto, no próprio setor, o
+                            cadastro de interesse para o Projeto Agência Web Escolar...
+                        </p>
+                        <span
+                            class="text-blue-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all underline">
+                            Continue lendo
+                        </span>
+                    </a>
+                </article>
+
+            </div>
+
+            <!-- Botão Carregar Mais -->
+            <div class="mt-10 text-center">
+                <button
+                    class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 text-white text-sm font-bold uppercase rounded hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    <span>Carregar mais notícias</span>
+                    <i class="fa-solid fa-sync text-sm" aria-hidden="true"></i>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- footer -->
+    <footer class="bg-[#2E3CB9] text-white pt-16 pb-0">
+        <!-- GRID SUPERIOR -->
+        <div class="max-w-screen-xl mx-auto flex flex-col gap-12 px-6 lg:flex-row lg:justify-between">
+            <!-- BLOCO INSTITUCIONAL -->
+            <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                    <h4 class="text-xl font-semibold">CCHLA</h4>
+                    <p class="text-sm mt-2 md:text-center">Centro de Ciências Humanas,<br>Letras e Artes</p>
+                </div>
+
+                <!-- REDES SOCIAIS -->
+                <nav aria-label="Redes sociais" class="flex gap-4 justify-start md:justify-center lg:justify-start">
+                    <a href="#" aria-label="Twitter"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-twitter text-[14px]" aria-hidden="true"></i>
+                    </a>
+
+                    <a href="#" aria-label="Instagram"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-instagram text-[14px]" aria-hidden="true"></i>
+                    </a>
+
+                    <a href="#" aria-label="YouTube"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-youtube text-[14px]" aria-hidden="true"></i>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- LINKS PRINCIPAIS -->
+            <nav aria-label="Mapa do site"
+                class="grid grid-cols-2 gap-10 md:grid-cols-3 text-sm md:text-center lg:text-left text-[16px]">
+                <!-- COLUNA 1 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Institucional</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Administração</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Documentos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">CONSEC</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Departamentos</a></li>
+                </ul>
+
+                <!-- COLUNA 2 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Acadêmico</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Ensino</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Pesquisa</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Extensão</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Publicações</a></li>
+                </ul>
+
+                <!-- COLUNA 3 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Imprensa</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Eventos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Orçamento</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Notícias</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Especiais</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- LINHA DIVISÓRIA -->
+        <div class="border-t-1 border-[#3457CB] my-10 mx-6 lg:mx-auto max-w-screen-xl"></div>
+
+        <!-- BLOCO INFERIOR -->
+        <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px]">
+            <a href="https://www.google.com/maps/search/?api=1&query=CCHLA+-+CENTRO+DE+CI%C3%8ANCIAS+HUMANAS%2C+LETRAS+E+ARTES+-+UFRN%2C+Natal%2C+RN"
+                target="_blank" rel="noopener noreferrer"
+                class="hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded">
+                <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
+                <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
+                <p class="mt-4">
+                    Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
+                </p>
+            </a>
+
+            <p class="mt-1">
+                Telefone:
+                <strong>(84) +55 84 3342-2243 / 84 99193-6154</strong>
+                |
+                E-mail:
+                <a href="mailto:secretariacchla@gmail.com" class="font-bold hover:underline focus:underline">
+                    secretariacchla@gmail.com
+                </a>
+            </p>
+        </div>
+
+        <!-- RODAPÉ FINAL -->
+        <div class="bg-[#1D2E7A] py-6 text-center">
+            <a href="https://agenciaweb.ifrn.edu.br" target="_blank" rel="noopener noreferrer"
+                aria-label="Desenvolvido pela Agência Web do IFRN"
+                class="inline-block hover:opacity-90 focus:opacity-90 transition-opacity">
+                <img src="assets/img/logo-awe.svg" alt="Agência Web do IFRN" class="mx-auto w-8 h-auto">
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
