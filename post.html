@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Software impulsiona pesquisas sobre análise climática | CCHLA</title>
+    <meta name="description" content="Estudo explora áreas críticas de calor por meio de mapas detalhados">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/assets/icons/favicon.ico" sizes="any">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/noticias.css">
+</head>
+
+<body class="bg-white page-noticia">
+
+
+    <!-- Breadcrumb -->
+    <nav class="bg-[#F5F5F5] border-b border-gray-200" aria-label="Breadcrumb">
+        <div class="max-w-screen-xl mx-auto px-4 lg:px-6 py-3">
+            <ol class="flex items-center gap-2 text-xs text-gray-600">
+                <li>
+                    <a href="/"
+                        class="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 rounded">
+                        Home
+                    </a>
+                </li>
+                <li aria-hidden="true">
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </li>
+                <li>
+                    <span class="text-gray-900 font-medium">Nosso Blog</span>
+                </li>
+            </ol>
+        </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <main class="py-10 lg:py-12">
+        <article class="container-news">
+            <header class="mb-6">
+
+                <!-- Título Principal -->
+                <h1 class="text-3xl lg:text-5xl font-bold mb-4 leading-tight">
+                    Software impulsiona pesquisas sobre análise climática
+                </h1>
+
+                <!-- Subtítulo/Lead -->
+                <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-6 font-normal">
+                    Estudo explora áreas críticas de calor por meio de mapas detalhados
+                </p>
+
+                <!-- Metadados: Autoria e Data -->
+                <div class="text-sm text-gray-500 leading-relaxed">
+                    <div class="mb-1">
+                        <span class="text-gray-700 font-semibold">Por </span>
+                        <a href="#" class="text-[#1B4D9E] hover:underline font-semibold">Giovana Góis</a>
+                        <span>, </span>
+                        <span>LABCAM-AGECOM/UFRN</span>
+                        <span class="mx-2">·</span>
+                        <time datetime="2024-08-29">29/08/2024 12h47</time>
+                    </div>
+                </div>
+
+            </header>
+
+            <!-- Barra de Compartilhamento -->
+            <div class="border-y border-gray-200">
+                <div class="max-w-screen-xl mx-auto px-4 lg:px-6 py-3">
+                    <div class="flex items-center gap-3">
+                        <a href="#" aria-label="Compartilhar no Facebook"
+                            class="flex items-center justify-center w-10 h-10 text-white rounded-full bg-[#1877F2] hover:bg-[#145dbf] text-white transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <i class="fa-brands fa-facebook-f text-sm" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Compartilhar no WhatsApp"
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-[#25D366] hover:bg-[#1da851] text-white transition-colors focus:outline-none focus:ring-2 focus:ring-green-400">
+                            <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Compartilhar link"
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            <i class="fa-solid fa-share-nodes text-sm" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const pageUrl = encodeURIComponent(window.location.href);
+                    const pageTitle = encodeURIComponent(document.title);
+
+                    // Facebook
+                    document.querySelector('[aria-label="Compartilhar no Facebook"]').addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+                        window.open(fbUrl, '_blank', 'width=600,height=400');
+                    });
+
+                    // WhatsApp
+                    document.querySelector('[aria-label="Compartilhar no WhatsApp"]').addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const waUrl = `https://api.whatsapp.com/send?text=${pageTitle}%20${pageUrl}`;
+                        window.open(waUrl, '_blank');
+                    });
+
+                    // Copiar link
+                    document.querySelector('[aria-label="Compartilhar link"]').addEventListener('click', async function (e) {
+                        e.preventDefault();
+                        try {
+                            await navigator.clipboard.writeText(window.location.href);
+                            alert("Link copiado para a área de transferência!");
+                        } catch (err) {
+                            console.error("Erro ao copiar o link:", err);
+                            alert("Não foi possível copiar o link.");
+                        }
+                    });
+                });
+            </script>
+
+
+            <!-- Conteúdo do Post -->
+            <div class="post-content pt-8">
+
+                <p>
+                    As análises climáticas são impulsionadas pelo uso de tecnologias avançadas que permitem
+                    compreender padrões atmosféricos, prever fenômenos extremos e avaliar impactos
+                    ambientais com maior precisão. Modelos climáticos computacionais utilizam inteligência
+                    artificial e big data para processar imensas quantidades de dados. Tais informações são
+                    essenciais para a tomada de decisões em políticas públicas, planejamento urbano e gestão
+                    de recursos naturais.
+                </p>
+
+                <!-- Imagem Destacada -->
+                <figure>
+                    <img src="https://cdn.pixabay.com/photo/2021/11/25/20/52/river-6824576_1280.jpg"
+                        alt="Árvore isolada em paisagem verde ao nascer do sol" loading="lazy">
+                    <figcaption>Fonte: Banco de imagens / Unsplash</figcaption>
+                </figure>
+
+                <p>
+                    <a href="https://exemplo.com">Um estudo recente</a> produziu um mapa de calor das
+                    árvores urbanas, fornecendo informações sobre onde, quando e como a vegetação urbana se
+                    desenvolve e as funções desempenhadas nas cidades, ajudando arquitetos e urbanistas a
+                    tomarem decisões mais conscientes.
+                </p>
+
+                <p>
+                    O projeto começou com a parceria com São José, Califórnia, e objetivou o mapeamento de
+                    Zonas de calor, seus impactos e o potencial de arborização urbana no município. De
+                    maneira semelhante, foi desenvolvida uma ferramenta utilizando dados de inventários de
+                    árvores e a LIDAR, obtendo informações sobre a estrutura da distribuição das árvores e
+                    suas características.
+                </p>
+
+                <h2>Metodologia e Resultados</h2>
+
+                <p>
+                    De acordo com Mara Fazio, a ideia do mapeamento e a prefeitura da UFPR vieram de
+                    discussões sobre maneiras mais práticas para ajudar os planejadores urbanos das cidades
+                    que começam a estruturar, mapear e ampliar as regiões de sombra. O software oferece não
+                    só o lado visual, mas também o econômico, uma vez que calcula o valor monetário que cada
+                    árvore traz ao ambiente onde está instalada.
+                </p>
+
+                <!-- Segunda Imagem -->
+                <figure>
+                    <img src="https://cdn.pixabay.com/photo/2023/12/20/22/35/desert-8460850_1280.jpg"
+                        alt="Pessoa de joelhos em terreno árido olhando para o céu" loading="lazy">
+                    <figcaption>A mudança climática afeta diretamente a qualidade de vida nas cidades.
+                        Fonte: Pexels</figcaption>
+                </figure>
+
+                <p>
+                    Citomeeting a sámen foi pensado na Califórnia e desenvolveu um método ao fixar dos dados
+                    disponibilizados pela cidade de Califórnia sobre suas árvores. Foram levados os dados da
+                    prefeitura, imagens de satélite fornecidas por comerciais e imagens LIDAR. Com base
+                    nesse material, foi estruturado um serviço de código aberto que a ferramenta que
+                    integrou os ambientes SIG para lidar mais amplos.
+                </p>
+
+                <h2>Impacto Social e Ambiental</h2>
+
+                <p>
+                    É ainda mais importante para cidades mais vulneráveis à temperatura elevada e com
+                    menores informações sobre gestão de arborização urbana. A tecnologia alerta para o valor
+                    de realizar esses levantamentos em pequenos territórios antes de escalá-los à dimensão
+                    de uma cidade, ou uma área metropolitana.
+                </p>
+
+                <!-- Terceira Imagem -->
+                <figure>
+                    <img src="https://cdn.pixabay.com/photo/2020/02/10/16/30/monk-4836982_960_720.jpg"
+                        alt="Rua urbana com carros e árvores" loading="lazy">
+                    <figcaption>Arborização urbana contribui para redução da temperatura em áreas
+                        metropolitanas</figcaption>
+                </figure>
+
+                <p>
+                    Nesse ponto, a diferença entre os cenários é inequívocos e o fato de ter sido um
+                    processo intenso e colaborativo não apenas demonstrou uma demanda urgente sobre
+                    indicadores ambientais, como também se traduziu uma política e um plano para equipar
+                    bairros de menor renda no horizonte dos censos seguintes.
+                </p>
+
+                <h2>Parcerias Internacionais</h2>
+
+                <p>
+                    A menção ao trabalho desenvolvido no Brasil foi apontada em resumo, e foi indicada à
+                    Coordenação de Políticas de Ordenamento Territorial Urbano. O processo chamou a atenção
+                    para importância da arborização histórica e mudanças sistêmicas que a cidade vem
+                    apresentar neste contexto.
+                </p>
+
+            </div>
+
+            <!-- Posts Relacionados -->
+            <aside class="related-posts mt-12 pt-8 border-t border-gray-200">
+                <div class="max-w-screen-xl mx-auto px-4 lg:px-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-8">posts relacionados</h2>
+
+                    <div class="space-y-8">
+
+                        <!-- Post Relacionado 1 -->
+                        <article class="pb-6 border-b border-gray-100 last:border-0">
+                            <div class="mb-2">
+                                <span class="text-sm text-gray-500">por </span>
+                                <a href="#" class="text-sm text-blue-600 hover:underline font-medium">Ana
+                                    Kézia</a>
+                                <span class="text-sm text-gray-500">, publicado em </span>
+                                <time datetime="2023-07-16" class="text-sm text-gray-500">16.jul.2023</time>
+                            </div>
+                            <h3 class="text-xl font-semibold leading-tight">
+                                <a href="#" class="text-blue-700 hover:text-blue-900 hover:underline transition-colors">
+                                    UI Designer: tornando o UI design fundamental para conquistar os
+                                    usuários.
+                                </a>
+                            </h3>
+                        </article>
+
+                        <!-- Post Relacionado 2 -->
+                        <article class="pb-6 border-b border-gray-100 last:border-0">
+                            <div class="mb-2">
+                                <span class="text-sm text-gray-500">por </span>
+                                <a href="#" class="text-sm text-blue-600 hover:underline font-medium">Letícia
+                                    Mirelly</a>
+                                <span class="text-sm text-gray-500">, publicado em </span>
+                                <time datetime="2023-10-30" class="text-sm text-gray-500">30.out.2023</time>
+                            </div>
+                            <h3 class="text-xl font-semibold leading-tight">
+                                <a href="#" class="text-blue-700 hover:text-blue-900 hover:underline transition-colors">
+                                    UX Designer: uma experiência fluida, intuitiva e agradável é essencial
+                                    para fidelizar clientes.
+                                </a>
+                            </h3>
+                        </article>
+
+                        <!-- Post Relacionado 3 -->
+                        <article class="pb-6 border-b border-gray-100 last:border-0">
+                            <div class="mb-2">
+                                <span class="text-sm text-gray-500">por </span>
+                                <a href="#" class="text-sm text-blue-600 hover:underline font-medium">Luiz
+                                    Fernando</a>
+                                <span class="text-sm text-gray-500">, publicado em </span>
+                                <time datetime="2023-10-30" class="text-sm text-gray-500">30.out.2023</time>
+                            </div>
+                            <h3 class="text-xl font-semibold leading-tight">
+                                <a href="#" class="text-blue-700 hover:text-blue-900 hover:underline transition-colors">
+                                    Agência WEB: o elo entre a escola e o mundo.
+                                </a>
+                            </h3>
+                        </article>
+
+                        <!-- Post Relacionado 4 -->
+                        <article class="pb-6">
+                            <div class="mb-2">
+                                <span class="text-sm text-gray-500">por </span>
+                                <a href="#" class="text-sm text-blue-600 hover:underline font-medium">Filipi
+                                    Silva</a>
+                                <span class="text-sm text-gray-500">, publicado em </span>
+                                <time datetime="2023-10-30" class="text-sm text-gray-500">30.out.2023</time>
+                            </div>
+                            <h3 class="text-xl font-semibold leading-tight">
+                                <a href="#" class="text-blue-700 hover:text-blue-900 hover:underline transition-colors">
+                                    Programação: o impulso para o futuro.
+                                </a>
+                            </h3>
+                        </article>
+
+                    </div>
+                </div>
+            </aside>
+
+        </article>
+    </main>
+
+
+
+    <!-- footer -->
+    <footer class="bg-[#2E3CB9] text-white pt-16 pb-0">
+        <!-- GRID SUPERIOR -->
+        <div class="max-w-screen-xl mx-auto flex flex-col gap-12 px-6 lg:flex-row lg:justify-between">
+            <!-- BLOCO INSTITUCIONAL -->
+            <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
+                    <h4 class="text-xl font-semibold">CCHLA</h4>
+                    <p class="text-sm mt-2 md:text-center">Centro de Ciências Humanas,<br>Letras e Artes</p>
+                </div>
+
+                <!-- REDES SOCIAIS -->
+                <nav aria-label="Redes sociais" class="flex gap-4 justify-start md:justify-center lg:justify-start">
+                    <a href="#" aria-label="Twitter"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-twitter text-[14px]" aria-hidden="true"></i>
+                    </a>
+
+                    <a href="#" aria-label="Instagram"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-instagram text-[14px]" aria-hidden="true"></i>
+                    </a>
+
+                    <a href="#" aria-label="YouTube"
+                        class="flex items-center justify-center w-8 h-8 bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fa-brands fa-youtube text-[14px]" aria-hidden="true"></i>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- LINKS PRINCIPAIS -->
+            <nav aria-label="Mapa do site"
+                class="grid grid-cols-2 gap-10 md:grid-cols-3 text-sm md:text-center lg:text-left text-[16px]">
+                <!-- COLUNA 1 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Institucional</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Administração</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Documentos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">CONSEC</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Departamentos</a></li>
+                </ul>
+
+                <!-- COLUNA 2 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Acadêmico</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Ensino</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Pesquisa</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Extensão</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Publicações</a></li>
+                </ul>
+
+                <!-- COLUNA 3 -->
+                <ul class="flex flex-col gap-2">
+                    <li><span class="font-bold uppercase tracking-wide">Imprensa</span></li>
+                    <li><a href="#" class="hover:underline focus:underline">Eventos</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Orçamento</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Notícias</a></li>
+                    <li><a href="#" class="hover:underline focus:underline">Especiais</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- LINHA DIVISÓRIA -->
+        <div class="border-t-1 border-[#3457CB] my-10 mx-6 lg:mx-auto max-w-screen-xl"></div>
+
+        <!-- BLOCO INFERIOR -->
+        <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px]">
+            <a href="https://www.google.com/maps/search/?api=1&query=CCHLA+-+CENTRO+DE+CI%C3%8ANCIAS+HUMANAS%2C+LETRAS+E+ARTES+-+UFRN%2C+Natal%2C+RN"
+                target="_blank" rel="noopener noreferrer"
+                class="hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded">
+                <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
+                <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
+                <p class="mt-4">
+                    Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
+                </p>
+            </a>
+
+            <p class="mt-1">
+                Telefone:
+                <strong>(84) +55 84 3342-2243 / 84 99193-6154</strong>
+                |
+                E-mail:
+                <a href="mailto:secretariacchla@gmail.com" class="font-bold hover:underline focus:underline">
+                    secretariacchla@gmail.com
+                </a>
+            </p>
+        </div>
+
+        <!-- RODAPÉ FINAL -->
+        <div class="bg-[#1D2E7A] py-6 text-center">
+            <a href="https://agenciaweb.ifrn.edu.br" target="_blank" rel="noopener noreferrer"
+                aria-label="Desenvolvido pela Agência Web do IFRN"
+                class="inline-block hover:opacity-90 focus:opacity-90 transition-opacity">
+                <img src="assets/img/logo-awe.svg" alt="Agência Web do IFRN" class="mx-auto w-8 h-auto">
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
