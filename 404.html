@@ -45,11 +45,46 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 
   <style>
-    /* Padrão WebKit (Chrome, Edge, Safari, Opera) */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Animação suave para entrada */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Scrollbar customizada */
     ::-webkit-scrollbar {
       width: 8px;
-      height: 8px;
-      transition: all 0.3s ease;
     }
 
     ::-webkit-scrollbar-track {
@@ -60,32 +95,10 @@
     ::-webkit-scrollbar-thumb {
       background-color: #305CFF;
       border-radius: 10px;
-      transition: all 0.3s ease;
     }
 
-    /* Ao passar o mouse sobre o scroll */
     ::-webkit-scrollbar-thumb:hover {
       background-color: #1E3AFF;
-      /* tonalidade mais escura */
-      width: 12px;
-      /* efeito de expansão suave */
-    }
-
-    /* Ajuste visual do hover na área do scrollbar */
-    ::-webkit-scrollbar:hover {
-      width: 12px;
-      height: 12px;
-    }
-
-    /* Firefox */
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #305CFF #f1f1f1;
-    }
-
-    /* Para Firefox não há width animável, mas podemos dar leve contraste no hover */
-    html:hover {
-      scrollbar-color: #1E3AFF #e6e6e6;
     }
   </style>
 </head>
@@ -231,57 +244,95 @@
   </script>
 
   <!-- MAIN -->
-  <main class="min-h-screen flex flex-col bg-white text-gray-800">
-    <!-- Barra contextual -->
-    <div class="bg-gray-100 border-b">
-      <div class="container mx-auto text-sm text-gray-500 py-2 px-4">
-        Página não encontrada
-      </div>
-    </div>
+  <main class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="max-w-5xl w-full">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
 
-    <!-- Área principal -->
-    <section class="flex-1 py-10 lg:py-16">
-      <div class="container mx-auto px-4">
-        <div class="flex flex-col lg:flex-row items-center gap-10">
-          <!-- Texto e CTAs -->
-          <div class="lg:w-1/2 text-center lg:text-left">
-            <h1 class="text-4xl font-bold text-blue-700 mb-1">Oops....</h1>
-            <p class="text-2xl font-semibold mb-3">Página não encontrada</p>
-            <p class="text-gray-500 mb-6">
+        <!-- Lado Esquerdo: Texto e CTAs -->
+        <div class="text-center lg:text-left space-y-6 animate-fade-in-up">
+          <div>
+            <h1 class="text-5xl md:text-6xl font-bold text-blue-700 mb-2">
+              Oops....
+            </h1>
+            <p class="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
+              Página não encontrada
+            </p>
+            <p class="text-gray-600 text-lg">
               A página que você está tentando acessar não existe ou foi removida.
             </p>
-
-            <div class="flex flex-col gap-3 max-w-md mx-auto lg:mx-0">
-              <a href="/"
-                class="block rounded-lg bg-blue-50 hover:bg-blue-100 transition p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                <div class="font-semibold text-lg text-gray-900 mb-1">
-                  Acesse a nossa home
-                </div>
-                <p class="text-gray-600 text-sm">
-                  Acompanhe o nosso departamento e encontre o que precisa.
-                </p>
-              </a>
-
-              <a href="/noticias"
-                class="block rounded-lg bg-blue-50 hover:bg-blue-100 transition p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                <div class="font-semibold text-lg text-gray-900 mb-1">
-                  Notícias
-                </div>
-                <p class="text-gray-600 text-sm">
-                  Fique por dentro de tudo que acontece no CCHLA.
-                </p>
-              </a>
-            </div>
           </div>
 
-          <!-- Imagem ilustrativa -->
-          <div class="lg:w-1/2 flex justify-center">
-            <img src="assets/img/img-404.png" alt="Erro 404 - Página não encontrada"
-              class="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full h-auto" />
+          <!-- Cards de Ação -->
+          <div class="flex flex-col gap-4 max-w-md mx-auto lg:mx-0">
+            <!-- Card Home -->
+            <a href="/"
+              class="group block rounded-lg bg-blue-50 hover:bg-blue-100 hover:shadow-md transition-all duration-300 p-5 text-left focus:outline-none focus:ring-4 focus:ring-blue-300">
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-home" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                  <h2 class="font-semibold text-lg text-gray-900 mb-1">
+                    Acesse a nossa home
+                  </h2>
+                  <p class="text-gray-600 text-sm">
+                    Acompanhe o nosso departamento e encontre o que precisa.
+                  </p>
+                </div>
+              </div>
+            </a>
+
+            <!-- Card Notícias -->
+            <a href="/noticias"
+              class="group block rounded-lg bg-blue-50 hover:bg-blue-100 hover:shadow-md transition-all duration-300 p-5 text-left focus:outline-none focus:ring-4 focus:ring-blue-300">
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                  <h2 class="font-semibold text-lg text-gray-900 mb-1">
+                    Notícias
+                  </h2>
+                  <p class="text-gray-600 text-sm">
+                    Fique por dentro de tudo que acontece no CCHLA.
+                  </p>
+                </div>
+              </div>
+            </a>
+
+            <!-- Card Contato -->
+            <a href="/contato"
+              class="group block rounded-lg bg-blue-50 hover:bg-blue-100 hover:shadow-md transition-all duration-300 p-5 text-left focus:outline-none focus:ring-4 focus:ring-blue-300">
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                  <h2 class="font-semibold text-lg text-gray-900 mb-1">
+                    Fale conosco
+                  </h2>
+                  <p class="text-gray-600 text-sm">
+                    Entre em contato com nossa equipe.
+                  </p>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
+
+        <!-- Lado Direito: Imagem -->
+        <div class="flex justify-center lg:justify-end animate-fade-in-up" style="animation-delay: 0.2s;">
+          <div class="relative max-w-md w-full animate-float">
+            <img src="assets/img/img-404.png" alt="Ilustração de erro 404 - Robô com tela de erro"
+              class="w-full h-auto drop-shadow-2xl">
+          </div>
+        </div>
+
       </div>
-    </section>
+    </div>
   </main>
 
 
@@ -293,7 +344,7 @@
       <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
         <div class="flex flex-col gap-6 text-left md:text-center lg:text-left">
           <h4 class="text-xl font-semibold">CCHLA</h4>
-          <p class="text-sm mt-2 md:text-center ">Centro de Ciências Humanas,<br>Letras e Artes</p>
+          <p class="text-sm mt-2 md:text-center">Centro de Ciências Humanas,<br>Letras e Artes</p>
         </div>
 
         <!-- REDES SOCIAIS -->
@@ -317,7 +368,7 @@
 
       <!-- LINKS PRINCIPAIS -->
       <nav aria-label="Mapa do site"
-        class="grid grid-cols-2 gap-10 md:grid-cols-3 text-sm md:text-center lg:text-left text-[16px] ">
+        class="grid grid-cols-2 gap-10 md:grid-cols-3 text-sm md:text-center lg:text-left text-[16px]">
         <!-- COLUNA 1 -->
         <ul class="flex flex-col gap-2">
           <li><span class="font-bold uppercase tracking-wide">Institucional</span></li>
@@ -351,44 +402,16 @@
     <div class="border-t-1 border-[#3457CB] my-10 mx-6 lg:mx-auto max-w-screen-xl"></div>
 
     <!-- BLOCO INFERIOR -->
-    <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px] ">
-      <a id="linkMapa">
+    <div class="text-center text-sm leading-relaxed max-w-screen-md mx-auto px-6 pt-4 pb-14 text-[16px]">
+      <a href="https://www.google.com/maps/search/?api=1&query=CCHLA+-+CENTRO+DE+CI%C3%8ANCIAS+HUMANAS%2C+LETRAS+E+ARTES+-+UFRN%2C+Natal%2C+RN"
+        target="_blank" rel="noopener noreferrer"
+        class="hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded">
         <h3 class="font-bold uppercase">Universidade Federal do Rio Grande do Norte</h3>
         <p class="mt-1">Centro de Ciências Humanas, Letras e Artes</p>
         <p class="mt-4">
           Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970
         </p>
       </a>
-
-      <script>
-        const link = document.getElementById("linkMapa");
-        const destino = "CCHLA - CENTRO DE CIÊNCIAS HUMANAS, LETRAS E ARTES - UFRN, Natal, RN";
-
-        // link web padrão (funciona em todos)
-        const urlWeb = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destino)}`;
-        // link mobile (abre o app direto)
-        const urlMobile = `geo:0,0?q=${encodeURIComponent(destino)}`;
-
-        // Verifica se é mobile
-        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-        // Define comportamento no clique
-        link.addEventListener("click", function (e) {
-          if (isMobile) {
-            // tenta abrir o app do Maps
-            window.location.href = urlMobile;
-            // fallback pro link web se o app não abrir em 800ms
-            setTimeout(() => {
-              window.open(urlWeb, "_blank");
-            }, 800);
-          } else {
-            // desktop: abre o maps na nova aba
-            window.open(urlWeb, "_blank");
-          }
-        });
-      </script>
-
-
 
       <p class="mt-1">
         Telefone:
