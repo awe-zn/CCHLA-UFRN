@@ -177,6 +177,12 @@
 }
 
 /* ----- Bloco de setor ----- */
+.orgaos>hr,
+.orgaos>br,
+.orgaos>p {
+  display: none;
+}
+
 .orgaos>article,
 .orgaos .setor {
   border-top: 1px solid #2563eb;
