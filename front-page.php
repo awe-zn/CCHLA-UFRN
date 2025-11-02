@@ -492,7 +492,7 @@ get_header(); ?>
 
 
     <!-- acesso rapido section-->
-
+    <?php /*!-- 
     <section class="mx-auto max-w-screen-xl px-4 py-16">
         <header class="mb-10 max-md:px-4">
             <p class="text-gray-600 text-sm font-light pb-2 border-b border-blue-200 w-fit">ACESSO RÁPIDO</p>
@@ -551,6 +551,10 @@ get_header(); ?>
             </a>
         </div>
     </section>
+
+    --*/ ?>
+
+    <?php get_template_part('parts/extra/template-parts/acesso-rapido'); ?>
 
 </main>
 
