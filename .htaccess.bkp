@@ -1,0 +1,387 @@
+# BEGIN WordPress Security & Performance
+# Gerado para CCHLA - UFRN
+# Última atualização: 2025
+
+# ==============================================================================
+# SEGURANÇA GERAL
+# ==============================================================================
+
+# Proteção contra hotlinking de imagens
+RewriteEngine On
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?cchla\.ufrn\.br [NC]
+RewriteCond %{REQUEST_URI} \.(jpe?g|png|gif|svg|webp)$ [NC]
+RewriteRule \.(jpe?g|png|gif|svg|webp)$ - [F,L]
+
+# Bloquear acesso a arquivos sensíveis
+<FilesMatch "^\.?(htaccess|htpasswd|env|git|svn|wp-config\.php|readme\.html|license\.txt|error_log|php\.ini)">
+    Require all denied
+</FilesMatch>
+
+# Proteger wp-config.php
+<files wp-config.php>
+    Require all denied
+</files>
+
+# Bloquear acesso ao diretório de uploads de PHP
+<Directory "/wp-content/uploads/">
+    <Files "*.php">
+        Require all denied
+    </Files>
+</Directory>
+
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Desabilitar assinatura do servidor
+ServerSignature Off
+
+# Proteção contra clickjacking
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# Bloquear XML-RPC (previne ataques DDoS)
+<Files xmlrpc.php>
+    Require all denied
+</Files>
+
+# Bloquear acesso ao wp-login.php de bots (opcional, ajustar conforme necessário)
+<Files wp-login.php>
+    # Permitir apenas IPs da UFRN (exemplo)
+    # Require ip 200.129.0.0/16
+    # Ou permitir todos (comentar as linhas acima se necessário)
+    Require all granted
+</Files>
+
+# ==============================================================================
+# PERFORMANCE E CACHE
+# ==============================================================================
+
+# Habilitar compressão GZIP
+<IfModule mod_deflate.c>
+    # Comprimir HTML, CSS, JavaScript, Text, XML e fontes
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/woff
+    AddOutputFilterByType DEFLATE font/woff2
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    
+    # Remover bugs de navegadores antigos
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    Header append Vary User-Agent
+</IfModule>
+
+# Cache do navegador - Expires Headers
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    
+    # HTML
+    ExpiresByType text/html "access plus 0 seconds"
+    
+    # CSS
+    ExpiresByType text/css "access plus 1 year"
+    
+    # JavaScript
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    
+    # Imagens
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+    
+    # Fontes
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/x-font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # Vídeos
+    ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType video/mpeg "access plus 1 year"
+    ExpiresByType video/webm "access plus 1 year"
+    
+    # Áudio
+    ExpiresByType audio/mp3 "access plus 1 year"
+    ExpiresByType audio/ogg "access plus 1 year"
+    
+    # PDF
+    ExpiresByType application/pdf "access plus 1 month"
+    
+    # Dados
+    ExpiresByType application/json "access plus 0 seconds"
+    ExpiresByType application/xml "access plus 0 seconds"
+    ExpiresByType text/xml "access plus 0 seconds"
+</IfModule>
+
+# Cache-Control Headers
+<IfModule mod_headers.c>
+    # Cache para 1 ano
+    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|svg|webp|js|css|swf|woff|woff2|ttf|otf|eot)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+    
+    # Cache para 1 semana
+    <FilesMatch "\.(xml|txt)$">
+        Header set Cache-Control "max-age=604800, public, must-revalidate"
+    </FilesMatch>
+    
+    # Sem cache para HTML
+    <FilesMatch "\.(html|htm|php)$">
+        Header set Cache-Control "max-age=0, private, no-store, no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ==============================================================================
+# OTIMIZAÇÃO DE ENTREGA DE CONTEÚDO
+# ==============================================================================
+
+# ETags (desabilitar para melhor caching)
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# Keep-Alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# ==============================================================================
+# REDIRECIONAMENTOS E URLS
+# ==============================================================================
+
+# Forçar HTTPS (descomentar quando SSL estiver ativo)
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# Redirecionar www para não-www (ou vice-versa, escolher uma opção)
+# Opção 1: www para não-www
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTP_HOST} ^www\.cchla\.ufrn\.br [NC]
+#     RewriteRule ^(.*)$ https://cchla.ufrn.br/$1 [L,R=301]
+# </IfModule>
+
+# Opção 2: não-www para www
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTP_HOST} ^cchla\.ufrn\.br [NC]
+#     RewriteRule ^(.*)$ https://www.cchla.ufrn.br/$1 [L,R=301]
+# </IfModule>
+
+# ==============================================================================
+# PROTEÇÃO CONTRA ATAQUES COMUNS
+# ==============================================================================
+
+# Bloquear requisições com query strings suspeitas
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Bloquear requisições com caracteres inválidos
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+    
+    # Bloquear SQL injection
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} concat.*\( [NC,OR]
+    RewriteCond %{QUERY_STRING} union.*select.*\( [NC,OR]
+    RewriteCond %{QUERY_STRING} union.*all.*select [NC,OR]
+    
+    # Bloquear file injection
+    RewriteCond %{QUERY_STRING} (\.\.\/|\.\.\\) [NC,OR]
+    RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|>|\'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+    
+    # Bloquear XSS
+    RewriteCond %{QUERY_STRING} (javascript:|data:|vbscript:) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<iframe|<script|<img|<embed|<object) [NC]
+    
+    # Retornar 403 Forbidden
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# Bloquear acesso a arquivos de backup
+<FilesMatch "\.(bak|backup|config|dist|fla|inc|ini|log|psd|sh|sql|swp|old|~)$">
+    Require all denied
+</FilesMatch>
+
+# Proteger contra scanners de vulnerabilidades
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} (havij|libwww-perl|wget|python|nikto|curl|scan|java|winhttp|clshttp|loader) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%22|%27|%28|%3C|%3E|%00).*(libwww-perl|wget|python|nikto|curl|scan|java|winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# ==============================================================================
+# LIMITE DE UPLOAD (ajustar conforme necessário)
+# ==============================================================================
+
+# Aumentar limite de upload para 64MB
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+php_value max_execution_time 300
+php_value max_input_time 300
+php_value memory_limit 256M
+
+# ==============================================================================
+# TIPOS MIME
+# ==============================================================================
+
+<IfModule mod_mime.c>
+    # Fontes Web
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+    
+    # Vídeo
+    AddType video/mp4 .mp4
+    AddType video/webm .webm
+    AddType video/ogg .ogv
+    
+    # Áudio
+    AddType audio/mp3 .mp3
+    AddType audio/mp4 .m4a
+    AddType audio/ogg .ogg
+    AddType audio/oga .oga
+    
+    # Imagens
+    AddType image/svg+xml .svg .svgz
+    AddType image/webp .webp
+    
+    # JavaScript
+    AddType application/javascript .js
+    AddType application/json .json
+    
+    # Manifests
+    AddType application/manifest+json .webmanifest
+    AddType text/cache-manifest .appcache
+</IfModule>
+
+# ==============================================================================
+# WORDPRESS PADRÃO - NÃO MODIFICAR
+# ==============================================================================
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+# ==============================================================================
+# LOGS E DEBUG (DESABILITAR EM PRODUÇÃO)
+# ==============================================================================
+
+# Desabilitar exibição de erros do PHP (IMPORTANTE em produção)
+php_flag display_errors Off
+php_flag display_startup_errors Off
+
+# Habilitar log de erros
+php_flag log_errors On
+php_value error_log /home/cchla/public_html/wp-content/debug.log
+
+# ==============================================================================
+# CORS - Cross-Origin Resource Sharing (para APIs e fontes)
+# ==============================================================================
+
+<IfModule mod_headers.c>
+    # Permitir fontes de qualquer origem
+    <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+    
+    # Para API (ajustar conforme necessidade)
+    # <FilesMatch "\.(json)$">
+    #     Header set Access-Control-Allow-Origin "https://cchla.ufrn.br"
+    #     Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    #     Header set Access-Control-Allow-Headers "Content-Type"
+    # </FilesMatch>
+</IfModule>
+
+# ==============================================================================
+# HTTP/2 Server Push (se suportado pelo servidor)
+# ==============================================================================
+
+<IfModule mod_http2.c>
+    # Habilitar HTTP/2
+    Protocols h2 h2c http/1.1
+</IfModule>
+
+# ==============================================================================
+# BLOQUEAR ACESSO DE IPS ESPECÍFICOS (opcional)
+# ==============================================================================
+
+# Descomente e adicione IPs maliciosos conforme necessário
+# <Limit GET POST>
+#     Order Allow,Deny
+#     Allow from all
+#     Deny from 123.456.789.0
+#     Deny from 987.654.321.0
+# </Limit>
+
+# ==============================================================================
+# PROTEÇÃO WP-ADMIN (adicionar autenticação extra - opcional)
+# ==============================================================================
+
+# Para adicionar proteção com senha ao wp-admin, descomente:
+# <Files wp-login.php>
+#     AuthType Basic
+#     AuthName "Área Restrita - CCHLA"
+#     AuthUserFile /home/cchla/.htpasswd
+#     Require valid-user
+# </Files>
+
+# ==============================================================================
+# FIM DO ARQUIVO
+# ==============================================================================

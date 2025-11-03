@@ -36,14 +36,20 @@ if (is_singular() && has_post_thumbnail()) {
 <html <?php language_attributes(); ?>>
 
 <head>
-    <meta charset="<?php bloginfo('charset'); ?>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <?php
+    // Meta tags básicas
+    $descricao = get_theme_mod('cchla_descricao_curta', 'Ensino, pesquisa, cultura e extensão');
+    ?>
 
     <!-- Primary Meta Tags -->
-    <meta name="description" content="<?php echo esc_attr($meta_description); ?>" />
+    <meta name="description" content="<?php echo esc_attr($descricao); ?>">
+    <meta name="author" content="<?php echo esc_attr(get_theme_mod('cchla_nome_completo', 'CCHLA - UFRN')); ?>">
     <meta name="robots" content="index, follow" />
-    <meta name="author" content="CCHLA / UFRN" />
     <link rel="canonical" href="<?php echo esc_url($current_url); ?>" />
+
 
     <!-- Favicons -->
     <link rel="icon" href="<?php echo $site_assets; ?>/assets/icons/favicon.svg" type="image/svg+xml" />
@@ -58,18 +64,34 @@ if (is_singular() && has_post_thumbnail()) {
     <meta name="theme-color" content="#193CB8" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="<?php echo esc_attr($page_title); ?>" />
-    <meta property="og:description" content="<?php echo esc_attr($meta_description); ?>" />
-    <meta property="og:image" content="<?php echo esc_url($og_image); ?>" />
-    <meta property="og:type" content="<?php echo is_singular() ? 'article' : 'website'; ?>" />
-    <meta property="og:url" content="<?php echo esc_url($current_url); ?>" />
-    <meta property="og:site_name" content="<?php echo esc_attr($site_name); ?>" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo esc_url(home_url('/')); ?>">
+    <meta property="og:title" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
+    <meta property="og:description" content="<?php echo esc_attr($descricao); ?>">
+    <?php
+    $share_image_id = get_theme_mod('cchla_default_share_image', '');
+    if ($share_image_id) {
+        $share_image = wp_get_attachment_image_url($share_image_id, 'full');
+        if ($share_image) {
+            echo '<meta property="og:image" content="' . esc_url($share_image) . '">';
+        }
+    }
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="<?php echo esc_attr($page_title); ?>" />
-    <meta name="twitter:description" content="<?php echo esc_attr($meta_description); ?>" />
-    <meta name="twitter:image" content="<?php echo esc_url($og_image); ?>" />
+    $fb_app_id = get_theme_mod('cchla_facebook_app_id', '');
+    if ($fb_app_id) {
+        echo '<meta property="fb:app_id" content="' . esc_attr($fb_app_id) . '">';
+    }
+    ?>
+
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<?php echo esc_url(home_url('/')); ?>">
+    <meta property="twitter:title" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
+    <meta property="twitter:description" content="<?php echo esc_attr($descricao); ?>">
+    <?php if ($share_image_id && $share_image) : ?>
+        <meta property="twitter:image" content="<?php echo esc_url($share_image); ?>">
+    <?php endif; ?>
 
     <!-- Preconnect para otimização -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>

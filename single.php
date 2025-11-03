@@ -19,6 +19,7 @@ $categories = get_the_category();
 $category_name = !empty($categories) ? $categories[0]->name : '';
 $published_date = get_the_date('c');
 $modified_date = get_the_modified_date('c');
+$site_assets = get_template_directory_uri();
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -86,16 +87,16 @@ $modified_date = get_the_modified_date('c');
     </script>
 
     <!-- Favicon -->
-    <link rel="icon" href="<?php echo get_template_directory_uri(); ?>/assets/icons/favicon.svg" type="image/svg+xml">
-    <link rel="alternate icon" href="<?php echo get_template_directory_uri(); ?>/assets/icons/favicon.ico" sizes="any">
+    <link rel="icon" href="<?php echo $site_assets; ?>/assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="<?php echo $site_assets; ?>/assets/icons/favicon.ico" sizes="any">
 
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" sizes="120x120" href="<?php echo get_template_directory_uri(); ?>/assets/icons/apple-touch-icon-120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<?php echo get_template_directory_uri(); ?>/assets/icons/apple-touch-icon-152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo get_template_directory_uri(); ?>/assets/icons/apple-touch-icon-180.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<?php echo $site_assets; ?>/assets/icons/apple-touch-icon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<?php echo $site_assets; ?>/assets/icons/apple-touch-icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $site_assets; ?>/assets/icons/apple-touch-icon-180.png">
 
     <!-- Manifest -->
-    <link rel="manifest" href="<?php echo get_template_directory_uri(); ?>/assets/icons/site.webmanifest">
+    <link rel="manifest" href="<?php echo $site_assets; ?>/assets/icons/site.webmanifest">
     <meta name="theme-color" content="#193CB8">
 
     <!-- Tailwind CSS -->
@@ -108,7 +109,7 @@ $modified_date = get_the_modified_date('c');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/noticias.css">
+    <link rel="stylesheet" href="<?php echo $site_assets; ?>/assets/css/noticias.css">
 
     <?php wp_head(); ?>
 </head>
@@ -116,38 +117,7 @@ $modified_date = get_the_modified_date('c');
 <body <?php body_class('bg-white page-noticia'); ?>>
     <?php wp_body_open(); ?>
 
-    <?php get_header(); ?>
-
-    <!-- Breadcrumb -->
-    <nav class="bg-[#F5F5F5] border-b border-gray-200" aria-label="Breadcrumb">
-        <div class="max-w-screen-xl mx-auto px-4 lg:px-6 py-3">
-            <ol class="flex items-center gap-2 text-xs text-gray-600">
-                <li>
-                    <a href="<?php echo esc_url(home_url('/')); ?>"
-                        class="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 text-[14px]">
-                        Home
-                    </a>
-                </li>
-                <li aria-hidden="true">
-                    <i class="fa-solid fa-chevron-right text-[14px]"></i>
-                </li>
-                <?php if ($category_name) : ?>
-                    <li>
-                        <a href="<?php echo esc_url(get_category_link($categories[0]->term_id)); ?>"
-                            class="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 text-[14px]">
-                            <?php echo esc_html($category_name); ?>
-                        </a>
-                    </li>
-                    <li aria-hidden="true">
-                        <i class="fa-solid fa-chevron-right text-[14px]"></i>
-                    </li>
-                <?php endif; ?>
-                <li>
-                    <span class="text-gray-900 font-medium text-[14px]"><?php echo esc_html(wp_trim_words($post_title, 15, '...')); ?></span>
-                </li>
-            </ol>
-        </div>
-    </nav>
+    <?php get_template_part('parts/extra/template-parts/breadcrumb'); ?>
 
     <!-- Main Content -->
     <main class="py-10 lg:py-12">
@@ -169,17 +139,13 @@ $modified_date = get_the_modified_date('c');
                     <?php endif; ?>
 
                     <!-- Metadados: Autoria e Data -->
-                    <div class="text-sm text-gray-500 leading-relaxed">
+                    <div class="text-sm text-gray-500 leading-relaxed pt-5">
                         <div class="mb-1">
                             <span class="text-gray-700 font-semibold"><?php esc_html_e('Por', 'cchla-ufrn'); ?> </span>
                             <a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))); ?>"
                                 class="text-[#1B4D9E] hover:underline font-semibold">
                                 <?php the_author(); ?>
                             </a>
-                            <?php if ($category_name) : ?>
-                                <span>, </span>
-                                <span><?php echo esc_html($category_name); ?></span>
-                            <?php endif; ?>
                             <span class="mx-2">·</span>
                             <time datetime="<?php echo esc_attr(get_the_date('c')); ?>">
                                 <?php echo esc_html(get_the_date('d/m/Y H\hi')); ?>

@@ -1648,7 +1648,7 @@ function cchla_publicacao_meta_box_callback($post)
             color: #646970;
         }
     </style>
-<?php
+    <?php
 }
 
 /**
@@ -1754,3 +1754,3115 @@ function cchla_add_publicacao_image_sizes()
     add_image_size('publicacao-thumb', 96, 144, true); // Miniatura
 }
 add_action('after_setup_theme', 'cchla_add_publicacao_image_sizes');
+
+/**
+ * Função auxiliar para exibir publicações
+ */
+function cchla_get_publicacoes($args = array())
+{
+    $defaults = array(
+        'limite' => 6,
+        'tipo' => '',
+        'ano' => '',
+        'mostrar_capa' => true,
+    );
+
+    $args = wp_parse_args($args, $defaults);
+
+    $query_args = array(
+        'post_type' => 'publicacoes',
+        'posts_per_page' => $args['limite'],
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'post_status' => 'publish',
+    );
+
+    if (!empty($args['tipo'])) {
+        $query_args['tax_query'] = array(
+            array(
+                'taxonomy' => 'tipo_publicacao',
+                'field' => 'slug',
+                'terms' => $args['tipo'],
+            ),
+        );
+    }
+
+    if (!empty($args['ano'])) {
+        $query_args['meta_query'] = array(
+            array(
+                'key' => '_publicacao_ano',
+                'value' => $args['ano'],
+                'compare' => '=',
+            ),
+        );
+    }
+
+    return new WP_Query($query_args);
+}
+
+/**
+ * Shortcode para Publicações
+ * Uso: [publicacoes limite="6" tipo="livro" ano="2024"]
+ */
+function cchla_publicacoes_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'limite' => 6,
+        'tipo' => '',
+        'ano' => '',
+        'colunas' => '3',
+    ), $atts, 'publicacoes');
+
+    $query = cchla_get_publicacoes(array(
+        'limite' => intval($atts['limite']),
+        'tipo' => sanitize_text_field($atts['tipo']),
+        'ano' => sanitize_text_field($atts['ano']),
+    ));
+
+    if (!$query->have_posts()) {
+        return '<p class="text-center text-gray-500">' . esc_html__('Nenhuma publicação encontrada.', 'cchla-ufrn') . '</p>';
+    }
+
+    ob_start();
+
+    $colunas_class = 'grid-cols-' . esc_attr($atts['colunas']);
+
+    echo '<div class="grid ' . $colunas_class . ' gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">';
+
+    while ($query->have_posts()) {
+        $query->the_post();
+
+        $autores = get_post_meta(get_the_ID(), '_publicacao_autores', true);
+        $isbn = get_post_meta(get_the_ID(), '_publicacao_isbn', true);
+        $link_externo = get_post_meta(get_the_ID(), '_publicacao_link_externo', true);
+        $tipos = get_the_terms(get_the_ID(), 'tipo_publicacao');
+        $tipo_nome = ($tipos && !is_wp_error($tipos)) ? $tipos[0]->name : 'Livro';
+
+        $link_url = $link_externo ? $link_externo : get_permalink();
+        $link_target = $link_externo ? '_blank' : '_self';
+        $link_rel = $link_externo ? 'noopener noreferrer' : '';
+    ?>
+
+        <a href="<?php echo esc_url($link_url); ?>"
+            target="<?php echo esc_attr($link_target); ?>"
+            <?php if ($link_rel) echo 'rel="' . esc_attr($link_rel) . '"'; ?>
+            class="group flex flex-col justify-between bg-white rounded-md p-6 border border-gray-200 hover:shadow-lg transition-all duration-300">
+
+            <div class="space-y-2">
+                <p class="text-xs uppercase text-gray-600 font-medium tracking-wide">
+                    <?php echo esc_html($tipo_nome); ?>
+                </p>
+
+                <h3 class="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                    <?php the_title(); ?>
+                </h3>
+
+                <?php if ($autores) : ?>
+                    <p class="text-sm text-gray-600">
+                        <?php echo esc_html($autores); ?>
+                    </p>
+                <?php endif; ?>
+
+                <?php if ($isbn) : ?>
+                    <p class="text-sm text-gray-500">
+                        <?php echo esc_html($isbn); ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+
+            <div class="flex justify-between items-end mt-4">
+                <?php if (has_post_thumbnail()) : ?>
+                    <figure class="max-md:hidden">
+                        <?php the_post_thumbnail('publicacao-thumb', array(
+                            'class' => 'w-24 h-32 object-cover rounded-md shadow-sm group-hover:scale-105 transition-transform duration-300'
+                        )); ?>
+                    </figure>
+                <?php endif; ?>
+
+                <span class="flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:underline">
+                    <?php esc_html_e('Leia mais', 'cchla-ufrn'); ?>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </span>
+            </div>
+        </a>
+
+        <?php
+    }
+
+    echo '</div>';
+
+    wp_reset_postdata();
+
+    return ob_get_clean();
+}
+add_shortcode('publicacoes', 'cchla_publicacoes_shortcode');
+
+/**
+ * Widget de Publicações
+ */
+class CCHLA_Publicacoes_Widget extends WP_Widget
+{
+
+    public function __construct()
+    {
+        parent::__construct(
+            'cchla_publicacoes_widget',
+            __('CCHLA - Publicações Recentes', 'cchla-ufrn'),
+            array('description' => __('Exibe publicações recentes do CCHLA', 'cchla-ufrn'))
+        );
+    }
+
+    public function widget($args, $instance)
+    {
+        echo $args['before_widget'];
+
+        if (!empty($instance['title'])) {
+            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
+        }
+
+        $limite = !empty($instance['limite']) ? $instance['limite'] : 5;
+        $tipo = !empty($instance['tipo']) ? $instance['tipo'] : '';
+
+        $query = cchla_get_publicacoes(array(
+            'limite' => $limite,
+            'tipo' => $tipo,
+        ));
+
+        if ($query->have_posts()) {
+            echo '<ul class="space-y-4">';
+
+            while ($query->have_posts()) {
+                $query->the_post();
+
+                $link_externo = get_post_meta(get_the_ID(), '_publicacao_link_externo', true);
+                $link_url = $link_externo ? $link_externo : get_permalink();
+        ?>
+
+                <li class="border-b border-gray-200 pb-3 last:border-0">
+                    <a href="<?php echo esc_url($link_url); ?>" class="block group">
+                        <h4 class="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors mb-1">
+                            <?php the_title(); ?>
+                        </h4>
+                        <?php
+                        $autores = get_post_meta(get_the_ID(), '_publicacao_autores', true);
+                        if ($autores) :
+                        ?>
+                            <p class="text-xs text-gray-600">
+                                <?php echo esc_html(wp_trim_words($autores, 5)); ?>
+                            </p>
+                        <?php endif; ?>
+                    </a>
+                </li>
+
+        <?php
+            }
+
+            echo '</ul>';
+
+            echo '<div class="mt-4 pt-4 border-t border-gray-200">';
+            echo '<a href="' . esc_url(get_post_type_archive_link('publicacoes')) . '" class="text-sm text-blue-600 hover:underline">';
+            esc_html_e('Ver todas as publicações →', 'cchla-ufrn');
+            echo '</a>';
+            echo '</div>';
+
+            wp_reset_postdata();
+        }
+
+        echo $args['after_widget'];
+    }
+
+    public function form($instance)
+    {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Publicações Recentes', 'cchla-ufrn');
+        $limite = !empty($instance['limite']) ? $instance['limite'] : 5;
+        $tipo = !empty($instance['tipo']) ? $instance['tipo'] : '';
+
+        $tipos = get_terms(array(
+            'taxonomy' => 'tipo_publicacao',
+            'hide_empty' => false,
+        ));
+        ?>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">
+                <?php esc_html_e('Título:', 'cchla-ufrn'); ?>
+            </label>
+            <input class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('title')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                type="text"
+                value="<?php echo esc_attr($title); ?>">
+        </p>
+
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('limite')); ?>">
+                <?php esc_html_e('Quantidade:', 'cchla-ufrn'); ?>
+            </label>
+            <input class="tiny-text"
+                id="<?php echo esc_attr($this->get_field_id('limite')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('limite')); ?>"
+                type="number"
+                min="1"
+                max="20"
+                value="<?php echo esc_attr($limite); ?>">
+        </p>
+
+        <?php if ($tipos && !is_wp_error($tipos)) : ?>
+            <p>
+                <label for="<?php echo esc_attr($this->get_field_id('tipo')); ?>">
+                    <?php esc_html_e('Tipo:', 'cchla-ufrn'); ?>
+                </label>
+                <select class="widefat"
+                    id="<?php echo esc_attr($this->get_field_id('tipo')); ?>"
+                    name="<?php echo esc_attr($this->get_field_name('tipo')); ?>">
+                    <option value=""><?php esc_html_e('Todos', 'cchla-ufrn'); ?></option>
+                    <?php foreach ($tipos as $term) : ?>
+                        <option value="<?php echo esc_attr($term->slug); ?>" <?php selected($tipo, $term->slug); ?>>
+                            <?php echo esc_html($term->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </p>
+        <?php endif; ?>
+    <?php
+    }
+
+    public function update($new_instance, $old_instance)
+    {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        $instance['limite'] = (!empty($new_instance['limite'])) ? absint($new_instance['limite']) : 5;
+        $instance['tipo'] = (!empty($new_instance['tipo'])) ? sanitize_text_field($new_instance['tipo']) : '';
+        return $instance;
+    }
+}
+
+function cchla_register_publicacoes_widget()
+{
+    register_widget('CCHLA_Publicacoes_Widget');
+}
+add_action('widgets_init', 'cchla_register_publicacoes_widget');
+
+/**
+ * Adiciona ordenação personalizada no query do arquivo
+ */
+function cchla_publicacoes_archive_query($query)
+{
+    if (!is_admin() && $query->is_main_query() && is_post_type_archive('publicacoes')) {
+
+        // Busca
+        if (isset($_GET['s']) && !empty($_GET['s'])) {
+            $query->set('s', sanitize_text_field($_GET['s']));
+        }
+
+        // Ordenação
+        if (isset($_GET['orderby']) && isset($_GET['order'])) {
+            $orderby = sanitize_text_field($_GET['orderby']);
+            $order = sanitize_text_field($_GET['order']);
+
+            if ($orderby === 'title') {
+                $query->set('orderby', 'title');
+                $query->set('order', strtoupper($order));
+            } elseif ($orderby === 'date') {
+                $query->set('orderby', 'date');
+                $query->set('order', strtoupper($order));
+            }
+        }
+    }
+}
+add_action('pre_get_posts', 'cchla_publicacoes_archive_query');
+
+/**
+ * Adiciona informações de publicação ao RSS Feed
+ */
+function cchla_publicacoes_rss_item()
+{
+    if (get_post_type() === 'publicacoes') {
+        $autores = get_post_meta(get_the_ID(), '_publicacao_autores', true);
+        $isbn = get_post_meta(get_the_ID(), '_publicacao_isbn', true);
+
+        if ($autores) {
+            echo '<dc:creator>' . esc_html($autores) . '</dc:creator>';
+        }
+
+        if ($isbn) {
+            echo '<prism:isbn>' . esc_html($isbn) . '</prism:isbn>';
+        }
+    }
+}
+add_action('rss2_item', 'cchla_publicacoes_rss_item');
+
+/**
+ * Conta total de publicações por tipo
+ */
+function cchla_count_publicacoes_by_tipo($slug = '')
+{
+    $args = array(
+        'post_type' => 'publicacoes',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+    );
+
+    if (!empty($slug)) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'tipo_publicacao',
+                'field' => 'slug',
+                'terms' => $slug,
+            ),
+        );
+    }
+
+    $query = new WP_Query($args);
+    return $query->found_posts;
+}
+
+/**
+ * Retorna estatísticas de publicações
+ */
+function cchla_get_publicacoes_stats()
+{
+    $stats = array();
+
+    // Total de publicações
+    $stats['total'] = wp_count_posts('publicacoes')->publish;
+
+    // Por tipo
+    $terms = get_terms(array(
+        'taxonomy' => 'tipo_publicacao',
+        'hide_empty' => true,
+    ));
+
+    if ($terms && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            $stats['por_tipo'][$term->slug] = array(
+                'nome' => $term->name,
+                'total' => $term->count,
+            );
+        }
+    }
+
+    // Por ano
+    global $wpdb;
+    $anos = $wpdb->get_results("
+        SELECT DISTINCT meta_value as ano, COUNT(*) as total
+        FROM {$wpdb->postmeta} pm
+        INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+        WHERE pm.meta_key = '_publicacao_ano'
+        AND p.post_type = 'publicacoes'
+        AND p.post_status = 'publish'
+        GROUP BY meta_value
+        ORDER BY meta_value DESC
+    ");
+
+    if ($anos) {
+        foreach ($anos as $ano) {
+            $stats['por_ano'][$ano->ano] = $ano->total;
+        }
+    }
+
+    return $stats;
+}
+
+/**
+ * Shortcode para estatísticas de publicações
+ * Uso: [estatisticas_publicacoes]
+ */
+function cchla_estatisticas_publicacoes_shortcode()
+{
+    $stats = cchla_get_publicacoes_stats();
+
+    ob_start();
+    ?>
+    <div class="publicacoes-stats bg-gray-50 rounded-lg p-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">
+            <?php esc_html_e('Estatísticas de Publicações', 'cchla-ufrn'); ?>
+        </h3>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-lg p-4 text-center border border-blue-200">
+                <div class="text-3xl font-bold text-blue-600 mb-1">
+                    <?php echo esc_html($stats['total']); ?>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <?php esc_html_e('Total', 'cchla-ufrn'); ?>
+                </div>
+            </div>
+
+            <?php if (isset($stats['por_tipo'])) : ?>
+                <?php $count = 0; ?>
+                <?php foreach ($stats['por_tipo'] as $tipo) : ?>
+                    <?php if ($count++ >= 3) break; ?>
+                    <div class="bg-white rounded-lg p-4 text-center border border-gray-200">
+                        <div class="text-3xl font-bold text-gray-700 mb-1">
+                            <?php echo esc_html($tipo['total']); ?>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <?php echo esc_html($tipo['nome']); ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
+        <?php if (isset($stats['por_ano']) && count($stats['por_ano']) > 0) : ?>
+            <div class="border-t border-gray-200 pt-4">
+                <h4 class="text-sm font-semibold text-gray-700 mb-3">
+                    <?php esc_html_e('Publicações por Ano', 'cchla-ufrn'); ?>
+                </h4>
+                <div class="grid grid-cols-5 gap-2">
+                    <?php foreach (array_slice($stats['por_ano'], 0, 10) as $ano => $total) : ?>
+                        <div class="text-center">
+                            <div class="text-lg font-bold text-gray-900"><?php echo esc_html($ano); ?></div>
+                            <div class="text-xs text-gray-600"><?php echo esc_html($total); ?> pub.</div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('estatisticas_publicacoes', 'cchla_estatisticas_publicacoes_shortcode');
+
+
+/**
+ * ============================================
+ * FUNÇÕES AUXILIARES PARA FILTROS DE ARQUIVO
+ * ============================================
+ */
+
+/**
+ * Verifica se há filtros ativos
+ */
+function is_filtered()
+{
+    return (
+        is_category() ||
+        is_tag() ||
+        is_tax() ||
+        is_author() ||
+        is_date() ||
+        get_search_query() ||
+        get_query_var('year') ||
+        get_query_var('orderby')
+    );
+}
+
+/**
+ * Modifica query principal para incluir filtros customizados
+ */
+function cchla_archive_query_modifications($query)
+{
+    if (!is_admin() && $query->is_main_query()) {
+
+        // Filtro de taxonomia customizada via URL
+        if (isset($_GET['tax']) && isset($_GET['term'])) {
+            $tax = sanitize_text_field($_GET['tax']);
+            $term = sanitize_text_field($_GET['term']);
+
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => $tax,
+                    'field' => 'slug',
+                    'terms' => $term,
+                ),
+            ));
+        }
+
+        // Filtro de ano
+        if (isset($_GET['year']) && !empty($_GET['year'])) {
+            $year = absint($_GET['year']);
+            $query->set('year', $year);
+        }
+
+        // Ordenação personalizada
+        if (isset($_GET['orderby']) && isset($_GET['order'])) {
+            $orderby = sanitize_text_field($_GET['orderby']);
+            $order = sanitize_text_field($_GET['order']);
+
+            switch ($orderby) {
+                case 'title':
+                    $query->set('orderby', 'title');
+                    $query->set('order', strtoupper($order));
+                    break;
+
+                case 'date':
+                    $query->set('orderby', 'date');
+                    $query->set('order', strtoupper($order));
+                    break;
+
+                case 'comment_count':
+                    $query->set('orderby', 'comment_count');
+                    $query->set('order', strtoupper($order));
+                    break;
+
+                case 'modified':
+                    $query->set('orderby', 'modified');
+                    $query->set('order', strtoupper($order));
+                    break;
+            }
+        }
+
+        // Ajusta posts_per_page baseado no post type
+        if (is_post_type_archive('publicacoes') || is_tax('tipo_publicacao')) {
+            $query->set('posts_per_page', 12);
+        } elseif (is_post_type_archive('acesso_rapido') || is_tax('categoria_acesso')) {
+            $query->set('posts_per_page', 15);
+        }
+    }
+}
+add_action('pre_get_posts', 'cchla_archive_query_modifications');
+
+/**
+ * Adiciona body class para identificar tipo de arquivo
+ */
+function cchla_archive_body_class($classes)
+{
+    if (is_post_type_archive()) {
+        $post_type = get_query_var('post_type');
+        $classes[] = 'archive-' . $post_type;
+    }
+
+    if (is_tax()) {
+        $term = get_queried_object();
+        $classes[] = 'taxonomy-' . $term->taxonomy;
+        $classes[] = 'term-' . $term->slug;
+    }
+
+    if (is_filtered()) {
+        $classes[] = 'has-filters';
+    }
+
+    return $classes;
+}
+add_filter('body_class', 'cchla_archive_body_class');
+
+/**
+ * Breadcrumb para Custom Post Types
+ */
+function cchla_get_cpt_breadcrumb()
+{
+    $breadcrumb = array();
+
+    if (is_post_type_archive()) {
+        $post_type_obj = get_post_type_object(get_query_var('post_type'));
+
+        $breadcrumb[] = array(
+            'title' => $post_type_obj->labels->name,
+            'url' => get_post_type_archive_link(get_query_var('post_type')),
+        );
+    } elseif (is_tax()) {
+        $term = get_queried_object();
+        $tax_obj = get_taxonomy($term->taxonomy);
+        $post_type = $tax_obj->object_type[0];
+
+        // Adiciona link para o arquivo do post type
+        if ($post_type !== 'post') {
+            $post_type_obj = get_post_type_object($post_type);
+            $breadcrumb[] = array(
+                'title' => $post_type_obj->labels->name,
+                'url' => get_post_type_archive_link($post_type),
+            );
+        }
+
+        // Adiciona a taxonomia atual
+        $breadcrumb[] = array(
+            'title' => $term->name,
+            'url' => get_term_link($term),
+            'current' => true,
+        );
+    }
+
+    return $breadcrumb;
+}
+
+/**
+ * Retorna estatísticas do arquivo atual
+ */
+function cchla_get_archive_stats()
+{
+    global $wp_query;
+
+    $stats = array(
+        'total' => $wp_query->found_posts,
+        'current_page' => max(1, get_query_var('paged')),
+        'per_page' => $wp_query->query_vars['posts_per_page'],
+        'total_pages' => $wp_query->max_num_pages,
+        'showing_start' => (max(1, get_query_var('paged')) - 1) * $wp_query->query_vars['posts_per_page'] + 1,
+        'showing_end' => min($wp_query->found_posts, max(1, get_query_var('paged')) * $wp_query->query_vars['posts_per_page']),
+    );
+
+    return $stats;
+}
+
+/**
+ * Exibe informações de paginação
+ */
+function cchla_archive_pagination_info()
+{
+    $stats = cchla_get_archive_stats();
+
+    if ($stats['total'] > 0) {
+        printf(
+            esc_html__('Mostrando %1$s - %2$s de %3$s resultados', 'cchla-ufrn'),
+            '<strong>' . number_format_i18n($stats['showing_start']) . '</strong>',
+            '<strong>' . number_format_i18n($stats['showing_end']) . '</strong>',
+            '<strong>' . number_format_i18n($stats['total']) . '</strong>'
+        );
+    }
+}
+
+/**
+ * Widget - Filtros de Arquivo
+ */
+class CCHLA_Archive_Filters_Widget extends WP_Widget
+{
+
+    public function __construct()
+    {
+        parent::__construct(
+            'cchla_archive_filters_widget',
+            __('CCHLA - Filtros de Arquivo', 'cchla-ufrn'),
+            array('description' => __('Exibe filtros para páginas de arquivo', 'cchla-ufrn'))
+        );
+    }
+
+    public function widget($args, $instance)
+    {
+        if (!is_archive() && !is_search()) {
+            return;
+        }
+
+        echo $args['before_widget'];
+
+        if (!empty($instance['title'])) {
+            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
+        }
+
+    ?>
+        <div class="archive-filters-widget">
+
+            <!-- Busca -->
+            <form method="get" action="<?php echo esc_url(home_url('/')); ?>" class="mb-6">
+                <div class="relative">
+                    <input
+                        type="text"
+                        name="s"
+                        value="<?php echo get_search_query(); ?>"
+                        placeholder="<?php esc_attr_e('Buscar...', 'cchla-ufrn'); ?>"
+                        class="w-full px-4 py-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Categorias -->
+            <?php
+            $categories = get_categories(array('hide_empty' => true));
+            if ($categories && (get_post_type() === 'post' || !is_post_type_archive())) :
+            ?>
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-900 mb-3">
+                        <?php esc_html_e('Categorias', 'cchla-ufrn'); ?>
+                    </h4>
+                    <ul class="space-y-2">
+                        <?php foreach ($categories as $category) : ?>
+                            <li>
+                                <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>"
+                                    class="flex items-center justify-between text-sm text-gray-600 hover:text-blue-600 transition-colors <?php echo is_category($category->term_id) ? 'font-semibold text-blue-600' : ''; ?>">
+                                    <span><?php echo esc_html($category->name); ?></span>
+                                    <span class="text-xs text-gray-400">(<?php echo $category->count; ?>)</span>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <!-- Anos -->
+            <?php
+            global $wpdb;
+            $years = $wpdb->get_col("
+                SELECT DISTINCT YEAR(post_date) 
+                FROM $wpdb->posts 
+                WHERE post_status = 'publish' 
+                AND post_type = '" . esc_sql(get_post_type()) . "'
+                ORDER BY post_date DESC
+            ");
+
+            if ($years) :
+            ?>
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-900 mb-3">
+                        <?php esc_html_e('Arquivo por Ano', 'cchla-ufrn'); ?>
+                    </h4>
+                    <ul class="space-y-2">
+                        <?php foreach ($years as $year) : ?>
+                            <li>
+                                <a href="<?php echo esc_url(get_year_link($year)); ?>"
+                                    class="flex items-center justify-between text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                    <span><?php echo esc_html($year); ?></span>
+                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+        </div>
+    <?php
+
+        echo $args['after_widget'];
+    }
+
+    public function form($instance)
+    {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Filtros', 'cchla-ufrn');
+    ?>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">
+                <?php esc_html_e('Título:', 'cchla-ufrn'); ?>
+            </label>
+            <input class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('title')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                type="text"
+                value="<?php echo esc_attr($title); ?>">
+        </p>
+    <?php
+    }
+
+    public function update($new_instance, $old_instance)
+    {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        return $instance;
+    }
+}
+
+function cchla_register_archive_filters_widget()
+{
+    register_widget('CCHLA_Archive_Filters_Widget');
+}
+add_action('widgets_init', 'cchla_register_archive_filters_widget');
+
+/**
+ * Adiciona suporte a filtros na busca
+ */
+function cchla_search_filter($query)
+{
+    if (!is_admin() && $query->is_search() && $query->is_main_query()) {
+
+        // Filtrar por post type específico se fornecido
+        if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
+            $post_type = sanitize_text_field($_GET['post_type']);
+            $query->set('post_type', $post_type);
+        }
+
+        // Filtrar por categoria
+        if (isset($_GET['cat']) && !empty($_GET['cat'])) {
+            $query->set('cat', absint($_GET['cat']));
+        }
+
+        // Filtrar por tag
+        if (isset($_GET['tag']) && !empty($_GET['tag'])) {
+            $query->set('tag', sanitize_text_field($_GET['tag']));
+        }
+    }
+}
+add_action('pre_get_posts', 'cchla_search_filter');
+
+/**
+ * Shortcode para exibir filtros
+ * Uso: [filtros_arquivo]
+ */
+function cchla_filtros_arquivo_shortcode()
+{
+    if (!is_archive() && !is_search()) {
+        return '';
+    }
+
+    ob_start();
+
+    the_widget('CCHLA_Archive_Filters_Widget', array(
+        'title' => __('Refinar Busca', 'cchla-ufrn')
+    ));
+
+    return ob_get_clean();
+}
+add_shortcode('filtros_arquivo', 'cchla_filtros_arquivo_shortcode');
+
+/**
+ * Adiciona informações de debug no admin bar (apenas para admins)
+ */
+function cchla_admin_bar_archive_info($wp_admin_bar)
+{
+    if (!current_user_can('manage_options') || !is_archive()) {
+        return;
+    }
+
+    $stats = cchla_get_archive_stats();
+
+    $wp_admin_bar->add_node(array(
+        'id' => 'cchla-archive-stats',
+        'title' => sprintf(
+            '<span class="ab-icon dashicons dashicons-chart-bar"></span> %s resultados',
+            $stats['total']
+        ),
+        'href' => '#',
+    ));
+
+    $wp_admin_bar->add_node(array(
+        'id' => 'cchla-archive-type',
+        'parent' => 'cchla-archive-stats',
+        'title' => 'Tipo: ' . get_post_type(),
+    ));
+
+    if (is_filtered()) {
+        $wp_admin_bar->add_node(array(
+            'id' => 'cchla-archive-filtered',
+            'parent' => 'cchla-archive-stats',
+            'title' => '✓ Filtros ativos',
+        ));
+    }
+}
+add_action('admin_bar_menu', 'cchla_admin_bar_archive_info', 100);
+
+/**
+ * ============================================
+ * CUSTOM POST TYPE - SERVIÇOS DE EXTENSÃO
+ * ============================================
+ */
+
+/**
+ * Registra o Custom Post Type "Serviços"
+ */
+function cchla_register_servicos_cpt()
+{
+    $labels = array(
+        'name'                  => _x('Serviços', 'Post Type General Name', 'cchla-ufrn'),
+        'singular_name'         => _x('Serviço', 'Post Type Singular Name', 'cchla-ufrn'),
+        'menu_name'             => __('Serviços', 'cchla-ufrn'),
+        'name_admin_bar'        => __('Serviço', 'cchla-ufrn'),
+        'archives'              => __('Arquivo de Serviços', 'cchla-ufrn'),
+        'attributes'            => __('Atributos', 'cchla-ufrn'),
+        'parent_item_colon'     => __('Serviço Pai:', 'cchla-ufrn'),
+        'all_items'             => __('Todos os Serviços', 'cchla-ufrn'),
+        'add_new_item'          => __('Adicionar Novo Serviço', 'cchla-ufrn'),
+        'add_new'               => __('Adicionar Novo', 'cchla-ufrn'),
+        'new_item'              => __('Novo Serviço', 'cchla-ufrn'),
+        'edit_item'             => __('Editar Serviço', 'cchla-ufrn'),
+        'update_item'           => __('Atualizar Serviço', 'cchla-ufrn'),
+        'view_item'             => __('Ver Serviço', 'cchla-ufrn'),
+        'view_items'            => __('Ver Serviços', 'cchla-ufrn'),
+        'search_items'          => __('Buscar Serviço', 'cchla-ufrn'),
+        'not_found'             => __('Nenhum serviço encontrado', 'cchla-ufrn'),
+        'not_found_in_trash'    => __('Nenhum serviço na lixeira', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'label'                 => __('Serviço', 'cchla-ufrn'),
+        'description'           => __('Serviços de extensão oferecidos pelo CCHLA', 'cchla-ufrn'),
+        'labels'                => $labels,
+        'supports'              => array('title', 'editor', 'excerpt', 'thumbnail'),
+        'taxonomies'            => array('categoria_servico'),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 27,
+        'menu_icon'             => 'dashicons-heart',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => 'servicos',
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+        'show_in_rest'          => true,
+        'rewrite'               => array('slug' => 'servico', 'with_front' => false),
+    );
+
+    register_post_type('servicos', $args);
+}
+add_action('init', 'cchla_register_servicos_cpt', 0);
+
+/**
+ * Registra a Taxonomia "Categoria de Serviço"
+ */
+function cchla_register_categoria_servico_taxonomy()
+{
+    $labels = array(
+        'name'                       => _x('Categorias de Serviços', 'Taxonomy General Name', 'cchla-ufrn'),
+        'singular_name'              => _x('Categoria de Serviço', 'Taxonomy Singular Name', 'cchla-ufrn'),
+        'menu_name'                  => __('Categorias', 'cchla-ufrn'),
+        'all_items'                  => __('Todas as Categorias', 'cchla-ufrn'),
+        'parent_item'                => __('Categoria Pai', 'cchla-ufrn'),
+        'parent_item_colon'          => __('Categoria Pai:', 'cchla-ufrn'),
+        'new_item_name'              => __('Nova Categoria', 'cchla-ufrn'),
+        'add_new_item'               => __('Adicionar Nova Categoria', 'cchla-ufrn'),
+        'edit_item'                  => __('Editar Categoria', 'cchla-ufrn'),
+        'update_item'                => __('Atualizar Categoria', 'cchla-ufrn'),
+        'view_item'                  => __('Ver Categoria', 'cchla-ufrn'),
+        'separate_items_with_commas' => __('Separe categorias com vírgulas', 'cchla-ufrn'),
+        'add_or_remove_items'        => __('Adicionar ou remover categorias', 'cchla-ufrn'),
+        'choose_from_most_used'      => __('Escolher das mais usadas', 'cchla-ufrn'),
+        'popular_items'              => __('Categorias Populares', 'cchla-ufrn'),
+        'search_items'               => __('Buscar Categorias', 'cchla-ufrn'),
+        'not_found'                  => __('Nenhuma categoria encontrada', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => false,
+        'show_in_rest'               => true,
+    );
+
+    register_taxonomy('categoria_servico', array('servicos'), $args);
+}
+add_action('init', 'cchla_register_categoria_servico_taxonomy', 0);
+
+/**
+ * Cria categorias padrão
+ */
+function cchla_insert_default_categoria_servico_terms()
+{
+    $categorias = array(
+        'Extensão' => 'Programas e projetos de extensão',
+        'Cultura' => 'Atividades culturais e artísticas',
+        'Atendimento' => 'Serviços de atendimento ao público',
+        'Educação' => 'Cursos e capacitações',
+    );
+
+    foreach ($categorias as $nome => $descricao) {
+        if (!term_exists($nome, 'categoria_servico')) {
+            wp_insert_term($nome, 'categoria_servico', array(
+                'slug' => sanitize_title($nome),
+                'description' => $descricao,
+            ));
+        }
+    }
+}
+add_action('init', 'cchla_insert_default_categoria_servico_terms');
+
+/**
+ * Adiciona Meta Boxes para Serviços
+ */
+function cchla_servicos_meta_boxes()
+{
+    add_meta_box(
+        'cchla_servico_details',
+        __('Detalhes do Serviço', 'cchla-ufrn'),
+        'cchla_servico_meta_box_callback',
+        'servicos',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'cchla_servicos_meta_boxes');
+
+/**
+ * Callback do Meta Box
+ */
+function cchla_servico_meta_box_callback($post)
+{
+    wp_nonce_field('cchla_save_servico_meta', 'cchla_servico_nonce');
+
+    $icone_tipo = get_post_meta($post->ID, '_servico_icone_tipo', true);
+    $icone_classe = get_post_meta($post->ID, '_servico_icone_classe', true);
+    $icone_svg = get_post_meta($post->ID, '_servico_icone_svg', true);
+    $link_externo = get_post_meta($post->ID, '_servico_link_externo', true);
+    $link_botao_texto = get_post_meta($post->ID, '_servico_link_botao_texto', true);
+    $responsavel = get_post_meta($post->ID, '_servico_responsavel', true);
+    $contato = get_post_meta($post->ID, '_servico_contato', true);
+    $horario = get_post_meta($post->ID, '_servico_horario', true);
+    $localizacao = get_post_meta($post->ID, '_servico_localizacao', true);
+
+    $icone_tipo = $icone_tipo ? $icone_tipo : 'classe';
+    $link_botao_texto = $link_botao_texto ? $link_botao_texto : 'Leia mais';
+    ?>
+
+    <div class="cchla-servico-meta-box">
+
+        <!-- Tipo de Ícone -->
+        <p class="form-field">
+            <label>
+                <strong><?php esc_html_e('Tipo de Ícone', 'cchla-ufrn'); ?></strong>
+            </label>
+            <label style="margin-right: 20px;">
+                <input type="radio" name="servico_icone_tipo" value="classe" <?php checked($icone_tipo, 'classe'); ?>>
+                <?php esc_html_e('Classe Font Awesome', 'cchla-ufrn'); ?>
+            </label>
+            <label>
+                <input type="radio" name="servico_icone_tipo" value="svg" <?php checked($icone_tipo, 'svg'); ?>>
+                <?php esc_html_e('Código SVG', 'cchla-ufrn'); ?>
+            </label>
+        </p>
+
+        <!-- Classe Font Awesome -->
+        <div class="form-field icone-classe-field" style="<?php echo $icone_tipo === 'svg' ? 'display:none;' : ''; ?>">
+            <label for="servico_icone_classe">
+                <strong><?php esc_html_e('Classe Font Awesome', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="text"
+                id="servico_icone_classe"
+                name="servico_icone_classe"
+                value="<?php echo esc_attr($icone_classe); ?>"
+                class="regular-text"
+                placeholder="fa-solid fa-graduation-cap">
+            <span class="description">
+                <?php esc_html_e('Ex: fa-solid fa-graduation-cap, fa-solid fa-book', 'cchla-ufrn'); ?>
+                <a href="https://fontawesome.com/icons" target="_blank">
+                    <?php esc_html_e('Ver ícones', 'cchla-ufrn'); ?>
+                </a>
+            </span>
+            <div style="margin-top: 10px; font-size: 32px; color: #2563eb;">
+                <i class="<?php echo esc_attr($icone_classe); ?>"></i>
+            </div>
+        </div>
+
+        <!-- Código SVG -->
+        <div class="form-field icone-svg-field" style="<?php echo $icone_tipo === 'classe' ? 'display:none;' : ''; ?>">
+            <label for="servico_icone_svg">
+                <strong><?php esc_html_e('Código SVG', 'cchla-ufrn'); ?></strong>
+            </label>
+            <textarea
+                id="servico_icone_svg"
+                name="servico_icone_svg"
+                rows="5"
+                class="large-text code"
+                placeholder='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">...</svg>'><?php echo esc_textarea($icone_svg); ?></textarea>
+            <span class="description">
+                <?php esc_html_e('Cole o código SVG completo aqui', 'cchla-ufrn'); ?>
+            </span>
+            <?php if ($icone_svg) : ?>
+                <div style="margin-top: 10px; width: 32px; height: 32px; color: #2563eb;">
+                    <?php echo wp_kses_post($icone_svg); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Link Externo -->
+        <p class="form-field">
+            <label for="servico_link_externo">
+                <strong><?php esc_html_e('Link Externo (Opcional)', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="url"
+                id="servico_link_externo"
+                name="servico_link_externo"
+                value="<?php echo esc_url($link_externo); ?>"
+                class="large-text"
+                placeholder="https://servico.cchla.ufrn.br">
+            <span class="description">
+                <?php esc_html_e('Se preenchido, o card direcionará para este link ao invés da página interna', 'cchla-ufrn'); ?>
+            </span>
+        </p>
+
+        <!-- Texto do Botão -->
+        <p class="form-field">
+            <label for="servico_link_botao_texto">
+                <strong><?php esc_html_e('Texto do Botão', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="text"
+                id="servico_link_botao_texto"
+                name="servico_link_botao_texto"
+                value="<?php echo esc_attr($link_botao_texto); ?>"
+                class="regular-text"
+                placeholder="Leia mais">
+        </p>
+
+        <!-- Responsável -->
+        <p class="form-field">
+            <label for="servico_responsavel">
+                <strong><?php esc_html_e('Responsável', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="text"
+                id="servico_responsavel"
+                name="servico_responsavel"
+                value="<?php echo esc_attr($responsavel); ?>"
+                class="large-text"
+                placeholder="Prof. Dr. João Silva">
+        </p>
+
+        <!-- Contato -->
+        <p class="form-field">
+            <label for="servico_contato">
+                <strong><?php esc_html_e('Contato', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="text"
+                id="servico_contato"
+                name="servico_contato"
+                value="<?php echo esc_attr($contato); ?>"
+                class="large-text"
+                placeholder="(84) 3342-2243 | servico@cchla.ufrn.br">
+        </p>
+
+        <!-- Horário de Funcionamento -->
+        <p class="form-field">
+            <label for="servico_horario">
+                <strong><?php esc_html_e('Horário de Funcionamento', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="text"
+                id="servico_horario"
+                name="servico_horario"
+                value="<?php echo esc_attr($horario); ?>"
+                class="large-text"
+                placeholder="Segunda a Sexta, 8h às 17h">
+        </p>
+
+        <!-- Localização -->
+        <p class="form-field">
+            <label for="servico_localizacao">
+                <strong><?php esc_html_e('Localização', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="text"
+                id="servico_localizacao"
+                name="servico_localizacao"
+                value="<?php echo esc_attr($localizacao); ?>"
+                class="large-text"
+                placeholder="Sala 201, Bloco A, CCHLA">
+        </p>
+
+    </div>
+
+    <style>
+        .cchla-servico-meta-box .form-field {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f1;
+        }
+
+        .cchla-servico-meta-box .form-field:last-child {
+            border-bottom: none;
+        }
+
+        .cchla-servico-meta-box label strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .cchla-servico-meta-box .description {
+            display: block;
+            margin-top: 5px;
+            font-style: italic;
+            color: #646970;
+        }
+    </style>
+
+    <script>
+        jQuery(document).ready(function($) {
+            // Toggle entre classe e SVG
+            $('input[name="servico_icone_tipo"]').on('change', function() {
+                if ($(this).val() === 'classe') {
+                    $('.icone-classe-field').show();
+                    $('.icone-svg-field').hide();
+                } else {
+                    $('.icone-classe-field').hide();
+                    $('.icone-svg-field').show();
+                }
+            });
+
+            // Preview da classe Font Awesome
+            $('#servico_icone_classe').on('input', function() {
+                var classes = $(this).val();
+                $(this).parent().find('i').attr('class', classes);
+            });
+        });
+    </script>
+    <?php
+}
+
+/**
+ * Salva os Meta Dados
+ */
+function cchla_save_servico_meta($post_id)
+{
+    if (
+        !isset($_POST['cchla_servico_nonce']) ||
+        !wp_verify_nonce($_POST['cchla_servico_nonce'], 'cchla_save_servico_meta')
+    ) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    $fields = array(
+        'servico_icone_tipo',
+        'servico_icone_classe',
+        'servico_link_externo',
+        'servico_link_botao_texto',
+        'servico_responsavel',
+        'servico_contato',
+        'servico_horario',
+        'servico_localizacao',
+    );
+
+    foreach ($fields as $field) {
+        if (isset($_POST[$field])) {
+            if ($field === 'servico_link_externo') {
+                update_post_meta($post_id, '_' . $field, esc_url_raw($_POST[$field]));
+            } else {
+                update_post_meta($post_id, '_' . $field, sanitize_text_field($_POST[$field]));
+            }
+        }
+    }
+
+    // SVG precisa de sanitização especial
+    if (isset($_POST['servico_icone_svg'])) {
+        $svg = wp_kses($_POST['servico_icone_svg'], array(
+            'svg' => array(
+                'xmlns' => array(),
+                'viewbox' => array(),
+                'width' => array(),
+                'height' => array(),
+                'fill' => array(),
+                'class' => array(),
+            ),
+            'path' => array(
+                'd' => array(),
+                'fill' => array(),
+                'stroke' => array(),
+                'stroke-width' => array(),
+                'stroke-linecap' => array(),
+                'stroke-linejoin' => array(),
+            ),
+            'circle' => array(
+                'cx' => array(),
+                'cy' => array(),
+                'r' => array(),
+                'fill' => array(),
+                'stroke' => array(),
+            ),
+            'rect' => array(
+                'x' => array(),
+                'y' => array(),
+                'width' => array(),
+                'height' => array(),
+                'fill' => array(),
+                'stroke' => array(),
+            ),
+            'g' => array(
+                'fill' => array(),
+                'stroke' => array(),
+            ),
+        ));
+        update_post_meta($post_id, '_servico_icone_svg', $svg);
+    }
+}
+add_action('save_post', 'cchla_save_servico_meta');
+
+/**
+ * Adiciona colunas personalizadas no admin
+ */
+function cchla_servicos_columns($columns)
+{
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['icone'] = __('Ícone', 'cchla-ufrn');
+    $new_columns['title'] = $columns['title'];
+    $new_columns['taxonomy-categoria_servico'] = __('Categoria', 'cchla-ufrn');
+    $new_columns['responsavel'] = __('Responsável', 'cchla-ufrn');
+    $new_columns['date'] = $columns['date'];
+
+    return $new_columns;
+}
+add_filter('manage_servicos_posts_columns', 'cchla_servicos_columns');
+
+function cchla_servicos_column_content($column, $post_id)
+{
+    switch ($column) {
+        case 'icone':
+            $tipo = get_post_meta($post_id, '_servico_icone_tipo', true);
+
+            if ($tipo === 'svg') {
+                $svg = get_post_meta($post_id, '_servico_icone_svg', true);
+                if ($svg) {
+                    echo '<div style="width: 24px; height: 24px; color: #2563eb;">' . wp_kses_post($svg) . '</div>';
+                }
+            } else {
+                $classe = get_post_meta($post_id, '_servico_icone_classe', true);
+                if ($classe) {
+                    echo '<i class="' . esc_attr($classe) . '" style="font-size: 24px; color: #2563eb;"></i>';
+                }
+            }
+            break;
+
+        case 'responsavel':
+            $responsavel = get_post_meta($post_id, '_servico_responsavel', true);
+            echo $responsavel ? esc_html($responsavel) : '<span style="color: #ccc;">—</span>';
+            break;
+    }
+}
+add_action('manage_servicos_posts_custom_column', 'cchla_servicos_column_content', 10, 2);
+
+/**
+ * Shortcode para Serviços
+ * Uso: [servicos limite="4" categoria="extensao"]
+ */
+function cchla_servicos_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'limite' => 4,
+        'categoria' => '',
+        'colunas' => '4',
+    ), $atts, 'servicos');
+
+    $args = array(
+        'post_type' => 'servicos',
+        'posts_per_page' => intval($atts['limite']),
+        'orderby' => 'menu_order',
+        'order' => 'ASC',
+    );
+
+    if (!empty($atts['categoria'])) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'categoria_servico',
+                'field' => 'slug',
+                'terms' => sanitize_text_field($atts['categoria']),
+            ),
+        );
+    }
+
+    $query = new WP_Query($args);
+
+    if (!$query->have_posts()) {
+        return '';
+    }
+
+    ob_start();
+
+    $colunas_class = 'xl:grid-cols-' . esc_attr($atts['colunas']);
+
+    echo '<div class="grid gap-6 sm:grid-cols-2 ' . $colunas_class . '">';
+
+    while ($query->have_posts()) {
+        $query->the_post();
+
+        $icone_tipo = get_post_meta(get_the_ID(), '_servico_icone_tipo', true);
+        $icone_classe = get_post_meta(get_the_ID(), '_servico_icone_classe', true);
+        $icone_svg = get_post_meta(get_the_ID(), '_servico_icone_svg', true);
+        $link_externo = get_post_meta(get_the_ID(), '_servico_link_externo', true);
+        $link_botao_texto = get_post_meta(get_the_ID(), '_servico_link_botao_texto', true);
+
+        $link_url = $link_externo ? $link_externo : get_permalink();
+        $botao_texto = $link_botao_texto ? $link_botao_texto : __('Leia mais', 'cchla-ufrn');
+    ?>
+
+        <a href="<?php echo esc_url($link_url); ?>"
+            class="block p-6 border border-blue-200 rounded-lg hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+
+            <div class="text-blue-600 mb-3" style="width: 32px; height: 32px;">
+                <?php if ($icone_tipo === 'svg' && $icone_svg) : ?>
+                    <?php echo wp_kses_post($icone_svg); ?>
+                <?php elseif ($icone_classe) : ?>
+                    <i class="<?php echo esc_attr($icone_classe); ?>" style="font-size: 32px;"></i>
+                <?php endif; ?>
+            </div>
+
+            <h3 class="font-semibold mb-2">
+                <?php the_title(); ?>
+            </h3>
+
+            <p class="text-sm text-zinc-600 mb-3">
+                <?php echo has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 20); ?>
+            </p>
+
+            <span class="text-blue-600 font-medium inline-flex items-center gap-1">
+                <?php echo esc_html($botao_texto); ?>
+                <span aria-hidden="true">→</span>
+            </span>
+        </a>
+
+    <?php
+    }
+
+    echo '</div>';
+
+    wp_reset_postdata();
+
+    return ob_get_clean();
+}
+add_shortcode('servicos', 'cchla_servicos_shortcode');
+
+/**
+ * Ajusta ordem dos serviços no admin
+ */
+function cchla_servicos_menu_order_support()
+{
+    add_post_type_support('servicos', 'page-attributes');
+}
+add_action('init', 'cchla_servicos_menu_order_support');
+
+/**
+ * Flush rewrite rules ao ativar o tema
+ */
+function cchla_flush_rewrite_rules_on_activation()
+{
+    // Registra os post types
+    cchla_register_servicos_cpt();
+    cchla_register_publicacoes_cpt();
+    cchla_register_acesso_rapido_cpt();
+
+    // Flush das regras
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'cchla_flush_rewrite_rules_on_activation');
+
+/**
+ * Flush rewrite rules apenas uma vez após registrar CPTs
+ */
+function cchla_maybe_flush_rewrite_rules()
+{
+    $flush_option = 'cchla_flush_rewrite_rules';
+
+    if (get_option($flush_option) !== 'done') {
+        flush_rewrite_rules();
+        update_option($flush_option, 'done');
+    }
+}
+add_action('init', 'cchla_maybe_flush_rewrite_rules', 999);
+
+/**
+ * ============================================
+ * CUSTOM POST TYPE - ESPECIAIS CCHLA
+ * ============================================
+ */
+
+/**
+ * Registra o Custom Post Type "Especiais"
+ */
+function cchla_register_especiais_cpt()
+{
+    $labels = array(
+        'name'                  => _x('Especiais', 'Post Type General Name', 'cchla-ufrn'),
+        'singular_name'         => _x('Especial', 'Post Type Singular Name', 'cchla-ufrn'),
+        'menu_name'             => __('Especiais CCHLA', 'cchla-ufrn'),
+        'name_admin_bar'        => __('Especial', 'cchla-ufrn'),
+        'archives'              => __('Arquivo de Especiais', 'cchla-ufrn'),
+        'attributes'            => __('Atributos', 'cchla-ufrn'),
+        'parent_item_colon'     => __('Especial Pai:', 'cchla-ufrn'),
+        'all_items'             => __('Todos os Especiais', 'cchla-ufrn'),
+        'add_new_item'          => __('Adicionar Novo Especial', 'cchla-ufrn'),
+        'add_new'               => __('Adicionar Novo', 'cchla-ufrn'),
+        'new_item'              => __('Novo Especial', 'cchla-ufrn'),
+        'edit_item'             => __('Editar Especial', 'cchla-ufrn'),
+        'update_item'           => __('Atualizar Especial', 'cchla-ufrn'),
+        'view_item'             => __('Ver Especial', 'cchla-ufrn'),
+        'view_items'            => __('Ver Especiais', 'cchla-ufrn'),
+        'search_items'          => __('Buscar Especial', 'cchla-ufrn'),
+        'not_found'             => __('Nenhum especial encontrado', 'cchla-ufrn'),
+        'not_found_in_trash'    => __('Nenhum especial na lixeira', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'label'                 => __('Especial', 'cchla-ufrn'),
+        'description'           => __('Projetos especiais do CCHLA', 'cchla-ufrn'),
+        'labels'                => $labels,
+        'supports'              => array('title', 'editor', 'excerpt', 'thumbnail', 'page-attributes'),
+        'taxonomies'            => array('categoria_especial'),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 28,
+        'menu_icon'             => 'dashicons-video-alt3',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => 'especiais',
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+        'show_in_rest'          => true,
+        'rewrite'               => array('slug' => 'especial', 'with_front' => false),
+    );
+
+    register_post_type('especiais', $args);
+}
+add_action('init', 'cchla_register_especiais_cpt', 0);
+
+/**
+ * Registra a Taxonomia "Categoria de Especial"
+ */
+function cchla_register_categoria_especial_taxonomy()
+{
+    $labels = array(
+        'name'                       => _x('Categorias', 'Taxonomy General Name', 'cchla-ufrn'),
+        'singular_name'              => _x('Categoria', 'Taxonomy Singular Name', 'cchla-ufrn'),
+        'menu_name'                  => __('Categorias', 'cchla-ufrn'),
+        'all_items'                  => __('Todas as Categorias', 'cchla-ufrn'),
+        'parent_item'                => __('Categoria Pai', 'cchla-ufrn'),
+        'parent_item_colon'          => __('Categoria Pai:', 'cchla-ufrn'),
+        'new_item_name'              => __('Nova Categoria', 'cchla-ufrn'),
+        'add_new_item'               => __('Adicionar Nova Categoria', 'cchla-ufrn'),
+        'edit_item'                  => __('Editar Categoria', 'cchla-ufrn'),
+        'update_item'                => __('Atualizar Categoria', 'cchla-ufrn'),
+        'view_item'                  => __('Ver Categoria', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => false,
+        'show_in_rest'               => true,
+    );
+
+    register_taxonomy('categoria_especial', array('especiais'), $args);
+}
+add_action('init', 'cchla_register_categoria_especial_taxonomy', 0);
+
+/**
+ * Cria categorias padrão
+ */
+function cchla_insert_default_categoria_especial_terms()
+{
+    $categorias = array(
+        'Comunicação' => 'Projetos de comunicação social',
+        'Educação' => 'Projetos educacionais',
+        'Cultura' => 'Projetos culturais',
+        'Inclusão' => 'Projetos de inclusão social',
+        'Saúde' => 'Projetos relacionados à saúde',
+    );
+
+    foreach ($categorias as $nome => $descricao) {
+        if (!term_exists($nome, 'categoria_especial')) {
+            wp_insert_term($nome, 'categoria_especial', array(
+                'slug' => sanitize_title($nome),
+                'description' => $descricao,
+            ));
+        }
+    }
+}
+add_action('init', 'cchla_insert_default_categoria_especial_terms');
+
+/**
+ * Adiciona Meta Boxes para Especiais
+ */
+function cchla_especiais_meta_boxes()
+{
+    add_meta_box(
+        'cchla_especial_video',
+        __('Configurações de Vídeo', 'cchla-ufrn'),
+        'cchla_especial_video_meta_box_callback',
+        'especiais',
+        'normal',
+        'high'
+    );
+
+    add_meta_box(
+        'cchla_especial_info',
+        __('Informações Adicionais', 'cchla-ufrn'),
+        'cchla_especial_info_meta_box_callback',
+        'especiais',
+        'side',
+        'default'
+    );
+}
+add_action('add_meta_boxes', 'cchla_especiais_meta_boxes');
+
+/**
+ * Callback do Meta Box de Vídeo
+ */
+function cchla_especial_video_meta_box_callback($post)
+{
+    wp_nonce_field('cchla_save_especial_meta', 'cchla_especial_nonce');
+
+    $video_tipo = get_post_meta($post->ID, '_especial_video_tipo', true);
+    $video_url = get_post_meta($post->ID, '_especial_video_url', true);
+    $video_embed = get_post_meta($post->ID, '_especial_video_embed', true);
+    $video_arquivo_id = get_post_meta($post->ID, '_especial_video_arquivo_id', true);
+
+    $video_tipo = $video_tipo ? $video_tipo : 'url';
+    ?>
+
+    <div class="cchla-especial-video-box">
+
+        <!-- Tipo de Vídeo -->
+        <p class="form-field">
+            <label>
+                <strong><?php esc_html_e('Tipo de Vídeo', 'cchla-ufrn'); ?></strong>
+            </label>
+            <label style="display: block; margin: 10px 0;">
+                <input type="radio" name="especial_video_tipo" value="url" <?php checked($video_tipo, 'url'); ?>>
+                <?php esc_html_e('URL (YouTube, Vimeo, etc)', 'cchla-ufrn'); ?>
+            </label>
+            <label style="display: block; margin: 10px 0;">
+                <input type="radio" name="especial_video_tipo" value="embed" <?php checked($video_tipo, 'embed'); ?>>
+                <?php esc_html_e('Código Embed', 'cchla-ufrn'); ?>
+            </label>
+            <label style="display: block; margin: 10px 0;">
+                <input type="radio" name="especial_video_tipo" value="arquivo" <?php checked($video_tipo, 'arquivo'); ?>>
+                <?php esc_html_e('Arquivo de Vídeo (Upload)', 'cchla-ufrn'); ?>
+            </label>
+        </p>
+
+        <!-- URL do Vídeo -->
+        <div class="video-url-field" style="<?php echo $video_tipo !== 'url' ? 'display:none;' : ''; ?>">
+            <p class="form-field">
+                <label for="especial_video_url">
+                    <strong><?php esc_html_e('URL do Vídeo', 'cchla-ufrn'); ?></strong>
+                </label>
+                <input
+                    type="url"
+                    id="especial_video_url"
+                    name="especial_video_url"
+                    value="<?php echo esc_url($video_url); ?>"
+                    class="large-text"
+                    placeholder="https://www.youtube.com/watch?v=...">
+                <span class="description">
+                    <?php esc_html_e('Cole a URL do YouTube, Vimeo ou outro serviço', 'cchla-ufrn'); ?>
+                </span>
+
+                <?php if ($video_url) : ?>
+            <div style="margin-top: 15px;">
+                <strong><?php esc_html_e('Preview:', 'cchla-ufrn'); ?></strong>
+                <div style="margin-top: 10px; max-width: 100%;">
+                    <?php echo wp_oembed_get($video_url, array('width' => 600)); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        </p>
+        </div>
+
+        <!-- Código Embed -->
+        <div class="video-embed-field" style="<?php echo $video_tipo !== 'embed' ? 'display:none;' : ''; ?>">
+            <p class="form-field">
+                <label for="especial_video_embed">
+                    <strong><?php esc_html_e('Código Embed', 'cchla-ufrn'); ?></strong>
+                </label>
+                <textarea
+                    id="especial_video_embed"
+                    name="especial_video_embed"
+                    rows="6"
+                    class="large-text code"
+                    placeholder='<iframe src="..." ...></iframe>'><?php echo esc_textarea($video_embed); ?></textarea>
+                <span class="description">
+                    <?php esc_html_e('Cole o código iframe do vídeo', 'cchla-ufrn'); ?>
+                </span>
+            </p>
+        </div>
+
+        <!-- Arquivo de Vídeo -->
+        <div class="video-arquivo-field" style="<?php echo $video_tipo !== 'arquivo' ? 'display:none;' : ''; ?>">
+            <p class="form-field">
+                <label>
+                    <strong><?php esc_html_e('Arquivo de Vídeo', 'cchla-ufrn'); ?></strong>
+                </label>
+                <input type="hidden" id="especial_video_arquivo_id" name="especial_video_arquivo_id" value="<?php echo esc_attr($video_arquivo_id); ?>">
+            <div style="margin: 10px 0;">
+                <button type="button" class="button upload-video-button">
+                    <i class="dashicons dashicons-upload" style="vertical-align: middle;"></i>
+                    <?php esc_html_e('Fazer Upload de Vídeo', 'cchla-ufrn'); ?>
+                </button>
+                <button type="button" class="button remove-video-button" style="<?php echo !$video_arquivo_id ? 'display:none;' : ''; ?>">
+                    <?php esc_html_e('Remover Vídeo', 'cchla-ufrn'); ?>
+                </button>
+            </div>
+            <?php if ($video_arquivo_id) :
+                $video_url_preview = wp_get_attachment_url($video_arquivo_id);
+            ?>
+                <div class="video-preview" style="margin-top: 10px;">
+                    <video src="<?php echo esc_url($video_url_preview); ?>" controls style="max-width: 100%; height: auto;"></video>
+                    <p class="description">
+                        <?php echo basename($video_url_preview); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
+            <span class="description">
+                <?php esc_html_e('Formatos: MP4, WebM, OGV. Recomendado: MP4 até 50MB', 'cchla-ufrn'); ?>
+            </span>
+            </p>
+        </div>
+
+        <!-- Observação sobre Thumbnail -->
+        <div style="background: #f0f6fc; border-left: 4px solid #0073aa; padding: 15px; margin-top: 20px;">
+            <strong style="display: block; margin-bottom: 8px;">
+                <i class="dashicons dashicons-format-image" style="vertical-align: middle;"></i>
+                <?php esc_html_e('Thumbnail do Vídeo', 'cchla-ufrn'); ?>
+            </strong>
+            <p style="margin: 0; color: #555;">
+                <?php esc_html_e('Use o box "Imagem Destacada" ao lado direito para definir a thumbnail que aparece antes do vídeo carregar.', 'cchla-ufrn'); ?>
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        jQuery(document).ready(function($) {
+            // Toggle entre tipos de vídeo
+            $('input[name="especial_video_tipo"]').on('change', function() {
+                $('.video-url-field, .video-embed-field, .video-arquivo-field').hide();
+
+                if ($(this).val() === 'url') {
+                    $('.video-url-field').show();
+                } else if ($(this).val() === 'embed') {
+                    $('.video-embed-field').show();
+                } else if ($(this).val() === 'arquivo') {
+                    $('.video-arquivo-field').show();
+                }
+            });
+
+            // Upload de vídeo
+            var mediaUploader;
+
+            $('.upload-video-button').on('click', function(e) {
+                e.preventDefault();
+
+                if (mediaUploader) {
+                    mediaUploader.open();
+                    return;
+                }
+
+                mediaUploader = wp.media({
+                    title: '<?php esc_html_e('Escolher Vídeo', 'cchla-ufrn'); ?>',
+                    button: {
+                        text: '<?php esc_html_e('Usar este vídeo', 'cchla-ufrn'); ?>'
+                    },
+                    library: {
+                        type: 'video'
+                    },
+                    multiple: false
+                });
+
+                mediaUploader.on('select', function() {
+                    var attachment = mediaUploader.state().get('selection').first().toJSON();
+                    $('#especial_video_arquivo_id').val(attachment.id);
+
+                    var videoHtml = '<video src="' + attachment.url + '" controls style="max-width: 100%; height: auto;"></video>';
+                    videoHtml += '<p class="description">' + attachment.filename + '</p>';
+
+                    $('.video-preview').html(videoHtml);
+                    $('.remove-video-button').show();
+                });
+
+                mediaUploader.open();
+            });
+
+            // Remover vídeo
+            $('.remove-video-button').on('click', function(e) {
+                e.preventDefault();
+                $('#especial_video_arquivo_id').val('');
+                $('.video-preview').html('');
+                $(this).hide();
+            });
+        });
+    </script>
+
+    <style>
+        .cchla-especial-video-box .form-field {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f1;
+        }
+
+        .cchla-especial-video-box .form-field:last-child {
+            border-bottom: none;
+        }
+
+        .cchla-especial-video-box label strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .cchla-especial-video-box .description {
+            display: block;
+            margin-top: 5px;
+            font-style: italic;
+            color: #646970;
+        }
+    </style>
+<?php
+}
+
+/**
+ * Callback do Meta Box de Informações
+ */
+function cchla_especial_info_meta_box_callback($post)
+{
+    $link_projeto = get_post_meta($post->ID, '_especial_link_projeto', true);
+    $destaque_home = get_post_meta($post->ID, '_especial_destaque_home', true);
+?>
+
+    <div class="cchla-especial-info-box">
+
+        <!-- Link do Projeto -->
+        <p style="margin-bottom: 15px;">
+            <label for="especial_link_projeto">
+                <strong><?php esc_html_e('Link do Projeto', 'cchla-ufrn'); ?></strong>
+            </label>
+            <input
+                type="url"
+                id="especial_link_projeto"
+                name="especial_link_projeto"
+                value="<?php echo esc_url($link_projeto); ?>"
+                class="widefat"
+                placeholder="https://projeto.cchla.ufrn.br">
+            <span style="display: block; margin-top: 5px; font-size: 12px; color: #666;">
+                <?php esc_html_e('Link externo do projeto', 'cchla-ufrn'); ?>
+            </span>
+        </p>
+
+        <!-- Destacar na Home -->
+        <p style="margin-bottom: 15px;">
+            <label>
+                <input type="checkbox" name="especial_destaque_home" value="1" <?php checked($destaque_home, '1'); ?>>
+                <strong><?php esc_html_e('Destacar na Home', 'cchla-ufrn'); ?></strong>
+            </label>
+            <span style="display: block; margin-top: 5px; font-size: 12px; color: #666;">
+                <?php esc_html_e('Exibir como destaque principal', 'cchla-ufrn'); ?>
+            </span>
+        </p>
+
+        <!-- Ordem -->
+        <p style="background: #f0f6fc; padding: 10px; border-radius: 4px;">
+            <strong style="display: block; margin-bottom: 5px;">
+                <?php esc_html_e('💡 Dica:', 'cchla-ufrn'); ?>
+            </strong>
+            <span style="font-size: 12px; color: #555;">
+                <?php esc_html_e('Use o campo "Ordem" no box "Atributos" ao lado para definir a sequência de exibição.', 'cchla-ufrn'); ?>
+            </span>
+        </p>
+
+    </div>
+    <?php
+}
+
+/**
+ * Salva os Meta Dados
+ */
+function cchla_save_especial_meta($post_id)
+{
+    if (
+        !isset($_POST['cchla_especial_nonce']) ||
+        !wp_verify_nonce($_POST['cchla_especial_nonce'], 'cchla_save_especial_meta')
+    ) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Tipo de vídeo
+    if (isset($_POST['especial_video_tipo'])) {
+        update_post_meta($post_id, '_especial_video_tipo', sanitize_text_field($_POST['especial_video_tipo']));
+    }
+
+    // URL do vídeo
+    if (isset($_POST['especial_video_url'])) {
+        update_post_meta($post_id, '_especial_video_url', esc_url_raw($_POST['especial_video_url']));
+    }
+
+    // Embed
+    if (isset($_POST['especial_video_embed'])) {
+        $embed = wp_kses($_POST['especial_video_embed'], array(
+            'iframe' => array(
+                'src' => array(),
+                'width' => array(),
+                'height' => array(),
+                'frameborder' => array(),
+                'allowfullscreen' => array(),
+                'allow' => array(),
+                'title' => array(),
+            ),
+        ));
+        update_post_meta($post_id, '_especial_video_embed', $embed);
+    }
+
+    // Arquivo de vídeo
+    if (isset($_POST['especial_video_arquivo_id'])) {
+        update_post_meta($post_id, '_especial_video_arquivo_id', absint($_POST['especial_video_arquivo_id']));
+    }
+
+    // Link do projeto
+    if (isset($_POST['especial_link_projeto'])) {
+        update_post_meta($post_id, '_especial_link_projeto', esc_url_raw($_POST['especial_link_projeto']));
+    }
+
+    // Destaque home
+    if (isset($_POST['especial_destaque_home'])) {
+        update_post_meta($post_id, '_especial_destaque_home', '1');
+    } else {
+        delete_post_meta($post_id, '_especial_destaque_home');
+    }
+}
+add_action('save_post', 'cchla_save_especial_meta');
+
+/**
+ * Adiciona colunas personalizadas no admin
+ */
+function cchla_especiais_columns($columns)
+{
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['featured_image'] = __('Thumbnail', 'cchla-ufrn');
+    $new_columns['title'] = $columns['title'];
+    $new_columns['video'] = __('Vídeo', 'cchla-ufrn');
+    $new_columns['destaque'] = __('Destaque', 'cchla-ufrn');
+    $new_columns['taxonomy-categoria_especial'] = __('Categoria', 'cchla-ufrn');
+    $new_columns['menu_order'] = __('Ordem', 'cchla-ufrn');
+    $new_columns['date'] = $columns['date'];
+
+    return $new_columns;
+}
+add_filter('manage_especiais_posts_columns', 'cchla_especiais_columns');
+
+function cchla_especiais_column_content($column, $post_id)
+{
+    switch ($column) {
+        case 'featured_image':
+            if (has_post_thumbnail($post_id)) {
+                echo get_the_post_thumbnail($post_id, array(80, 60));
+            } else {
+                echo '<span style="color: #ccc;">—</span>';
+            }
+            break;
+
+        case 'video':
+            $tipo = get_post_meta($post_id, '_especial_video_tipo', true);
+            $icons = array(
+                'url' => '<i class="dashicons dashicons-video-alt3" style="color: #2271b1;"></i> URL',
+                'embed' => '<i class="dashicons dashicons-video-alt2" style="color: #2271b1;"></i> Embed',
+                'arquivo' => '<i class="dashicons dashicons-media-video" style="color: #2271b1;"></i> Arquivo',
+            );
+            echo isset($icons[$tipo]) ? $icons[$tipo] : '<span style="color: #ccc;">—</span>';
+            break;
+
+        case 'destaque':
+            $destaque = get_post_meta($post_id, '_especial_destaque_home', true);
+            if ($destaque === '1') {
+                echo '<span style="color: #00a32a; font-weight: bold;">★ Sim</span>';
+            } else {
+                echo '<span style="color: #ccc;">—</span>';
+            }
+            break;
+
+        case 'menu_order':
+            $order = get_post_field('menu_order', $post_id);
+            echo '<strong>' . esc_html($order) . '</strong>';
+            break;
+    }
+}
+add_action('manage_especiais_posts_custom_column', 'cchla_especiais_column_content', 10, 2);
+
+/**
+ * Torna colunas ordenáveis
+ */
+function cchla_especiais_sortable_columns($columns)
+{
+    $columns['menu_order'] = 'menu_order';
+    $columns['destaque'] = 'destaque_home';
+    return $columns;
+}
+add_filter('manage_edit-especiais_sortable_columns', 'cchla_especiais_sortable_columns');
+/**
+ * Shortcode para Especiais
+ * Uso: [especiais limite="4" categoria="comunicacao"]
+ */
+function cchla_especiais_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'limite' => 4,
+        'categoria' => '',
+        'destaque' => 'nao',
+    ), $atts, 'especiais');
+
+    $args = array(
+        'post_type' => 'especiais',
+        'posts_per_page' => intval($atts['limite']),
+        'orderby' => 'menu_order',
+        'order' => 'ASC',
+    );
+
+    if (!empty($atts['categoria'])) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'categoria_especial',
+                'field' => 'slug',
+                'terms' => sanitize_text_field($atts['categoria']),
+            ),
+        );
+    }
+
+    if ($atts['destaque'] === 'sim') {
+        $args['meta_query'] = array(
+            array(
+                'key' => '_especial_destaque_home',
+                'value' => '1',
+            ),
+        );
+    }
+
+    $query = new WP_Query($args);
+
+    if (!$query->have_posts()) {
+        return '';
+    }
+
+    ob_start();
+
+    echo '<div class="especiais-grid grid gap-6 md:grid-cols-2 lg:grid-cols-' . min(4, intval($atts['limite'])) . '">';
+
+    while ($query->have_posts()) {
+        $query->the_post();
+
+        $link_projeto = get_post_meta(get_the_ID(), '_especial_link_projeto', true);
+        $link_url = $link_projeto ? $link_projeto : get_permalink();
+    ?>
+
+        <article class="group bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow">
+            <a href="<?php echo esc_url($link_url); ?>"
+                <?php if ($link_projeto) echo 'target="_blank" rel="noopener noreferrer"'; ?>>
+
+                <div class="relative overflow-hidden aspect-video">
+                    <?php if (has_post_thumbnail()) : ?>
+                        <?php the_post_thumbnail('medium', array(
+                            'class' => 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+                        )); ?>
+                    <?php else : ?>
+                        <div class="w-full h-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                            <i class="fa-solid fa-video text-4xl text-white opacity-50"></i>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="absolute top-3 left-3 bg-black/70 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                        <i class="fa-solid fa-play"></i>
+                        <?php esc_html_e('Vídeo', 'cchla-ufrn'); ?>
+                    </div>
+                </div>
+
+                <div class="p-5">
+                    <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                        <?php the_title(); ?>
+                    </h3>
+
+                    <span class="text-blue-600 text-sm font-medium">
+                        <?php esc_html_e('Assistir →', 'cchla-ufrn'); ?>
+                    </span>
+                </div>
+            </a>
+        </article>
+
+        <?php
+    }
+
+    echo '</div>';
+
+    wp_reset_postdata();
+
+    return ob_get_clean();
+}
+add_shortcode('especiais', 'cchla_especiais_shortcode');
+
+/**
+ * Widget de Especiais
+ */
+class CCHLA_Especiais_Widget extends WP_Widget
+{
+
+    public function __construct()
+    {
+        parent::__construct(
+            'cchla_especiais_widget',
+            __('CCHLA - Especiais', 'cchla-ufrn'),
+            array('description' => __('Exibe especiais do CCHLA', 'cchla-ufrn'))
+        );
+    }
+
+    public function widget($args, $instance)
+    {
+        echo $args['before_widget'];
+
+        if (!empty($instance['title'])) {
+            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
+        }
+
+        $limite = !empty($instance['limite']) ? $instance['limite'] : 3;
+
+        $widget_args = array(
+            'post_type' => 'especiais',
+            'posts_per_page' => $limite,
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+        );
+
+        $query = new WP_Query($widget_args);
+
+        if ($query->have_posts()) {
+            echo '<div class="especiais-widget space-y-4">';
+
+            while ($query->have_posts()) {
+                $query->the_post();
+
+                $link_projeto = get_post_meta(get_the_ID(), '_especial_link_projeto', true);
+                $link_url = $link_projeto ? $link_projeto : get_permalink();
+        ?>
+
+                <article class="flex gap-3">
+                    <?php if (has_post_thumbnail()) : ?>
+                        <div class="flex-shrink-0 w-24 h-16 overflow-hidden rounded">
+                            <a href="<?php echo esc_url($link_url); ?>">
+                                <?php the_post_thumbnail('thumbnail', array('class' => 'w-full h-full object-cover')); ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="flex-1">
+                        <h4 class="text-sm font-semibold mb-1">
+                            <a href="<?php echo esc_url($link_url); ?>" class="hover:text-blue-600">
+                                <?php the_title(); ?>
+                            </a>
+                        </h4>
+                        <span class="text-xs text-blue-600">
+                            <i class="fa-solid fa-play"></i>
+                            <?php esc_html_e('Assistir', 'cchla-ufrn'); ?>
+                        </span>
+                    </div>
+                </article>
+
+        <?php
+            }
+
+            echo '</div>';
+
+            echo '<div class="mt-4 pt-4 border-t">';
+            echo '<a href="' . esc_url(get_post_type_archive_link('especiais')) . '" class="text-sm text-blue-600 hover:underline">';
+            esc_html_e('Ver todos os especiais →', 'cchla-ufrn');
+            echo '</a>';
+            echo '</div>';
+
+            wp_reset_postdata();
+        }
+
+        echo $args['after_widget'];
+    }
+
+    public function form($instance)
+    {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Especiais CCHLA', 'cchla-ufrn');
+        $limite = !empty($instance['limite']) ? $instance['limite'] : 3;
+        ?>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">
+                <?php esc_html_e('Título:', 'cchla-ufrn'); ?>
+            </label>
+            <input class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('title')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                type="text"
+                value="<?php echo esc_attr($title); ?>">
+        </p>
+
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('limite')); ?>">
+                <?php esc_html_e('Quantidade:', 'cchla-ufrn'); ?>
+            </label>
+            <input class="tiny-text"
+                id="<?php echo esc_attr($this->get_field_id('limite')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('limite')); ?>"
+                type="number"
+                min="1"
+                max="10"
+                value="<?php echo esc_attr($limite); ?>">
+        </p>
+    <?php
+    }
+
+    public function update($new_instance, $old_instance)
+    {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        $instance['limite'] = (!empty($new_instance['limite'])) ? absint($new_instance['limite']) : 3;
+        return $instance;
+    }
+}
+
+function cchla_register_especiais_widget()
+{
+    register_widget('CCHLA_Especiais_Widget');
+}
+add_action('widgets_init', 'cchla_register_especiais_widget');
+
+/**
+ * Adiciona suporte a tamanhos de imagem para vídeos
+ */
+function cchla_add_especial_image_sizes()
+{
+    add_image_size('especial-thumb', 260, 180, true);
+    add_image_size('especial-large', 800, 450, true);
+}
+add_action('after_setup_theme', 'cchla_add_especial_image_sizes');
+
+/**
+ * Modifica query do arquivo para ordenar por menu_order
+ */
+function cchla_especiais_archive_query($query)
+{
+    if (!is_admin() && $query->is_main_query() && (is_post_type_archive('especiais') || is_tax('categoria_especial'))) {
+        $query->set('orderby', 'menu_order');
+        $query->set('order', 'ASC');
+    }
+}
+add_action('pre_get_posts', 'cchla_especiais_archive_query');
+
+/**
+ * ============================================
+ * WORDPRESS CUSTOMIZER - CONFIGURAÇÕES DO TEMA
+ * ============================================
+ */
+
+/**
+ * Registra configurações no Customizer
+ */
+function cchla_customize_register($wp_customize)
+{
+
+    /**
+     * ========================================
+     * SEÇÃO: INFORMAÇÕES GERAIS
+     * ========================================
+     */
+    $wp_customize->add_section('cchla_info_geral', array(
+        'title' => __('Informações Gerais', 'cchla-ufrn'),
+        'priority' => 30,
+        'description' => __('Configure informações básicas do CCHLA', 'cchla-ufrn'),
+    ));
+
+    // Nome completo da instituição
+    $wp_customize->add_setting('cchla_nome_completo', array(
+        'default' => 'Centro de Ciências Humanas, Letras e Artes',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'refresh',
+    ));
+
+    $wp_customize->add_control('cchla_nome_completo', array(
+        'label' => __('Nome Completo', 'cchla-ufrn'),
+        'section' => 'cchla_info_geral',
+        'type' => 'text',
+    ));
+
+    // Sigla
+    $wp_customize->add_setting('cchla_sigla', array(
+        'default' => 'CCHLA',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'refresh',
+    ));
+
+    $wp_customize->add_control('cchla_sigla', array(
+        'label' => __('Sigla', 'cchla-ufrn'),
+        'section' => 'cchla_info_geral',
+        'type' => 'text',
+    ));
+
+    // Descrição curta
+    $wp_customize->add_setting('cchla_descricao_curta', array(
+        'default' => 'Ensino, pesquisa, cultura e extensão',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport' => 'refresh',
+    ));
+
+    $wp_customize->add_control('cchla_descricao_curta', array(
+        'label' => __('Descrição Curta', 'cchla-ufrn'),
+        'description' => __('Usada no rodapé e meta tags', 'cchla-ufrn'),
+        'section' => 'cchla_info_geral',
+        'type' => 'textarea',
+    ));
+
+    /**
+     * ========================================
+     * SEÇÃO: CONTATO
+     * ========================================
+     */
+    $wp_customize->add_section('cchla_contato', array(
+        'title' => __('Informações de Contato', 'cchla-ufrn'),
+        'priority' => 31,
+        'description' => __('Configure telefones, emails e endereço', 'cchla-ufrn'),
+    ));
+
+    // Telefone Principal
+    $wp_customize->add_setting('cchla_telefone_principal', array(
+        'default' => '(84) 3342-2243',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_telefone_principal', array(
+        'label' => __('Telefone Principal', 'cchla-ufrn'),
+        'section' => 'cchla_contato',
+        'type' => 'text',
+    ));
+
+    // Telefone Secundário
+    $wp_customize->add_setting('cchla_telefone_secundario', array(
+        'default' => '(84) 99193-6154',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_telefone_secundario', array(
+        'label' => __('Telefone Secundário', 'cchla-ufrn'),
+        'section' => 'cchla_contato',
+        'type' => 'text',
+    ));
+
+    // Email Principal
+    $wp_customize->add_setting('cchla_email_principal', array(
+        'default' => 'secretariacchla@gmail.com',
+        'sanitize_callback' => 'sanitize_email',
+    ));
+
+    $wp_customize->add_control('cchla_email_principal', array(
+        'label' => __('Email Principal', 'cchla-ufrn'),
+        'section' => 'cchla_contato',
+        'type' => 'email',
+    ));
+
+    // Email Secundário
+    $wp_customize->add_setting('cchla_email_secundario', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_email',
+    ));
+
+    $wp_customize->add_control('cchla_email_secundario', array(
+        'label' => __('Email Secundário (Opcional)', 'cchla-ufrn'),
+        'section' => 'cchla_contato',
+        'type' => 'email',
+    ));
+
+    // Endereço Completo
+    $wp_customize->add_setting('cchla_endereco_completo', array(
+        'default' => 'Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('cchla_endereco_completo', array(
+        'label' => __('Endereço Completo', 'cchla-ufrn'),
+        'section' => 'cchla_contato',
+        'type' => 'textarea',
+    ));
+
+    // Link Google Maps
+    $wp_customize->add_setting('cchla_google_maps_link', array(
+        'default' => 'https://www.google.com/maps/search/?api=1&query=CCHLA+-+CENTRO+DE+CI%C3%8ANCIAS+HUMANAS%2C+LETRAS+E+ARTES+-+UFRN%2C+Natal%2C+RN',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_google_maps_link', array(
+        'label' => __('Link Google Maps', 'cchla-ufrn'),
+        'section' => 'cchla_contato',
+        'type' => 'url',
+    ));
+
+    // Horário de Funcionamento
+    $wp_customize->add_setting('cchla_horario_funcionamento', array(
+        'default' => 'Segunda a Sexta, 8h às 17h',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_horario_funcionamento', array(
+        'label' => __('Horário de Funcionamento', 'cchla-ufrn'),
+        'section' => 'cchla_contato',
+        'type' => 'text',
+    ));
+
+    /**
+     * ========================================
+     * SEÇÃO: REDES SOCIAIS
+     * ========================================
+     */
+    $wp_customize->add_section('cchla_redes_sociais', array(
+        'title' => __('Redes Sociais', 'cchla-ufrn'),
+        'priority' => 32,
+        'description' => __('Configure os links das redes sociais do CCHLA', 'cchla-ufrn'),
+    ));
+
+    // Facebook
+    $wp_customize->add_setting('cchla_facebook', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_facebook', array(
+        'label' => __('Facebook', 'cchla-ufrn'),
+        'section' => 'cchla_redes_sociais',
+        'type' => 'url',
+        'description' => __('https://facebook.com/seuperfil', 'cchla-ufrn'),
+    ));
+
+    // Instagram
+    $wp_customize->add_setting('cchla_instagram', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_instagram', array(
+        'label' => __('Instagram', 'cchla-ufrn'),
+        'section' => 'cchla_redes_sociais',
+        'type' => 'url',
+        'description' => __('https://instagram.com/seuperfil', 'cchla-ufrn'),
+    ));
+
+    // Twitter/X
+    $wp_customize->add_setting('cchla_twitter', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_twitter', array(
+        'label' => __('Twitter / X', 'cchla-ufrn'),
+        'section' => 'cchla_redes_sociais',
+        'type' => 'url',
+        'description' => __('https://twitter.com/seuperfil', 'cchla-ufrn'),
+    ));
+
+    // YouTube
+    $wp_customize->add_setting('cchla_youtube', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_youtube', array(
+        'label' => __('YouTube', 'cchla-ufrn'),
+        'section' => 'cchla_redes_sociais',
+        'type' => 'url',
+        'description' => __('https://youtube.com/@seucanal', 'cchla-ufrn'),
+    ));
+
+    // LinkedIn
+    $wp_customize->add_setting('cchla_linkedin', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_linkedin', array(
+        'label' => __('LinkedIn', 'cchla-ufrn'),
+        'section' => 'cchla_redes_sociais',
+        'type' => 'url',
+        'description' => __('https://linkedin.com/company/suaempresa', 'cchla-ufrn'),
+    ));
+
+    // TikTok
+    $wp_customize->add_setting('cchla_tiktok', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_tiktok', array(
+        'label' => __('TikTok', 'cchla-ufrn'),
+        'section' => 'cchla_redes_sociais',
+        'type' => 'url',
+        'description' => __('https://tiktok.com/@seuperfil', 'cchla-ufrn'),
+    ));
+
+    // WhatsApp
+    $wp_customize->add_setting('cchla_whatsapp', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_whatsapp', array(
+        'label' => __('WhatsApp (Número)', 'cchla-ufrn'),
+        'section' => 'cchla_redes_sociais',
+        'type' => 'text',
+        'description' => __('Apenas números: 5584991936154', 'cchla-ufrn'),
+    ));
+
+    /**
+     * ========================================
+     * SEÇÃO: RODAPÉ
+     * ========================================
+     */
+    $wp_customize->add_section('cchla_rodape', array(
+        'title' => __('Configurações do Rodapé', 'cchla-ufrn'),
+        'priority' => 33,
+        'description' => __('Personalize textos e informações do rodapé', 'cchla-ufrn'),
+    ));
+
+    // Texto do Rodapé
+    $wp_customize->add_setting('cchla_rodape_texto', array(
+        'default' => 'Centro de Ciências Humanas, Letras e Artes',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+
+    $wp_customize->add_control('cchla_rodape_texto', array(
+        'label' => __('Texto do Rodapé', 'cchla-ufrn'),
+        'description' => __('Texto que aparece ao lado do logo no rodapé', 'cchla-ufrn'),
+        'section' => 'cchla_rodape',
+        'type' => 'textarea',
+    ));
+
+    // Copyright
+    $wp_customize->add_setting('cchla_copyright', array(
+        'default' => '© ' . date('Y') . ' CCHLA - UFRN. Todos os direitos reservados.',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+
+    $wp_customize->add_control('cchla_copyright', array(
+        'label' => __('Texto de Copyright', 'cchla-ufrn'),
+        'description' => __('Use [ano] para o ano atual', 'cchla-ufrn'),
+        'section' => 'cchla_rodape',
+        'type' => 'textarea',
+    ));
+
+    // Créditos
+    $wp_customize->add_setting('cchla_creditos', array(
+        'default' => 'Desenvolvido por Agência Web - IFRN',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_creditos', array(
+        'label' => __('Créditos', 'cchla-ufrn'),
+        'section' => 'cchla_rodape',
+        'type' => 'text',
+    ));
+
+    // Link dos Créditos
+    $wp_customize->add_setting('cchla_creditos_link', array(
+        'default' => 'https://agenciaweb.ifrn.edu.br',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_creditos_link', array(
+        'label' => __('Link dos Créditos', 'cchla-ufrn'),
+        'section' => 'cchla_rodape',
+        'type' => 'url',
+    ));
+
+    // Logo do Rodapé
+    $wp_customize->add_setting('cchla_rodape_logo', array(
+        'default' => '',
+        'sanitize_callback' => 'absint',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'cchla_rodape_logo', array(
+        'label' => __('Logo do Rodapé', 'cchla-ufrn'),
+        'description' => __('Se não definido, usa o logo principal', 'cchla-ufrn'),
+        'section' => 'cchla_rodape',
+        'mime_type' => 'image',
+    )));
+
+    /**
+     * ========================================
+     * SEÇÃO: SEO E COMPARTILHAMENTO
+     * ========================================
+     */
+    $wp_customize->add_section('cchla_seo', array(
+        'title' => __('SEO e Compartilhamento', 'cchla-ufrn'),
+        'priority' => 34,
+        'description' => __('Configure imagens e textos para SEO', 'cchla-ufrn'),
+    ));
+
+    // Imagem padrão de compartilhamento
+    $wp_customize->add_setting('cchla_default_share_image', array(
+        'default' => '',
+        'sanitize_callback' => 'absint',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'cchla_default_share_image', array(
+        'label' => __('Imagem Padrão de Compartilhamento', 'cchla-ufrn'),
+        'description' => __('Usada quando posts não têm imagem destacada (1200x630px)', 'cchla-ufrn'),
+        'section' => 'cchla_seo',
+        'mime_type' => 'image',
+    )));
+
+    // Google Analytics ID
+    $wp_customize->add_setting('cchla_google_analytics', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_google_analytics', array(
+        'label' => __('Google Analytics ID', 'cchla-ufrn'),
+        'description' => __('Ex: G-XXXXXXXXXX ou UA-XXXXXXXXX', 'cchla-ufrn'),
+        'section' => 'cchla_seo',
+        'type' => 'text',
+    ));
+
+    // Facebook App ID
+    $wp_customize->add_setting('cchla_facebook_app_id', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_facebook_app_id', array(
+        'label' => __('Facebook App ID', 'cchla-ufrn'),
+        'description' => __('Para insights do Facebook', 'cchla-ufrn'),
+        'section' => 'cchla_seo',
+        'type' => 'text',
+    ));
+
+    /**
+     * ========================================
+     * SEÇÃO: SCRIPTS PERSONALIZADOS
+     * ========================================
+     */
+    $wp_customize->add_section('cchla_scripts', array(
+        'title' => __('Scripts Personalizados', 'cchla-ufrn'),
+        'priority' => 35,
+        'description' => __('Adicione scripts customizados ao site', 'cchla-ufrn'),
+    ));
+
+    // Header Scripts
+    $wp_customize->add_setting('cchla_header_scripts', array(
+        'default' => '',
+        'sanitize_callback' => 'cchla_sanitize_scripts',
+    ));
+
+    $wp_customize->add_control('cchla_header_scripts', array(
+        'label' => __('Scripts no Header', 'cchla-ufrn'),
+        'description' => __('Código inserido antes do </head>', 'cchla-ufrn'),
+        'section' => 'cchla_scripts',
+        'type' => 'textarea',
+    ));
+
+    // Footer Scripts
+    $wp_customize->add_setting('cchla_footer_scripts', array(
+        'default' => '',
+        'sanitize_callback' => 'cchla_sanitize_scripts',
+    ));
+
+    $wp_customize->add_control('cchla_footer_scripts', array(
+        'label' => __('Scripts no Footer', 'cchla-ufrn'),
+        'description' => __('Código inserido antes do </body>', 'cchla-ufrn'),
+        'section' => 'cchla_scripts',
+        'type' => 'textarea',
+    ));
+}
+add_action('customize_register', 'cchla_customize_register');
+
+/**
+ * Sanitiza scripts personalizados
+ */
+function cchla_sanitize_scripts($input)
+{
+    return wp_kses_post($input);
+}
+
+/**
+ * Adiciona scripts personalizados no header
+ */
+function cchla_add_header_scripts()
+{
+    $header_scripts = get_theme_mod('cchla_header_scripts', '');
+
+    if (!empty($header_scripts)) {
+        echo "\n<!-- Custom Header Scripts -->\n";
+        echo $header_scripts;
+        echo "\n<!-- /Custom Header Scripts -->\n";
+    }
+
+    // Google Analytics
+    $ga_id = get_theme_mod('cchla_google_analytics', '');
+    if (!empty($ga_id)) {
+    ?>
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr($ga_id); ?>"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', '<?php echo esc_js($ga_id); ?>');
+        </script>
+    <?php
+    }
+}
+add_action('wp_head', 'cchla_add_header_scripts');
+
+/**
+ * Adiciona scripts personalizados no footer
+ */
+function cchla_add_footer_scripts()
+{
+    $footer_scripts = get_theme_mod('cchla_footer_scripts', '');
+
+    if (!empty($footer_scripts)) {
+        echo "\n<!-- Custom Footer Scripts -->\n";
+        echo $footer_scripts;
+        echo "\n<!-- /Custom Footer Scripts -->\n";
+    }
+}
+add_action('wp_footer', 'cchla_add_footer_scripts');
+/**
+ * ============================================
+ * FUNÇÕES AUXILIARES PARA CUSTOMIZER
+ * ============================================
+ */
+
+/**
+ * Retorna informações de contato
+ */
+function cchla_get_contato_info($campo = '')
+{
+    $contatos = array(
+        'telefone_principal' => get_theme_mod('cchla_telefone_principal', '(84) 3342-2243'),
+        'telefone_secundario' => get_theme_mod('cchla_telefone_secundario', '(84) 99193-6154'),
+        'email_principal' => get_theme_mod('cchla_email_principal', 'secretariacchla@gmail.com'),
+        'email_secundario' => get_theme_mod('cchla_email_secundario', ''),
+        'endereco' => get_theme_mod('cchla_endereco_completo', 'Av. Sen. Salgado Filho, S/n – Lagoa Nova, Natal – RN, 59078-970'),
+        'google_maps' => get_theme_mod('cchla_google_maps_link', ''),
+        'horario' => get_theme_mod('cchla_horario_funcionamento', 'Segunda a Sexta, 8h às 17h'),
+    );
+
+    if (!empty($campo) && isset($contatos[$campo])) {
+        return $contatos[$campo];
+    }
+
+    return $contatos;
+}
+
+/**
+ * Retorna redes sociais configuradas
+ */
+function cchla_get_redes_sociais()
+{
+    $redes = array(
+        'facebook' => array(
+            'url' => get_theme_mod('cchla_facebook', ''),
+            'icon' => 'fa-brands fa-facebook-f',
+            'label' => 'Facebook',
+        ),
+        'instagram' => array(
+            'url' => get_theme_mod('cchla_instagram', ''),
+            'icon' => 'fa-brands fa-instagram',
+            'label' => 'Instagram',
+        ),
+        'twitter' => array(
+            'url' => get_theme_mod('cchla_twitter', ''),
+            'icon' => 'fa-brands fa-twitter',
+            'label' => 'Twitter',
+        ),
+        'youtube' => array(
+            'url' => get_theme_mod('cchla_youtube', ''),
+            'icon' => 'fa-brands fa-youtube',
+            'label' => 'YouTube',
+        ),
+        'linkedin' => array(
+            'url' => get_theme_mod('cchla_linkedin', ''),
+            'icon' => 'fa-brands fa-linkedin-in',
+            'label' => 'LinkedIn',
+        ),
+        'tiktok' => array(
+            'url' => get_theme_mod('cchla_tiktok', ''),
+            'icon' => 'fa-brands fa-tiktok',
+            'label' => 'TikTok',
+        ),
+        'whatsapp' => array(
+            'url' => get_theme_mod('cchla_whatsapp', ''),
+            'icon' => 'fa-brands fa-whatsapp',
+            'label' => 'WhatsApp',
+        ),
+    );
+
+    // Remove redes sem URL configurada
+    return array_filter($redes, function ($rede) {
+        return !empty($rede['url']);
+    });
+}
+
+/**
+ * Exibe redes sociais
+ */
+function cchla_display_redes_sociais($classe_wrapper = 'flex gap-4', $classe_link = 'w-8 h-8')
+{
+    $redes = cchla_get_redes_sociais();
+
+    if (empty($redes)) {
+        return;
+    }
+
+    echo '<nav aria-label="' . esc_attr__('Redes sociais', 'cchla-ufrn') . '" class="' . esc_attr($classe_wrapper) . '">';
+
+    foreach ($redes as $key => $rede) {
+        $url = $rede['url'];
+
+        // WhatsApp usa formato especial
+        if ($key === 'whatsapp') {
+            $numero = preg_replace('/[^0-9]/', '', $url);
+            $url = 'https://wa.me/' . $numero;
+        }
+
+        printf(
+            '<a href="%s" aria-label="%s" target="_blank" rel="noopener noreferrer" class="%s flex items-center justify-center bg-white text-blue-700 rounded-full transition-all duration-200 hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"><i class="%s text-[14px]" aria-hidden="true"></i></a>',
+            esc_url($url),
+            esc_attr($rede['label']),
+            esc_attr($classe_link),
+            esc_attr($rede['icon'])
+        );
+    }
+
+    echo '</nav>';
+}
+
+/**
+ * Retorna copyright com substituição de variáveis
+ */
+function cchla_get_copyright()
+{
+    $copyright = get_theme_mod('cchla_copyright', '© ' . date('Y') . ' CCHLA - UFRN. Todos os direitos reservados.');
+
+    // Substitui [ano] pelo ano atual
+    $copyright = str_replace('[ano]', date('Y'), $copyright);
+
+    return $copyright;
+}
+
+/**
+ * Shortcode para exibir informações de contato
+ * Uso: [contato campo="telefone_principal"]
+ */
+function cchla_contato_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'campo' => 'telefone_principal',
+        'icone' => 'sim',
+    ), $atts);
+
+    $valor = cchla_get_contato_info($atts['campo']);
+
+    if (empty($valor)) {
+        return '';
+    }
+
+    $icones = array(
+        'telefone_principal' => 'fa-solid fa-phone',
+        'telefone_secundario' => 'fa-solid fa-phone',
+        'email_principal' => 'fa-solid fa-envelope',
+        'email_secundario' => 'fa-solid fa-envelope',
+        'endereco' => 'fa-solid fa-location-dot',
+        'horario' => 'fa-solid fa-clock',
+    );
+
+    $output = '';
+
+    if ($atts['icone'] === 'sim' && isset($icones[$atts['campo']])) {
+        $output .= '<i class="' . esc_attr($icones[$atts['campo']]) . '"></i> ';
+    }
+
+    // Formata links
+    if (strpos($atts['campo'], 'email') !== false) {
+        $output .= '<a href="mailto:' . esc_attr($valor) . '">' . esc_html($valor) . '</a>';
+    } elseif (strpos($atts['campo'], 'telefone') !== false) {
+        $tel_limpo = preg_replace('/[^0-9+]/', '', $valor);
+        $output .= '<a href="tel:' . esc_attr($tel_limpo) . '">' . esc_html($valor) . '</a>';
+    } else {
+        $output .= esc_html($valor);
+    }
+
+    return $output;
+}
+add_shortcode('contato', 'cchla_contato_shortcode');
+
+/**
+ * Shortcode para exibir redes sociais
+ * Uso: [redes_sociais]
+ */
+function cchla_redes_sociais_shortcode()
+{
+    ob_start();
+    cchla_display_redes_sociais();
+    return ob_get_clean();
+}
+add_shortcode('redes_sociais', 'cchla_redes_sociais_shortcode');
+/**
+ * Widget de Informações de Contato
+ */
+class CCHLA_Contato_Widget extends WP_Widget
+{
+
+    public function __construct()
+    {
+        parent::__construct(
+            'cchla_contato_widget',
+            __('CCHLA - Informações de Contato', 'cchla-ufrn'),
+            array('description' => __('Exibe informações de contato do CCHLA', 'cchla-ufrn'))
+        );
+    }
+
+    public function widget($args, $instance)
+    {
+        echo $args['before_widget'];
+
+        if (!empty($instance['title'])) {
+            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
+        }
+
+        $mostrar = isset($instance['mostrar']) ? $instance['mostrar'] : array('telefone', 'email', 'endereco');
+
+        echo '<div class="contato-widget space-y-3">';
+
+        if (in_array('telefone', $mostrar)) {
+            $telefone = cchla_get_contato_info('telefone_principal');
+            if ($telefone) {
+                echo '<div class="flex items-center gap-3">';
+                echo '<i class="fa-solid fa-phone text-blue-600"></i>';
+                echo '<a href="tel:' . esc_attr(preg_replace('/[^0-9+]/', '', $telefone)) . '" class="text-sm hover:text-blue-600">' . esc_html($telefone) . '</a>';
+                echo '</div>';
+            }
+        }
+
+        if (in_array('email', $mostrar)) {
+            $email = cchla_get_contato_info('email_principal');
+            if ($email) {
+                echo '<div class="flex items-center gap-3">';
+                echo '<i class="fa-solid fa-envelope text-blue-600"></i>';
+                echo '<a href="mailto:' . esc_attr($email) . '" class="text-sm hover:text-blue-600 break-all">' . esc_html($email) . '</a>';
+                echo '</div>';
+            }
+        }
+
+        if (in_array('endereco', $mostrar)) {
+            $endereco = cchla_get_contato_info('endereco');
+            if ($endereco) {
+                echo '<div class="flex items-start gap-3">';
+                echo '<i class="fa-solid fa-location-dot text-blue-600 mt-1"></i>';
+                echo '<address class="text-sm not-italic">' . esc_html($endereco) . '</address>';
+                echo '</div>';
+            }
+        }
+
+        if (in_array('horario', $mostrar)) {
+            $horario = cchla_get_contato_info('horario');
+            if ($horario) {
+                echo '<div class="flex items-center gap-3">';
+                echo '<i class="fa-solid fa-clock text-blue-600"></i>';
+                echo '<span class="text-sm">' . esc_html($horario) . '</span>';
+                echo '</div>';
+            }
+        }
+
+        echo '</div>';
+
+        // Redes sociais (se ativado)
+        if (isset($instance['mostrar_redes']) && $instance['mostrar_redes']) {
+            echo '<div class="mt-4 pt-4 border-t">';
+            cchla_display_redes_sociais('flex gap-2', 'w-8 h-8 text-xs');
+            echo '</div>';
+        }
+
+        echo $args['after_widget'];
+    }
+
+    public function form($instance)
+    {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Contato', 'cchla-ufrn');
+        $mostrar = isset($instance['mostrar']) ? $instance['mostrar'] : array('telefone', 'email', 'endereco');
+        $mostrar_redes = isset($instance['mostrar_redes']) ? (bool) $instance['mostrar_redes'] : true;
+    ?>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">
+                <?php esc_html_e('Título:', 'cchla-ufrn'); ?>
+            </label>
+            <input class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('title')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                type="text"
+                value="<?php echo esc_attr($title); ?>">
+        </p>
+
+        <p>
+            <strong><?php esc_html_e('Mostrar:', 'cchla-ufrn'); ?></strong><br>
+
+            <label>
+                <input type="checkbox"
+                    name="<?php echo esc_attr($this->get_field_name('mostrar')); ?>[]"
+                    value="telefone"
+                    <?php checked(in_array('telefone', $mostrar)); ?>>
+                <?php esc_html_e('Telefone', 'cchla-ufrn'); ?>
+            </label><br>
+
+            <label>
+                <input type="checkbox"
+                    name="<?php echo esc_attr($this->get_field_name('mostrar')); ?>[]"
+                    value="email"
+                    <?php checked(in_array('email', $mostrar)); ?>>
+                <?php esc_html_e('Email', 'cchla-ufrn'); ?>
+            </label><br>
+
+            <label>
+                <input type="checkbox"
+                    name="<?php echo esc_attr($this->get_field_name('mostrar')); ?>[]"
+                    value="endereco"
+                    <?php checked(in_array('endereco', $mostrar)); ?>>
+                <?php esc_html_e('Endereço', 'cchla-ufrn'); ?>
+            </label><br>
+
+            <label>
+                <input type="checkbox"
+                    name="<?php echo esc_attr($this->get_field_name('mostrar')); ?>[]"
+                    value="horario"
+                    <?php checked(in_array('horario', $mostrar)); ?>>
+                <?php esc_html_e('Horário', 'cchla-ufrn'); ?>
+            </label>
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox"
+                    name="<?php echo esc_attr($this->get_field_name('mostrar_redes')); ?>"
+                    value="1"
+                    <?php checked($mostrar_redes); ?>>
+                <?php esc_html_e('Mostrar redes sociais', 'cchla-ufrn'); ?>
+            </label>
+        </p>
+<?php
+    }
+
+    public function update($new_instance, $old_instance)
+    {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        $instance['mostrar'] = isset($new_instance['mostrar']) ? array_map('sanitize_text_field', $new_instance['mostrar']) : array();
+        $instance['mostrar_redes'] = isset($new_instance['mostrar_redes']) ? 1 : 0;
+        return $instance;
+    }
+}
+
+function cchla_register_contato_widget()
+{
+    register_widget('CCHLA_Contato_Widget');
+}
+add_action('widgets_init', 'cchla_register_contato_widget');
+/**
+ * Registra menus do rodapé
+ */
+function cchla_register_footer_menus()
+{
+    register_nav_menus(array(
+        'footer-institucional' => __('Rodapé - Institucional', 'cchla-ufrn'),
+        'footer-academico' => __('Rodapé - Acadêmico', 'cchla-ufrn'),
+        'footer-imprensa' => __('Rodapé - Imprensa', 'cchla-ufrn'),
+    ));
+}
+add_action('after_setup_theme', 'cchla_register_footer_menus');

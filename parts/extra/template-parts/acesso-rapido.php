@@ -86,7 +86,7 @@ $has_more = $total_acessos > 6;
     </div>
 
     <?php if ($has_more) : ?>
-        <div class="text-center mt-10">
+        <div class="text-right mt-10">
             <a href="<?php echo esc_url(get_post_type_archive_link('acesso_rapido')); ?>"
                 class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <?php esc_html_e('Ver todos os sistemas', 'cchla-ufrn'); ?>
