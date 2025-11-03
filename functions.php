@@ -4836,7 +4836,7 @@ class CCHLA_Contato_Widget extends WP_Widget
                 <?php esc_html_e('Mostrar redes sociais', 'cchla-ufrn'); ?>
             </label>
         </p>
-<?php
+    <?php
     }
 
     public function update($new_instance, $old_instance)
@@ -4866,3 +4866,450 @@ function cchla_register_footer_menus()
     ));
 }
 add_action('after_setup_theme', 'cchla_register_footer_menus');
+
+
+/**
+ * ============================================
+ * CUSTOMIZAÇÃO DO ADMIN - CCHLA
+ * ============================================
+ */
+
+/**
+ * Enfileira estilos e scripts do admin
+ */
+function cchla_admin_enqueue_scripts($hook)
+{
+    // CSS do Login
+    if ($hook === 'login') {
+        wp_enqueue_style(
+            'cchla-admin-login',
+            get_template_directory_uri() . '/admin/css/admin-login.css',
+            array(),
+            filemtime(get_template_directory() . '/admin/css/admin-login.css')
+        );
+    }
+
+    // CSS do Dashboard
+    wp_enqueue_style(
+        'cchla-admin-dashboard',
+        get_template_directory_uri() . '/admin/css/admin-dashboard.css',
+        array(),
+        filemtime(get_template_directory() . '/admin/css/admin-dashboard.css')
+    );
+
+    // JavaScript Customizado
+    wp_enqueue_script(
+        'cchla-admin-custom',
+        get_template_directory_uri() . '/admin/js/admin-custom.js',
+        array('jquery', 'wp-util'),
+        filemtime(get_template_directory() . '/admin/js/admin-custom.js'),
+        true
+    );
+
+    // Passa variáveis para o JavaScript
+    wp_localize_script('cchla-admin-custom', 'cchlaAdmin', array(
+        'themeUrl' => get_template_directory_uri(),
+        'adminUrl' => admin_url(),
+        'siteUrl' => home_url(),
+        'showWelcome' => current_user_can('manage_options'),
+        'nonce' => wp_create_nonce('cchla-admin-nonce'),
+    ));
+
+    // Enfileira Media Uploader quando necessário
+    if (in_array($hook, array('post.php', 'post-new.php'))) {
+        wp_enqueue_media();
+    }
+}
+add_action('admin_enqueue_scripts', 'cchla_admin_enqueue_scripts');
+add_action('login_enqueue_scripts', 'cchla_admin_enqueue_scripts');
+
+/**
+ * Customiza a URL do logo de login
+ */
+function cchla_login_logo_url()
+{
+    return home_url();
+}
+add_filter('login_headerurl', 'cchla_login_logo_url');
+
+/**
+ * Customiza o título do logo de login
+ */
+function cchla_login_logo_url_title()
+{
+    return get_bloginfo('name') . ' - ' . get_bloginfo('description');
+}
+add_filter('login_headertext', 'cchla_login_logo_url_title');
+
+/**
+ * Enfileira estilos e scripts do login
+ */
+function cchla_login_enqueue_scripts()
+{
+    // CSS do Login
+    wp_enqueue_style(
+        'cchla-admin-login',
+        get_template_directory_uri() . '/admin/css/admin-login.css',
+        array(),
+        filemtime(get_template_directory() . '/admin/css/admin-login.css')
+    );
+
+    // JavaScript do Login
+    wp_enqueue_script(
+        'cchla-admin-login-js',
+        get_template_directory_uri() . '/admin/js/admin-login.js',
+        array(),
+        filemtime(get_template_directory() . '/admin/js/admin-login.js'),
+        true
+    );
+}
+add_action('login_enqueue_scripts', 'cchla_login_enqueue_scripts');
+
+/**
+ * Customiza a mensagem de login
+ */
+function cchla_login_message($message)
+{
+    // Remove mensagem padrão se estiver vazia
+    if (strpos($message, 'log in') !== false || strpos($message, 'register') !== false) {
+        return '';
+    }
+    return $message;
+}
+add_filter('login_message', 'cchla_login_message');
+
+/**
+ * Adiciona classes personalizadas ao body do login
+ */
+function cchla_login_body_class($classes)
+{
+    $classes[] = 'cchla-login';
+    $classes[] = 'cchla-theme';
+    return $classes;
+}
+add_filter('login_body_class', 'cchla_login_body_class');
+
+/**
+ * Remove a mensagem "Lembrar-me por 2 semanas"
+ */
+function cchla_customize_login_text($text)
+{
+    if ($text === 'Lembrar-me') {
+        return 'Manter-me conectado';
+    }
+    return $text;
+}
+add_filter('gettext', 'cchla_customize_login_text', 20, 3);
+
+/**
+ * Customiza o rodapé do admin
+ */
+function cchla_admin_footer_text()
+{
+    $text = sprintf(
+        __('Desenvolvido com %s pela equipe CCHLA', 'cchla-ufrn'),
+        '<span style="color: #dc3232;">❤</span>'
+    );
+    return $text;
+}
+add_filter('admin_footer_text', 'cchla_admin_footer_text');
+
+/**
+ * Customiza a versão do WordPress no rodapé
+ */
+function cchla_admin_footer_version()
+{
+    return sprintf(
+        __('CCHLA v%s', 'cchla-ufrn'),
+        wp_get_theme()->get('Version')
+    );
+}
+add_filter('update_footer', 'cchla_admin_footer_version', 11);
+
+/**
+ * Remove itens desnecessários do menu admin
+ */
+function cchla_remove_admin_menu_items()
+{
+    // Para não administradores
+    if (!current_user_can('manage_options')) {
+        remove_menu_page('tools.php');        // Ferramentas
+        remove_menu_page('edit-comments.php'); // Comentários (se não usar)
+    }
+}
+add_action('admin_menu', 'cchla_remove_admin_menu_items', 999);
+
+/**
+ * Personaliza o Dashboard Welcome Panel
+ */
+function cchla_custom_dashboard_welcome_panel()
+{
+    // Esconde o padrão
+    remove_action('welcome_panel', 'wp_welcome_panel');
+}
+add_action('load-index.php', 'cchla_custom_dashboard_welcome_panel');
+
+/**
+ * Adiciona widgets personalizados ao dashboard
+ */
+function cchla_add_dashboard_widgets()
+{
+    wp_add_dashboard_widget(
+        'cchla_quick_links',
+        '🚀 Acesso Rápido - CCHLA',
+        'cchla_dashboard_quick_links_widget'
+    );
+
+    wp_add_dashboard_widget(
+        'cchla_stats',
+        '📊 Estatísticas do Site',
+        'cchla_dashboard_stats_widget'
+    );
+}
+add_action('wp_dashboard_setup', 'cchla_add_dashboard_widgets');
+
+/**
+ * Widget de Links Rápidos
+ */
+function cchla_dashboard_quick_links_widget()
+{
+    ?>
+    <div class="cchla-quick-links" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+        <a href="<?php echo admin_url('post-new.php?post_type=noticias'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
+            <span style="font-size: 24px;">📰</span>
+            <span>Nova Notícia</span>
+        </a>
+
+        <a href="<?php echo admin_url('post-new.php?post_type=publicacoes'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
+            <span style="font-size: 24px;">📚</span>
+            <span>Nova Publicação</span>
+        </a>
+
+        <a href="<?php echo admin_url('post-new.php?post_type=especiais'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
+            <span style="font-size: 24px;">🎬</span>
+            <span>Novo Especial</span>
+        </a>
+
+        <a href="<?php echo admin_url('post-new.php?post_type=servicos'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
+            <span style="font-size: 24px;">💼</span>
+            <span>Novo Serviço</span>
+        </a>
+
+        <a href="<?php echo admin_url('customize.php'); ?>" class="button button-secondary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
+            <span style="font-size: 24px;">🎨</span>
+            <span>Personalizar</span>
+        </a>
+
+        <a href="<?php echo home_url(); ?>" target="_blank" class="button button-secondary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
+            <span style="font-size: 24px;">🌐</span>
+            <span>Ver Site</span>
+        </a>
+    </div>
+<?php
+}
+
+/**
+ * Widget de Estatísticas
+ */
+function cchla_dashboard_stats_widget()
+{
+    // Função auxiliar para contar posts com segurança
+    $get_post_count = function ($post_type) {
+        if (!post_type_exists($post_type)) {
+            return 0;
+        }
+
+        $count = wp_count_posts($post_type);
+        return isset($count->publish) ? (int) $count->publish : 0;
+    };
+
+    $noticias_count = $get_post_count('noticias');
+    $publicacoes_count = $get_post_count('publicacoes');
+    $especiais_count = $get_post_count('especiais');
+    $servicos_count = $get_post_count('servicos');
+
+?>
+    <div class="cchla-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
+        <div style="background: linear-gradient(135deg, #2E3CB9, #183AB3); color: white; padding: 20px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold;"><?php echo $noticias_count; ?></div>
+            <div style="font-size: 14px; opacity: 0.9;">Notícias</div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #00a32a, #008a20); color: white; padding: 20px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold;"><?php echo $publicacoes_count; ?></div>
+            <div style="font-size: 14px; opacity: 0.9;">Publicações</div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #dc3232, #a02222); color: white; padding: 20px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold;"><?php echo $especiais_count; ?></div>
+            <div style="font-size: 14px; opacity: 0.9;">Especiais</div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #f0b849, #dda230); color: white; padding: 20px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold;"><?php echo $servicos_count; ?></div>
+            <div style="font-size: 14px; opacity: 0.9;">Serviços</div>
+        </div>
+    </div>
+<?php
+}
+
+/**
+ * Remove widgets desnecessários do dashboard
+ */
+function cchla_remove_dashboard_widgets()
+{
+    // Para não administradores
+    if (!current_user_can('manage_options')) {
+        remove_meta_box('dashboard_primary', 'dashboard', 'side');
+        remove_meta_box('dashboard_secondary', 'dashboard', 'side');
+        remove_meta_box('dashboard_quick_press', 'dashboard', 'side');
+        remove_meta_box('dashboard_recent_drafts', 'dashboard', 'side');
+    }
+}
+add_action('wp_dashboard_setup', 'cchla_remove_dashboard_widgets');
+
+/**
+ * Adiciona favicon customizado no admin
+ */
+function cchla_admin_favicon()
+{
+    $favicon = get_template_directory_uri() . '/assets/img/favicon.ico';
+    echo '<link rel="shortcut icon" href="' . esc_url($favicon) . '" />';
+}
+add_action('admin_head', 'cchla_admin_favicon');
+add_action('login_head', 'cchla_admin_favicon');
+
+/**
+ * Adiciona classes CSS personalizadas no body do admin
+ */
+function cchla_admin_body_class($classes)
+{
+    $classes .= ' cchla-admin';
+
+    // Adiciona classe baseada no papel do usuário
+    $user = wp_get_current_user();
+    if (!empty($user->roles)) {
+        $classes .= ' role-' . $user->roles[0];
+    }
+
+    return $classes;
+}
+add_filter('admin_body_class', 'cchla_admin_body_class');
+
+/**
+ * Customiza o editor TinyMCE
+ */
+function cchla_customize_tinymce($settings)
+{
+    $settings['content_css'] = get_template_directory_uri() . '/admin/css/editor-style.css';
+    return $settings;
+}
+add_filter('tiny_mce_before_init', 'cchla_customize_tinymce');
+
+/**
+ * ============================================
+ * CUSTOMIZAÇÕES DO ADMIN BAR
+ * ============================================
+ */
+
+/**
+ * Personaliza a saudação do admin bar
+ */
+function cchla_replace_howdy($wp_admin_bar)
+{
+    // Validação do objeto WP_Admin_Bar
+    if (!is_object($wp_admin_bar) || !method_exists($wp_admin_bar, 'get_node')) {
+        return;
+    }
+
+    // Obtém o nó my-account
+    $my_account = $wp_admin_bar->get_node('my-account');
+
+    // Validações completas
+    if (!is_object($my_account)) {
+        return;
+    }
+
+    if (!property_exists($my_account, 'title')) {
+        return;
+    }
+
+    if (empty($my_account->title)) {
+        return;
+    }
+
+    // Lista de saudações para substituir
+    $replacements = array(
+        'Howdy,' => 'Olá,',
+        'Howdy' => 'Olá',
+        'Hi,' => 'Olá,',
+    );
+
+    // Aplica as substituições
+    $new_title = str_replace(
+        array_keys($replacements),
+        array_values($replacements),
+        $my_account->title
+    );
+
+    // Atualiza apenas se houve mudança
+    if ($new_title !== $my_account->title) {
+        $wp_admin_bar->add_node(array(
+            'id' => 'my-account',
+            'title' => $new_title,
+        ));
+    }
+}
+add_filter('admin_bar_menu', 'cchla_replace_howdy', 25);
+
+/**
+ * Adiciona link para o site no admin bar
+ */
+function cchla_admin_bar_site_link($wp_admin_bar)
+{
+    // Validação
+    if (!is_object($wp_admin_bar) || !method_exists($wp_admin_bar, 'add_node')) {
+        return;
+    }
+
+    $args = array(
+        'id' => 'cchla-view-site',
+        'title' => '<span class="ab-icon dashicons dashicons-external"></span><span class="ab-label">Ver Site</span>',
+        'href' => home_url(),
+        'meta' => array(
+            'target' => '_blank',
+            'title' => 'Abrir o site em nova aba',
+            'class' => 'cchla-view-site-link'
+        )
+    );
+
+    $wp_admin_bar->add_node($args);
+}
+add_action('admin_bar_menu', 'cchla_admin_bar_site_link', 100);
+
+/**
+ *```
+
+ *## **7. Criar Imagens Necessárias**
+
+ *Crie ou adicione as seguintes imagens na pasta `/admin/images/`:
+
+ *1. **logo-login.svg** - Logo do CCHLA para a tela de login
+ *2. **logo-admin.svg** - Logo menor para o menu lateral
+ *3. **bg-login.png** - Textura de fundo (opcional)
+ *4. **favicon.ico** - Favicon do CCHLA
+
+ *## **8. Como Aplicar em Outros Projetos**
+
+ *### **Passo 1: Copiar arquivos**
+ *```
+ * /admin/
+ *├── css/
+ *│   ├── admin-variables.css
+ *│   ├── admin-login.css
+ *│   └── admin-dashboard.css
+ *├── js/
+ *│   └── admin-custom.js
+ *└── images/
+ *
+ **/

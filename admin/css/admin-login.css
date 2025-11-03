@@ -1,0 +1,692 @@
+/**
+ * ============================================
+ * PÁGINA DE LOGIN - CCHLA
+ * Identidade Visual Completa
+ * ============================================
+ */
+
+/* ===== IMPORTA VARIÁVEIS ===== */
+@import url('admin-variables.css');
+
+/* ===== RESET E BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#login form p {
+    margin-bottom: 1rem;
+}
+
+/* ===== CORPO DA PÁGINA - GRADIENTE AZUL ===== */
+body.login {
+    /*background: linear-gradient(135deg, #2E3CB9 0%, #183AB3 50%, #1D2E7A 100%); */
+    background-image: linear-gradient(in oklab, rgb(24, 58, 179) 0%, rgb(22, 37, 86) 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* ===== PADRÃO GEOMÉTRICO DE FUNDO ===== */
+body.login::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(25, 4, 65, 0.02) 35px, rgba(255, 255, 255, .02) 70px),
+        repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 255, 255, .02) 35px, rgba(255, 255, 255, .02) 70px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ===== FORMAS DECORATIVAS FLUTUANTES ===== */
+body.login::after {
+    content: '';
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(161, 203, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    top: -400px;
+    right: -400px;
+    pointer-events: none;
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(50px, 50px) rotate(90deg);
+    }
+
+    50% {
+        transform: translate(0, 100px) rotate(180deg);
+    }
+
+    75% {
+        transform: translate(-50px, 50px) rotate(270deg);
+    }
+}
+
+/* Segunda forma decorativa */
+body.login .cchla-shape-decoration {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(52, 87, 203, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    bottom: -300px;
+    left: -300px;
+    pointer-events: none;
+    animation: float 15s ease-in-out infinite reverse;
+}
+
+/* ===== CONTAINER DO LOGIN ===== */
+#login {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px 20px;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== LOGO ===== */
+#login h1 {
+    margin-bottom: 40px;
+}
+
+#login h1 a {
+    background-image: url('../images/logo-login.svg') !important;
+    background-size: contain !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    width: 100% !important;
+    height: 100px !important;
+    margin: 0 auto;
+    display: block;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.2));
+}
+
+#login h1 a:hover,
+#login h1 a:focus {
+    transform: scale(1.03);
+    filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.3));
+}
+
+/* ===== TEXTO ACIMA DO FORMULÁRIO ===== */
+.cchla-login-title {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cchla-login-title h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.cchla-login-title p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+}
+
+/* ===== FORMULÁRIO - CARD GLASSMORPHISM ===== */
+#loginform,
+#registerform,
+#lostpasswordform {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    padding: 40px 35px;
+    margin-top: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Detalhe decorativo no topo do card */
+#loginform::before,
+#registerform::before,
+#lostpasswordform::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2E3CB9, #3457CB, #2E3CB9);
+    background-size: 200% 100%;
+    animation: gradientMove 3s ease infinite;
+}
+
+@keyframes gradientMove {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ===== LABELS ===== */
+.login label {
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 0.3px;
+}
+
+/* ===== CAMPOS DE INPUT ===== */
+.login input[type="text"],
+.login input[type="password"],
+.login input[type="email"] {
+    background: #F9FAFB;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 15px;
+    color: #1F2937;
+    width: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-weight: 400;
+}
+
+.login input[type="text"]::placeholder,
+.login input[type="password"]::placeholder,
+.login input[type="email"]::placeholder {
+    color: #9CA3AF;
+}
+
+.login input[type="text"]:focus,
+.login input[type="password"]:focus,
+.login input[type="email"]:focus {
+    background: #FFFFFF;
+    border-color: #2E3CB9;
+    box-shadow:
+        0 0 0 4px rgba(46, 60, 185, 0.1),
+        0 4px 12px rgba(46, 60, 185, 0.15);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+/* Ícones nos inputs */
+.login .user-pass-wrap,
+.login .user-email-wrap {
+    position: relative;
+}
+
+.login .user-email-wrap::before {
+    content: '';
+}
+
+.login .user-pass-wrap::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.login input[type="password"] {
+    padding-left: 48px;
+}
+
+/* ===== CHECKBOX "LEMBRAR-ME" ===== */
+.login .forgetmenot {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 16px;
+}
+
+.login input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    margin-right: 10px;
+    border: 2px solid #D1D5DB;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    background: white;
+    position: relative;
+}
+
+.login input[type="checkbox"]:checked {
+    background: #2E3CB9;
+    border-color: #2E3CB9;
+}
+
+.login input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 3px rgba(46, 60, 185, 0.2);
+}
+
+.login .forgetmenot label {
+    margin: 0;
+    color: #4B5563;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ===== BOTÃO DE SUBMIT ===== */
+.login .button-primary {
+    background: linear-gradient(135deg, #2E3CB9 0%, #1D2E7A 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 16px 32px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+    box-shadow:
+        0 10px 25px rgba(46, 60, 185, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+    transition: all 0.3s ease !important;
+    height: auto !important;
+    width: 100%;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de brilho no botão */
+.login .button-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.login .button-primary:hover::before {
+    left: 100%;
+}
+
+.login .button-primary:hover,
+.login .button-primary:focus {
+    background: linear-gradient(135deg, #1D2E7A 0%, #2E3CB9 100%) !important;
+    box-shadow:
+        0 15px 35px rgba(46, 60, 185, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset !important;
+    transform: translateY(-2px);
+}
+
+.login .button-primary:active {
+    transform: translateY(0);
+    box-shadow:
+        0 5px 15px rgba(46, 60, 185, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+}
+
+/* ===== LINKS ===== */
+.login #nav,
+.login #backtoblog {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login #nav a,
+.login #backtoblog a {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.login #nav a:hover,
+.login #backtoblog a:hover,
+.login #nav a:focus,
+.login #backtoblog a:focus {
+    color: white;
+    background: rgba(46, 60, 185, 0.4);
+    transform: translateY(-1px);
+}
+
+/* ===== MENSAGENS DE ERRO/SUCESSO ===== */
+.login .message,
+.login .success {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    box-shadow:
+        0 10px 25px rgba(16, 185, 129, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login .message::before,
+.login .success::before {
+    content: '';
+    font-size: 20px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.login #login_error {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    box-shadow:
+        0 10px 25px rgba(239, 68, 68, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login #login_error::before {
+    content: '';
+    font-size: 20px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.login #login_error a,
+.login .message a,
+.login .success a {
+    color: white;
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+/* ===== IDIOMAS ===== */
+.login .language-switcher {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.login .language-switcher label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.login .language-switcher select {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: #1F2937;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.login .language-switcher select:hover,
+.login .language-switcher select:focus {
+    background: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* ===== PRIVACY POLICY LINK ===== */
+.login .privacy-policy-page-link {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.login .privacy-policy-page-link a {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.login .privacy-policy-page-link a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== FOOTER DECORATIVO ===== */
+.cchla-login-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    z-index: 0;
+    color: white;
+}
+
+.cchla-login-footer a {
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.cchla-login-footer a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* ===== LOADING SPINNER ===== */
+.login .spinner {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 50 50'%3E%3Cpath fill='%232E3CB9' d='M25,5A20.14,20.14,0,0,1,45,22.88a2.51,2.51,0,0,0,2.49,2.26h0A2.52,2.52,0,0,0,50,22.33a25.14,25.14,0,0,0-50,0,2.52,2.52,0,0,0,2.5,2.81h0A2.51,2.51,0,0,0,5,22.88,20.14,20.14,0,0,1,25,5Z'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 25 25' to='360 25 25' dur='0.6s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E") center center no-repeat;
+    background-size: 20px 20px;
+    float: none;
+    margin: 0 auto;
+    display: block;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media screen and (max-width: 768px) {
+    body.login {
+        padding: 20px;
+    }
+
+    #login {
+        max-width: 100%;
+        padding: 20px 15px;
+    }
+
+    #login h1 a {
+        height: 80px !important;
+    }
+
+    .cchla-login-title h2 {
+        font-size: 24px;
+    }
+
+    .cchla-login-title p {
+        font-size: 14px;
+    }
+
+    #loginform,
+    #registerform,
+    #lostpasswordform {
+        padding: 30px 25px;
+        border-radius: 16px;
+    }
+
+    .login input[type="text"],
+    .login input[type="password"],
+    .login input[type="email"] {
+        font-size: 16px;
+        /* Previne zoom no iOS */
+    }
+
+    .cchla-login-footer {
+        position: relative;
+        margin-top: 30px;
+    }
+
+
+
+    .language-switcher,
+    .cchla-login-footer {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    #loginform,
+    #registerform,
+    #lostpasswordform {
+        padding: 25px 20px;
+    }
+
+    .language-switcher,
+    .cchla-login-footer {
+        display: none;
+    }
+
+    .login .button-primary {
+        padding: 14px 24px !important;
+        font-size: 15px !important;
+    }
+}
+
+/* ===== DARK MODE (OPCIONAL) ===== */
+@media (prefers-color-scheme: dark) {
+    /* Mantém o mesmo visual, pois o fundo já é escuro */
+}
+
+/* ===== ACESSIBILIDADE ===== */
+.login *:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* ===== ANIMAÇÕES EXTRAS ===== */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.login .button-primary.loading {
+    pointer-events: none;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ===== TRANSIÇÕES SUAVES ===== */
+.login * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== IMPRESSÃO ===== */
+@media print {
+
+    body.login::before,
+    body.login::after,
+    .cchla-shape-decoration,
+    .cchla-login-footer {
+        display: none;
+    }
+
+    body.login {
+        background: white;
+    }
+
+    #loginform,
+    #registerform,
+    #lostpasswordform {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
