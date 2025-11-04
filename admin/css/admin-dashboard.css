@@ -104,7 +104,7 @@
 
 /* ===== BOTÕES ===== */
 .wp-core-ui .button-primary {
-    background: var(--cchla-primary) !important;
+    background: var(--cchla-primary-lighter) !important;
     border-color: var(--cchla-primary) !important;
     box-shadow: none !important;
     text-shadow: none !important;
@@ -117,6 +117,7 @@
 .wp-core-ui .button-primary:hover,
 .wp-core-ui .button-primary:focus {
     background: var(--cchla-primary-dark) !important;
+    color: var(--cchla-primary-lighter) !important;
     border-color: var(--cchla-primary-dark) !important;
     transform: translateY(-1px);
     box-shadow: var(--cchla-shadow-md) !important;

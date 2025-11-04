@@ -5076,82 +5076,190 @@ function cchla_dashboard_quick_links_widget()
     ?>
     <div class="cchla-quick-links" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
         <a href="<?php echo admin_url('post-new.php?post_type=noticias'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
-            <span style="font-size: 24px;">📰</span>
+            <span style="font-size: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#140b68ff" viewBox="0 0 256 256">
+                    <path d="M216,48H40a8,8,0,0,0-8,8V216l32-16,32,16,32-16,32,16,32-16,32,16V56A8,8,0,0,0,216,48ZM112,160H64V96h48Z" opacity="0.2"></path>
+                    <path d="M216,40H40A16,16,0,0,0,24,56V216a8,8,0,0,0,11.58,7.15L64,208.94l28.42,14.21a8,8,0,0,0,7.16,0L128,208.94l28.42,14.21a8,8,0,0,0,7.16,0L192,208.94l28.42,14.21A8,8,0,0,0,232,216V56A16,16,0,0,0,216,40Zm0,163.06-20.42-10.22a8,8,0,0,0-7.16,0L160,207.06l-28.42-14.22a8,8,0,0,0-7.16,0L96,207.06,67.58,192.84a8,8,0,0,0-7.16,0L40,203.06V56H216ZM136,112a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H144A8,8,0,0,1,136,112Zm0,32a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H144A8,8,0,0,1,136,144ZM64,168h48a8,8,0,0,0,8-8V96a8,8,0,0,0-8-8H64a8,8,0,0,0-8,8v64A8,8,0,0,0,64,168Zm8-64h32v48H72Z"></path>
+                </svg></span>
             <span>Nova Notícia</span>
         </a>
 
         <a href="<?php echo admin_url('post-new.php?post_type=publicacoes'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
-            <span style="font-size: 24px;">📚</span>
+            <span style="font-size: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#140b68ff" viewBox="0 0 256 256">
+                    <path d="M48,72h64V184H48ZM190.64,38.39a8,8,0,0,0-9.5-6.21l-46.81,10a8.07,8.07,0,0,0-6.15,9.57L139.79,107l62.46-13.42Z" opacity="0.2"></path>
+                    <path d="M231.65,194.55,198.46,36.75a16,16,0,0,0-19-12.39L132.65,34.42a16.08,16.08,0,0,0-12.3,19l33.19,157.8A16,16,0,0,0,169.16,224a16.25,16.25,0,0,0,3.38-.36l46.81-10.06A16.09,16.09,0,0,0,231.65,194.55ZM136,50.15c0-.06,0-.09,0-.09l46.8-10,3.33,15.87L139.33,66Zm6.62,31.47,46.82-10.05,3.34,15.9L146,97.53Zm6.64,31.57,46.82-10.06,13.3,63.24-46.82,10.06ZM216,197.94l-46.8,10-3.33-15.87L212.67,182,216,197.85C216,197.91,216,197.94,216,197.94ZM104,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V48A16,16,0,0,0,104,32ZM56,48h48V64H56Zm0,32h48v96H56Zm48,128H56V192h48v16Z"></path>
+                </svg></span>
             <span>Nova Publicação</span>
         </a>
 
         <a href="<?php echo admin_url('post-new.php?post_type=especiais'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
-            <span style="font-size: 24px;">🎬</span>
+            <span style="font-size: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#140b68ff" viewBox="0 0 256 256">
+                    <path d="M226.59,71.53a16,16,0,0,0-9.63-11C183.48,47.65,128,48,128,48s-55.48-.35-89,12.58a16,16,0,0,0-9.63,11C27.07,80.54,24,98.09,24,128s3.07,47.46,5.41,56.47A16,16,0,0,0,39,195.42C72.52,208.35,128,208,128,208s55.48.35,89-12.58a16,16,0,0,0,9.63-10.95c2.34-9,5.41-26.56,5.41-56.47S228.93,80.54,226.59,71.53ZM112,160V96l48,32Z" opacity="0.2"></path>
+                    <path d="M164.44,121.34l-48-32A8,8,0,0,0,104,96v64a8,8,0,0,0,12.44,6.66l48-32a8,8,0,0,0,0-13.32ZM120,145.05V111l25.58,17ZM234.33,69.52a24,24,0,0,0-14.49-16.4C185.56,39.88,131,40,128,40s-57.56-.12-91.84,13.12a24,24,0,0,0-14.49,16.4C19.08,79.5,16,97.74,16,128s3.08,48.5,5.67,58.48a24,24,0,0,0,14.49,16.41C69,215.56,120.4,216,127.34,216h1.32c6.94,0,58.37-.44,91.18-13.11a24,24,0,0,0,14.49-16.41c2.59-10,5.67-28.22,5.67-58.48S236.92,79.5,234.33,69.52Zm-15.49,113a8,8,0,0,1-4.77,5.49c-31.65,12.22-85.48,12-86.12,12s-54.37.18-86-12a8,8,0,0,1-4.77-5.49C34.8,173.39,32,156.57,32,128s2.8-45.39,5.16-54.47A8,8,0,0,1,41.93,68C73.58,55.82,127.4,56,128.05,56s54.37-.18,86,12a8,8,0,0,1,4.77,5.49C221.2,82.61,224,99.43,224,128S221.2,173.39,218.84,182.47Z"></path>
+                </svg></span>
             <span>Novo Especial</span>
         </a>
 
         <a href="<?php echo admin_url('post-new.php?post_type=servicos'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
-            <span style="font-size: 24px;">💼</span>
+            <span style="font-size: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#140b68ff" viewBox="0 0 256 256">
+                    <path d="M216,48V208a8,8,0,0,1-8,8H64L40,192V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z" opacity="0.2"></path>
+                    <path d="M224,48V208a16,16,0,0,1-16,16H136a8,8,0,0,1,0-16h72V48H48v96a8,8,0,0,1-16,0V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48ZM125.66,154.34a8,8,0,0,0-11.32,0L64,204.69,45.66,186.34a8,8,0,0,0-11.32,11.32l24,24a8,8,0,0,0,11.32,0l56-56A8,8,0,0,0,125.66,154.34Z"></path>
+                </svg></span>
             <span>Novo Serviço</span>
         </a>
 
         <a href="<?php echo admin_url('customize.php'); ?>" class="button button-secondary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
-            <span style="font-size: 24px;">🎨</span>
+            <span style="font-size: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256">
+                    <path d="M135.88,43.11l-25,143.14a35.71,35.71,0,0,1-41.34,29.2h0a36,36,0,0,1-28.95-41.71l25-143.13a8,8,0,0,1,9.19-6.49l54.67,9.73A8,8,0,0,1,135.88,43.11Z" opacity="0.2"></path>
+                    <path d="M88,180a12,12,0,1,1-12-12A12,12,0,0,1,88,180Zm152-23.81V208a16,16,0,0,1-16,16H76a46.36,46.36,0,0,1-7.94-.68,44,44,0,0,1-35.43-50.95l25-143.13a15.94,15.94,0,0,1,18.47-13L130.84,26a16,16,0,0,1,12.92,18.52l-12.08,69L199.49,89a16,16,0,0,1,20.45,9.52L239,150.69A18.35,18.35,0,0,1,240,156.19ZM103,184.87,128,41.74,73.46,32l-25,143.1A28,28,0,0,0,70.9,207.57,27.29,27.29,0,0,0,91.46,203,27.84,27.84,0,0,0,103,184.87ZM116.78,195,224,156.11,204.92,104,128.5,131.7l-9.78,55.92A44.63,44.63,0,0,1,116.78,195ZM224,173.12,127.74,208H224Z"></path>
+                </svg></span>
             <span>Personalizar</span>
         </a>
 
         <a href="<?php echo home_url(); ?>" target="_blank" class="button button-secondary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
-            <span style="font-size: 24px;">🌐</span>
+            <span style="font-size: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256">
+                    <path d="M215,168.71a96.42,96.42,0,0,1-30.54,37l-9.36-9.37a8,8,0,0,0-3.63-2.09L150,188.59a8,8,0,0,1-5.88-8.9l2.38-16.2a8,8,0,0,1,4.84-6.22l30.46-12.66a8,8,0,0,1,8.47,1.49ZM159.89,105,182.06,79.2A8,8,0,0,0,184,74V50A96,96,0,0,0,50.49,184.65l9.92-6.52A8,8,0,0,0,64,171.49l.21-36.23a8.06,8.06,0,0,1,1.35-4.41l20.94-31.3a8,8,0,0,1,11.34-2l19.81,13a8.06,8.06,0,0,0,5.77,1.45l31.46-4.26A8,8,0,0,0,159.89,105Z" opacity="0.2"></path>
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,16a87.5,87.5,0,0,1,48,14.28V74L153.83,99.74,122.36,104l-.31-.22L102.38,90.92A16,16,0,0,0,79.87,95.1L58.93,126.4a16,16,0,0,0-2.7,8.81L56,171.44l-3.27,2.15A88,88,0,0,1,128,40ZM62.29,186.47l2.52-1.65A16,16,0,0,0,72,171.53l.21-36.23L93.17,104a3.62,3.62,0,0,0,.32.22l19.67,12.87a15.94,15.94,0,0,0,11.35,2.77L156,115.59a16,16,0,0,0,10-5.41l22.17-25.76A16,16,0,0,0,192,74V67.67A87.87,87.87,0,0,1,211.77,155l-16.14-14.76a16,16,0,0,0-16.93-3l-30.46,12.65a16.08,16.08,0,0,0-9.68,12.45l-2.39,16.19a16,16,0,0,0,11.77,17.81L169.4,202l2.36,2.37A87.88,87.88,0,0,1,62.29,186.47ZM185,195l-4.3-4.31a16,16,0,0,0-7.26-4.18L152,180.85l2.39-16.19L184.84,152,205,170.48A88.43,88.43,0,0,1,185,195Z"></path>
+                </svg></span>
             <span>Ver Site</span>
         </a>
     </div>
-<?php
+    <?php
 }
 
 /**
- * Widget de Estatísticas
+ * Widget de Estatísticas - Versão Corrigida
  */
 function cchla_dashboard_stats_widget()
 {
-    // Função auxiliar para contar posts com segurança
-    $get_post_count = function ($post_type) {
-        if (!post_type_exists($post_type)) {
-            return 0;
+    // Configuração dos cards
+    $stats_config = array(
+        'acesso_rapido' => array(
+            'label' => 'Links rápidos',
+            'gradient' => 'linear-gradient(135deg, #2E3CB9, #183AB3)',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#140b68ff" viewBox="0 0 256 256"><path d="M184,80V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H176A8,8,0,0,1,184,80Z" opacity="0.2"></path><path d="M224,104a8,8,0,0,1-16,0V59.32l-66.33,66.34a8,8,0,0,1-11.32-11.32L196.68,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"></path></svg>'
+        ),
+        'publicacoes' => array(
+            'label' => 'Publicações',
+            'gradient' => 'linear-gradient(135deg, #00a32a, #008a20)',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#1b4e27ff" viewBox="0 0 256 256"><path d="M48,72h64V184H48ZM190.64,38.39a8,8,0,0,0-9.5-6.21l-46.81,10a8.07,8.07,0,0,0-6.15,9.57L139.79,107l62.46-13.42Z" opacity="0.2"></path><path d="M231.65,194.55,198.46,36.75a16,16,0,0,0-19-12.39L132.65,34.42a16.08,16.08,0,0,0-12.3,19l33.19,157.8A16,16,0,0,0,169.16,224a16.25,16.25,0,0,0,3.38-.36l46.81-10.06A16.09,16.09,0,0,0,231.65,194.55ZM136,50.15c0-.06,0-.09,0-.09l46.8-10,3.33,15.87L139.33,66Zm6.62,31.47,46.82-10.05,3.34,15.9L146,97.53Zm6.64,31.57,46.82-10.06,13.3,63.24-46.82,10.06ZM216,197.94l-46.8,10-3.33-15.87L212.67,182,216,197.85C216,197.91,216,197.94,216,197.94ZM104,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V48A16,16,0,0,0,104,32ZM56,48h48V64H56Zm0,32h48v96H56Zm48,128H56V192h48v16Z"></path></svg>'
+        ),
+        'especiais' => array(
+            'label' => 'Especiais',
+            'gradient' => 'linear-gradient(135deg, #dc3232, #a02222)',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#611111ff" viewBox="0 0 256 256"><path d="M226.59,71.53a16,16,0,0,0-9.63-11C183.48,47.65,128,48,128,48s-55.48-.35-89,12.58a16,16,0,0,0-9.63,11C27.07,80.54,24,98.09,24,128s3.07,47.46,5.41,56.47A16,16,0,0,0,39,195.42C72.52,208.35,128,208,128,208s55.48.35,89-12.58a16,16,0,0,0,9.63-10.95c2.34-9,5.41-26.56,5.41-56.47S228.93,80.54,226.59,71.53ZM112,160V96l48,32Z" opacity="0.2"></path><path d="M164.44,121.34l-48-32A8,8,0,0,0,104,96v64a8,8,0,0,0,12.44,6.66l48-32a8,8,0,0,0,0-13.32ZM120,145.05V111l25.58,17ZM234.33,69.52a24,24,0,0,0-14.49-16.4C185.56,39.88,131,40,128,40s-57.56-.12-91.84,13.12a24,24,0,0,0-14.49,16.4C19.08,79.5,16,97.74,16,128s3.08,48.5,5.67,58.48a24,24,0,0,0,14.49,16.41C69,215.56,120.4,216,127.34,216h1.32c6.94,0,58.37-.44,91.18-13.11a24,24,0,0,0,14.49-16.41c2.59-10,5.67-28.22,5.67-58.48S236.92,79.5,234.33,69.52Zm-15.49,113a8,8,0,0,1-4.77,5.49c-31.65,12.22-85.48,12-86.12,12s-54.37.18-86-12a8,8,0,0,1-4.77-5.49C34.8,173.39,32,156.57,32,128s2.8-45.39,5.16-54.47A8,8,0,0,1,41.93,68C73.58,55.82,127.4,56,128.05,56s54.37-.18,86,12a8,8,0,0,1,4.77,5.49C221.2,82.61,224,99.43,224,128S221.2,173.39,218.84,182.47Z"></path></svg>'
+        ),
+        'servicos' => array(
+            'label' => 'Serviços',
+            'gradient' => 'linear-gradient(135deg, #f0b849, #dda230)',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#775717ff" viewBox="0 0 256 256"><path d="M216,48V208a8,8,0,0,1-8,8H64L40,192V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z" opacity="0.2"></path><path d="M224,48V208a16,16,0,0,1-16,16H136a8,8,0,0,1,0-16h72V48H48v96a8,8,0,0,1-16,0V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48ZM125.66,154.34a8,8,0,0,0-11.32,0L64,204.69,45.66,186.34a8,8,0,0,0-11.32,11.32l24,24a8,8,0,0,0,11.32,0l56-56A8,8,0,0,0,125.66,154.34Z"></path></svg>'
+        ),
+    );
+
+    echo '<div class="cchla-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">';
+
+    $total_posts = 0;
+
+    foreach ($stats_config as $post_type => $config) {
+        // Verifica se o CPT existe
+        $exists = post_type_exists($post_type);
+
+        // Obtém contagem
+        $count = 0;
+        if ($exists) {
+            $count_obj = wp_count_posts($post_type);
+            if ($count_obj && isset($count_obj->publish)) {
+                $count = (int) $count_obj->publish;
+            }
         }
 
-        $count = wp_count_posts($post_type);
-        return isset($count->publish) ? (int) $count->publish : 0;
-    };
+        $total_posts += $count;
 
-    $noticias_count = $get_post_count('noticias');
-    $publicacoes_count = $get_post_count('publicacoes');
-    $especiais_count = $get_post_count('especiais');
-    $servicos_count = $get_post_count('servicos');
+        // Define opacidade baseado na existência
+        $opacity = $exists ? '1' : '0.5';
+        $title = $exists ? '' : ' title="Este tipo de post não está registrado"';
 
-?>
-    <div class="cchla-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
-        <div style="background: linear-gradient(135deg, #2E3CB9, #183AB3); color: white; padding: 20px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 32px; font-weight: bold;"><?php echo $noticias_count; ?></div>
-            <div style="font-size: 14px; opacity: 0.9;">Notícias</div>
-        </div>
+        printf(
+            '<div style="background: %s; color: white; padding: 20px; border-radius: 8px; text-align: center; opacity: %s; position: relative; cursor: %s;"%s>
+                <div style="font-size: 24px; margin-bottom: 8px;">%s</div>
+                <div style="font-size: 32px; font-weight: bold;">%d</div>
+                <div style="font-size: 14px; opacity: 0.9;">%s</div>
+                %s
+            </div>',
+            esc_attr($config['gradient']),
+            esc_attr($opacity),
+            $exists ? 'default' : 'help',
+            $title,
+            $config['icon'],
+            $count,
+            esc_html($config['label']),
+            !$exists ? '<div style="position: absolute; top: 5px; right: 8px; font-size: 18px;" title="CPT não registrado">⚠️</div>' : ''
+        );
+    }
 
-        <div style="background: linear-gradient(135deg, #00a32a, #008a20); color: white; padding: 20px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 32px; font-weight: bold;"><?php echo $publicacoes_count; ?></div>
-            <div style="font-size: 14px; opacity: 0.9;">Publicações</div>
-        </div>
+    echo '</div>';
 
-        <div style="background: linear-gradient(135deg, #dc3232, #a02222); color: white; padding: 20px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 32px; font-weight: bold;"><?php echo $especiais_count; ?></div>
-            <div style="font-size: 14px; opacity: 0.9;">Especiais</div>
-        </div>
+    // Mensagem se nenhum post existe
+    if ($total_posts === 0) {
+        echo '<div style="margin-top: 15px; padding: 15px; background: #f0f6fc; border-radius: 8px; text-align: center; color: #2271b1; border-left: 4px solid #2271b1;">';
+        echo '<p style="margin: 0;"><strong>💡 Dica:</strong> Comece criando seu primeiro conteúdo usando os botões de acesso rápido acima!</p>';
+        echo '</div>';
 
-        <div style="background: linear-gradient(135deg, #f0b849, #dda230); color: white; padding: 20px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 32px; font-weight: bold;"><?php echo $servicos_count; ?></div>
-            <div style="font-size: 14px; opacity: 0.9;">Serviços</div>
-        </div>
-    </div>
-<?php
+        // Debug info para admins
+        if (current_user_can('manage_options')) {
+            echo '<div style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 8px; font-size: 12px; color: #856404;">';
+            echo '<strong>🔧 Debug (visível apenas para administradores):</strong><br>';
+            echo 'Verifique se os Custom Post Types foram registrados corretamente. ';
+            echo 'Execute a função de debug acima para ver a lista completa.';
+            echo '</div>';
+        }
+    }
 }
+
+/**
+ * Garante que todos os CPTs estão registrados
+ * Executa na prioridade correta
+ */
+function cchla_ensure_cpts_registered()
+{
+    // Lista de funções de registro
+    $register_functions = array(
+        'cchla_register_noticias_cpt',
+        'cchla_register_publicacoes_cpt',
+        'cchla_register_especiais_cpt',
+        'cchla_register_servicos_cpt',
+    );
+
+    foreach ($register_functions as $function) {
+        if (function_exists($function)) {
+            call_user_func($function);
+        }
+    }
+}
+add_action('init', 'cchla_ensure_cpts_registered', 0);
+
+/**
+ * Força flush de rewrite rules uma vez
+ */
+function cchla_force_flush_once()
+{
+    $flushed = get_option('cchla_flushed_rules_v2');
+
+    if (!$flushed) {
+        flush_rewrite_rules();
+        update_option('cchla_flushed_rules_v2', true);
+
+        if (current_user_can('manage_options')) {
+            add_action('admin_notices', function () {
+    ?>
+                <div class="notice notice-success is-dismissible">
+                    <p><strong>✅ Permalinks recarregados!</strong> Os Custom Post Types devem aparecer agora.</p>
+                </div>
+<?php
+            });
+        }
+    }
+}
+add_action('admin_init', 'cchla_force_flush_once');
 
 /**
  * Remove widgets desnecessários do dashboard
