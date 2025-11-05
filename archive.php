@@ -17,8 +17,10 @@ $post_type = get_post_type();
 $queried_object = get_queried_object();
 ?>
 
+<h1>Arquivo - archive.php</h1>
+
 <!-- Breadcrumb -->
-<?php get_template_part('parts/extra/template-parts/breadcrumb'); ?>
+<?php cchla_breadcrumb(); ?>
 
 <main class="bg-white">
 

@@ -104,7 +104,7 @@
 
 /* ===== BOTÕES ===== */
 .wp-core-ui .button-primary {
-    background: var(--cchla-primary-lighter) !important;
+    background: var(--cchla-primary-dark) !important;
     border-color: var(--cchla-primary) !important;
     box-shadow: none !important;
     text-shadow: none !important;
@@ -112,11 +112,12 @@
     padding: 8px 16px !important;
     font-weight: var(--cchla-font-weight-semibold) !important;
     transition: all var(--cchla-transition-base) !important;
+    color: var(--cchla-primary-lighter);
 }
 
 .wp-core-ui .button-primary:hover,
 .wp-core-ui .button-primary:focus {
-    background: var(--cchla-primary-dark) !important;
+    background: var(--cchla-primary) !important;
     color: var(--cchla-primary-lighter) !important;
     border-color: var(--cchla-primary-dark) !important;
     transform: translateY(-1px);

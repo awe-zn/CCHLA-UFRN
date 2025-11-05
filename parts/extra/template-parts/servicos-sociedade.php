@@ -59,9 +59,9 @@ if (!$servicos_query->have_posts()) {
                 class="block p-6 border border-blue-200 rounded-lg hover:shadow-md hover:-translate-y-1 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
 
                 <!-- Ícone -->
-                <div class="text-blue-600 mb-3" style="width: 32px; height: 32px;">
+                <div class="mb-3" style="width: 32px; height: 32px;">
                     <?php if ($icone_tipo === 'svg' && $icone_svg) : ?>
-                        <?php echo wp_kses_post($icone_svg); ?>
+                        <?php echo $icone_svg; ?>
                     <?php elseif ($icone_classe) : ?>
                         <i class="<?php echo esc_attr($icone_classe); ?>" style="font-size: 32px;" aria-hidden="true"></i>
                     <?php else : ?>

@@ -35,8 +35,7 @@ get_header();
             </div>
         </div>
 
-    </div><!-- .container -->
-</div><!-- .site-content -->
-
+    </div>
+</div>
 <?php
 get_footer();

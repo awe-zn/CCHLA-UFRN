@@ -23,9 +23,15 @@ get_header();
 ?>
 
     <!-- Breadcrumb -->
-    <?php get_template_part('template-parts/breadcrumb'); ?>
+    <?php
+    cchla_breadcrumb(array(
+        'home_text' => 'Home',
+        'separator' => '/',
+        'show_current' => true
+    ));
+    ?>
 
-    <main class="bg-white">
+    <main class="bg-white" style="min-height: 50vh;">
 
         <article class="py-12">
             <div class="container mx-auto px-4 max-w-4xl">

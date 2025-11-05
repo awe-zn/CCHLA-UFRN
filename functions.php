@@ -2250,23 +2250,33 @@ function is_filtered()
     );
 }
 
+
 /**
  * Modifica query principal para incluir filtros customizados
  */
 function cchla_archive_query_modifications($query)
 {
-    if (!is_admin() && $query->is_main_query()) {
+    // Só executa no front-end e na query principal
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
 
-        // Filtro de taxonomia customizada via URL
-        if (isset($_GET['tax']) && isset($_GET['term'])) {
-            $tax = sanitize_text_field($_GET['tax']);
-            $term = sanitize_text_field($_GET['term']);
+    // ===== POSTS PADRÃO (Notícias com Categorias) =====
+    if (is_category() || is_tag() || (is_home() && !is_front_page())) {
+        // Não modifica nada - deixa o WordPress trabalhar normalmente
+        return;
+    }
 
+    // ===== PUBLICAÇÕES =====
+    if (is_post_type_archive('publicacoes') || is_tax('tipo_publicacao')) {
+
+        // Filtro de taxonomia via URL
+        if (isset($_GET['tipo']) && !empty($_GET['tipo'])) {
             $query->set('tax_query', array(
                 array(
-                    'taxonomy' => $tax,
+                    'taxonomy' => 'tipo_publicacao',
                     'field' => 'slug',
-                    'terms' => $term,
+                    'terms' => sanitize_text_field($_GET['tipo']),
                 ),
             ));
         }
@@ -2274,43 +2284,107 @@ function cchla_archive_query_modifications($query)
         // Filtro de ano
         if (isset($_GET['year']) && !empty($_GET['year'])) {
             $year = absint($_GET['year']);
-            $query->set('year', $year);
+            $query->set('meta_query', array(
+                array(
+                    'key' => '_publicacao_ano',
+                    'value' => $year,
+                    'compare' => '=',
+                ),
+            ));
         }
 
-        // Ordenação personalizada
+        // Ordenação
         if (isset($_GET['orderby']) && isset($_GET['order'])) {
             $orderby = sanitize_text_field($_GET['orderby']);
-            $order = sanitize_text_field($_GET['order']);
+            $order = strtoupper(sanitize_text_field($_GET['order']));
 
-            switch ($orderby) {
-                case 'title':
-                    $query->set('orderby', 'title');
-                    $query->set('order', strtoupper($order));
-                    break;
-
-                case 'date':
-                    $query->set('orderby', 'date');
-                    $query->set('order', strtoupper($order));
-                    break;
-
-                case 'comment_count':
-                    $query->set('orderby', 'comment_count');
-                    $query->set('order', strtoupper($order));
-                    break;
-
-                case 'modified':
-                    $query->set('orderby', 'modified');
-                    $query->set('order', strtoupper($order));
-                    break;
+            if ($orderby === 'title') {
+                $query->set('orderby', 'title');
+                $query->set('order', $order);
+            } elseif ($orderby === 'date') {
+                $query->set('orderby', 'date');
+                $query->set('order', $order);
+            } elseif ($orderby === 'year') {
+                $query->set('meta_key', '_publicacao_ano');
+                $query->set('orderby', 'meta_value_num');
+                $query->set('order', $order);
             }
         }
 
-        // Ajusta posts_per_page baseado no post type
-        if (is_post_type_archive('publicacoes') || is_tax('tipo_publicacao')) {
-            $query->set('posts_per_page', 12);
-        } elseif (is_post_type_archive('acesso_rapido') || is_tax('categoria_acesso')) {
-            $query->set('posts_per_page', 15);
+        // Posts por página
+        $query->set('posts_per_page', 12);
+    }
+
+    // ===== ESPECIAIS =====
+    elseif (is_post_type_archive('especiais') || is_tax('categoria_especial')) {
+
+        // Filtro de categoria via URL
+        if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'categoria_especial',
+                    'field' => 'slug',
+                    'terms' => sanitize_text_field($_GET['categoria']),
+                ),
+            ));
         }
+
+        // Filtro de destaque
+        if (isset($_GET['destaque']) && $_GET['destaque'] === '1') {
+            $query->set('meta_query', array(
+                array(
+                    'key' => '_especial_destaque_home',
+                    'value' => '1',
+                ),
+            ));
+        }
+
+        // Ordenação (menu_order por padrão)
+        if (!isset($_GET['orderby'])) {
+            $query->set('orderby', 'menu_order');
+            $query->set('order', 'ASC');
+        }
+
+        $query->set('posts_per_page', 12);
+    }
+
+    // ===== SERVIÇOS =====
+    elseif (is_post_type_archive('servicos') || is_tax('categoria_servico')) {
+
+        // Filtro de categoria via URL
+        if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'categoria_servico',
+                    'field' => 'slug',
+                    'terms' => sanitize_text_field($_GET['categoria']),
+                ),
+            ));
+        }
+
+        $query->set('posts_per_page', 12);
+    }
+
+    // ===== ACESSO RÁPIDO =====
+    elseif (is_post_type_archive('acesso_rapido') || is_tax('categoria_acesso')) {
+
+        // Filtro de categoria via URL
+        if (isset($_GET['categoria']) && !empty($_GET['categoria'])) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'categoria_acesso',
+                    'field' => 'slug',
+                    'terms' => sanitize_text_field($_GET['categoria']),
+                ),
+            ));
+        }
+
+        // Ordenação por ordem personalizada
+        $query->set('meta_key', '_acesso_ordem');
+        $query->set('orderby', 'meta_value_num');
+        $query->set('order', 'ASC');
+
+        $query->set('posts_per_page', 15);
     }
 }
 add_action('pre_get_posts', 'cchla_archive_query_modifications');
@@ -2555,23 +2629,28 @@ add_action('widgets_init', 'cchla_register_archive_filters_widget');
  */
 function cchla_search_filter($query)
 {
-    if (!is_admin() && $query->is_search() && $query->is_main_query()) {
+    if (is_admin() || !$query->is_search() || !$query->is_main_query()) {
+        return;
+    }
 
-        // Filtrar por post type específico se fornecido
-        if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
-            $post_type = sanitize_text_field($_GET['post_type']);
+    // Filtrar por post type específico
+    if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
+        $post_type = sanitize_text_field($_GET['post_type']);
+
+        // Valida se o post type existe
+        if (post_type_exists($post_type)) {
             $query->set('post_type', $post_type);
         }
+    }
 
-        // Filtrar por categoria
-        if (isset($_GET['cat']) && !empty($_GET['cat'])) {
-            $query->set('cat', absint($_GET['cat']));
-        }
+    // Filtrar por categoria (apenas para posts padrão)
+    if (isset($_GET['cat']) && !empty($_GET['cat']) && !isset($_GET['post_type'])) {
+        $query->set('cat', absint($_GET['cat']));
+    }
 
-        // Filtrar por tag
-        if (isset($_GET['tag']) && !empty($_GET['tag'])) {
-            $query->set('tag', sanitize_text_field($_GET['tag']));
-        }
+    // Filtrar por tag (apenas para posts padrão)
+    if (isset($_GET['tag']) && !empty($_GET['tag']) && !isset($_GET['post_type'])) {
+        $query->set('tag', sanitize_text_field($_GET['tag']));
     }
 }
 add_action('pre_get_posts', 'cchla_search_filter');
@@ -5075,7 +5154,7 @@ function cchla_dashboard_quick_links_widget()
 {
     ?>
     <div class="cchla-quick-links" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-        <a href="<?php echo admin_url('post-new.php?post_type=noticias'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
+        <a href="<?php echo admin_url('post-new.php?post_type=post'); ?>" class="button button-primary" style="padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none;">
             <span style="font-size: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#140b68ff" viewBox="0 0 256 256">
                     <path d="M216,48H40a8,8,0,0,0-8,8V216l32-16,32,16,32-16,32,16,32-16,32,16V56A8,8,0,0,0,216,48ZM112,160H64V96h48Z" opacity="0.2"></path>
                     <path d="M216,40H40A16,16,0,0,0,24,56V216a8,8,0,0,0,11.58,7.15L64,208.94l28.42,14.21a8,8,0,0,0,7.16,0L128,208.94l28.42,14.21a8,8,0,0,0,7.16,0L192,208.94l28.42,14.21A8,8,0,0,0,232,216V56A16,16,0,0,0,216,40Zm0,163.06-20.42-10.22a8,8,0,0,0-7.16,0L160,207.06l-28.42-14.22a8,8,0,0,0-7.16,0L96,207.06,67.58,192.84a8,8,0,0,0-7.16,0L40,203.06V56H216ZM136,112a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H144A8,8,0,0,1,136,112Zm0,32a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H144A8,8,0,0,1,136,144ZM64,168h48a8,8,0,0,0,8-8V96a8,8,0,0,0-8-8H64a8,8,0,0,0-8,8v64A8,8,0,0,0,64,168Zm8-64h32v48H72Z"></path>
@@ -5254,7 +5333,7 @@ function cchla_force_flush_once()
                 <div class="notice notice-success is-dismissible">
                     <p><strong>✅ Permalinks recarregados!</strong> Os Custom Post Types devem aparecer agora.</p>
                 </div>
-<?php
+        <?php
             });
         }
     }
@@ -5421,3 +5500,336 @@ add_action('admin_bar_menu', 'cchla_admin_bar_site_link', 100);
  *└── images/
  *
  **/
+
+
+
+/**
+ * ============================================
+ * BREADCRUMB - FUNÇÃO PRINCIPAL
+ * ============================================
+ */
+
+/**
+ * Exibe o breadcrumb de navegação
+ * 
+ * @param array $args Argumentos opcionais
+ * @return string|void HTML do breadcrumb ou void se echo = true
+ */
+function cchla_breadcrumb($args = array())
+{
+    // Não exibe na home
+    if (is_front_page()) {
+        return;
+    }
+
+    // Configurações padrão
+    $defaults = array(
+        'home_text' => 'Início',
+        'separator' => '›',
+        'show_current' => true,
+        'echo' => true,
+    );
+
+    $args = wp_parse_args($args, $defaults);
+
+    // Se não quiser ecoar, captura o output
+    if (!$args['echo']) {
+        ob_start();
+    }
+
+    // Torna os argumentos disponíveis globalmente para o template
+    global $cchla_breadcrumb_args;
+    $cchla_breadcrumb_args = $args;
+
+    // Carrega o template part
+    get_template_part('parts/extra/template-parts/breadcrumb');
+
+    // Limpa a variável global
+    unset($cchla_breadcrumb_args);
+
+    // Retorna o conteúdo se echo = false
+    if (!$args['echo']) {
+        return ob_get_clean();
+    }
+}
+
+/**
+ * Shortcode para breadcrumb
+ * Uso: [breadcrumb] ou [breadcrumb home_text="Home" separator="/"]
+ */
+function cchla_breadcrumb_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'home_text' => 'Início',
+        'separator' => '›',
+        'show_current' => 'yes',
+    ), $atts);
+
+    // Converte 'yes'/'no' para boolean
+    $atts['show_current'] = ($atts['show_current'] === 'yes');
+
+    // Retorna o breadcrumb
+    return cchla_breadcrumb(array_merge($atts, array('echo' => false)));
+}
+add_shortcode('breadcrumb', 'cchla_breadcrumb_shortcode');
+
+
+
+
+
+/**
+ * ============================================
+ * SISTEMA DE BUSCA AVANÇADO
+ * ============================================
+ */
+
+/**
+ * Conta resultados de busca por tipo de post
+ * 
+ * @param string $search_query Termo de busca
+ * @return array Contagem por tipo
+ */
+function cchla_get_search_counts_by_type($search_query)
+{
+    if (empty($search_query)) {
+        return array();
+    }
+
+    $post_types = array('post', 'page', 'publicacoes', 'especiais', 'servicos', 'acesso_rapido');
+    $counts = array();
+
+    foreach ($post_types as $post_type) {
+        $args = array(
+            'post_type' => $post_type,
+            'post_status' => 'publish',
+            's' => $search_query,
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'no_found_rows' => false,
+        );
+
+        $query = new WP_Query($args);
+        $counts[$post_type] = $query->found_posts;
+        wp_reset_postdata();
+    }
+
+    return $counts;
+}
+
+/**
+ * Modifica a query de busca para incluir todos os post types
+ */
+function cchla_search_query_modification($query)
+{
+    if (!is_admin() && $query->is_search() && $query->is_main_query()) {
+
+        // Se filtro de post_type foi aplicado via URL
+        if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
+            $post_type = sanitize_text_field($_GET['post_type']);
+
+            if (post_type_exists($post_type)) {
+                $query->set('post_type', $post_type);
+            }
+        } else {
+            // Busca em todos os tipos
+            $query->set('post_type', array(
+                'post',
+                'page',
+                'publicacoes',
+                'especiais',
+                'servicos',
+                'acesso_rapido'
+            ));
+        }
+
+        // Posts por página
+        $query->set('posts_per_page', 10);
+    }
+}
+add_action('pre_get_posts', 'cchla_search_query_modification');
+
+/**
+ * Destaca o termo de busca no conteúdo
+ * 
+ * @param string $text Texto original
+ * @param string $search_term Termo a destacar
+ * @return string Texto com termo destacado
+ */
+function cchla_highlight_search_term($text, $search_term)
+{
+    if (empty($search_term)) {
+        return $text;
+    }
+
+    $highlighted = preg_replace(
+        '/(' . preg_quote($search_term, '/') . ')/iu',
+        '<mark class="bg-yellow-200 font-semibold">$1</mark>',
+        $text
+    );
+
+    return $highlighted;
+}
+
+/**
+ * Widget de Busca Avançada
+ */
+class CCHLA_Advanced_Search_Widget extends WP_Widget
+{
+
+    public function __construct()
+    {
+        parent::__construct(
+            'cchla_advanced_search_widget',
+            __('CCHLA - Busca Avançada', 'cchla-ufrn'),
+            array('description' => __('Busca em todos os tipos de conteúdo', 'cchla-ufrn'))
+        );
+    }
+
+    public function widget($args, $instance)
+    {
+        echo $args['before_widget'];
+
+        if (!empty($instance['title'])) {
+            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
+        }
+
+        get_search_form();
+
+        // Estatísticas rápidas
+        if (!empty($instance['show_stats'])) {
+            $stats = array(
+                'post' => wp_count_posts('post')->publish,
+                'publicacoes' => wp_count_posts('publicacoes')->publish,
+                'especiais' => wp_count_posts('especiais')->publish,
+            );
+
+            echo '<div class="search-stats mt-4 text-xs text-gray-600">';
+            echo '<p>' . sprintf(
+                __('Busque em %s notícias, %s publicações e %s especiais', 'cchla-ufrn'),
+                number_format_i18n($stats['post']),
+                number_format_i18n($stats['publicacoes']),
+                number_format_i18n($stats['especiais'])
+            ) . '</p>';
+            echo '</div>';
+        }
+
+        echo $args['after_widget'];
+    }
+
+    public function form($instance)
+    {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Buscar no Site', 'cchla-ufrn');
+        $show_stats = isset($instance['show_stats']) ? (bool) $instance['show_stats'] : false;
+        ?>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">
+                <?php esc_html_e('Título:', 'cchla-ufrn'); ?>
+            </label>
+            <input class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('title')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                type="text"
+                value="<?php echo esc_attr($title); ?>">
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox"
+                    name="<?php echo esc_attr($this->get_field_name('show_stats')); ?>"
+                    value="1"
+                    <?php checked($show_stats); ?>>
+                <?php esc_html_e('Mostrar estatísticas', 'cchla-ufrn'); ?>
+            </label>
+        </p>
+<?php
+    }
+
+    public function update($new_instance, $old_instance)
+    {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        $instance['show_stats'] = !empty($new_instance['show_stats']);
+        return $instance;
+    }
+}
+
+function cchla_register_advanced_search_widget()
+{
+    register_widget('CCHLA_Advanced_Search_Widget');
+}
+add_action('widgets_init', 'cchla_register_advanced_search_widget');
+
+/**
+ * Shortcode para formulário de busca
+ * Uso: [search_form]
+ */
+function cchla_search_form_shortcode($atts)
+{
+    ob_start();
+    get_search_form();
+    return ob_get_clean();
+}
+add_shortcode('search_form', 'cchla_search_form_shortcode');
+
+
+/**
+ * AJAX para sugestões de busca
+ */
+function cchla_search_suggestions()
+{
+    check_ajax_referer('cchla-search-nonce', 'nonce');
+
+    $term = sanitize_text_field($_POST['term']);
+
+    if (strlen($term) < 3) {
+        wp_send_json_error();
+    }
+
+    $args = array(
+        'post_type' => array('post', 'page', 'publicacoes', 'especiais', 'servicos'),
+        'posts_per_page' => 5,
+        's' => $term,
+    );
+
+    $query = new WP_Query($args);
+    $suggestions = array();
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+
+            $post_type_obj = get_post_type_object(get_post_type());
+
+            $suggestions[] = array(
+                'title' => get_the_title(),
+                'url' => get_permalink(),
+                'type' => $post_type_obj->labels->singular_name,
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    wp_send_json_success($suggestions);
+}
+add_action('wp_ajax_cchla_search_suggestions', 'cchla_search_suggestions');
+add_action('wp_ajax_nopriv_cchla_search_suggestions', 'cchla_search_suggestions');
+
+/**
+ * Enfileira script de autocomplete
+ */
+function cchla_enqueue_search_autocomplete()
+{
+    wp_enqueue_script(
+        'cchla-search-autocomplete',
+        get_template_directory_uri() . '/assets/js/search-autocomplete.js',
+        array('jquery'),
+        '1.0.0',
+        true
+    );
+
+    wp_localize_script('cchla-search-autocomplete', 'cchlaSearch', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('cchla-search-nonce'),
+    ));
+}
+add_action('wp_enqueue_scripts', 'cchla_enqueue_search_autocomplete');
