@@ -1,0 +1,822 @@
+/**
+ * Print Styles - Medium-Inspired Professional Layout
+ * 
+ * Design Philosophy:
+ * - Remove all non-content elements
+ * - Optimize typography for print
+ * - Ensure high-quality paper output
+ * - Maintain readability and hierarchy
+ * 
+ * @package CCHLA_UFRN
+ * @version 2.0.0
+ */
+
+/* ==========================================
+   BASE CONFIGURATION
+   ========================================== */
+
+@media print {
+
+    /* Reset básico para impressão */
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* Configuração da página */
+    @page {
+        size: A4;
+        margin: 2.5cm 2cm;
+
+        /* Cabeçalho e rodapé personalizados */
+        @top-center {
+            content: element(header);
+        }
+
+        @bottom-center {
+            content: counter(page) " / " counter(pages);
+            font-size: 9pt;
+            color: #666;
+        }
+    }
+
+    /* Primeira página sem cabeçalho */
+    @page :first {
+        @top-center {
+            content: none;
+        }
+    }
+
+    html,
+    body {
+        width: 210mm;
+        height: 297mm;
+        font-size: 12pt;
+        line-height: 1.6;
+        font-family: Georgia, 'Times New Roman', serif !important;
+        color: #161616;
+        background: #f2f2f3;
+    }
+
+    /* ==========================================
+       OCULTAR ELEMENTOS NÃO NECESSÁRIOS
+       ========================================== */
+
+    /* Navegação e UI */
+    header#site-header,
+    nav,
+    nav[role="navigation"],
+    aside,
+    footer,
+    .sidebar,
+    .widget,
+    .menu,
+    .navigation,
+
+    /* Breadcrumb */
+    nav[aria-label="breadcrumb"],
+    nav[aria-label="Breadcrumb"],
+    .breadcrumb,
+    .breadcrumbs,
+
+    /* Barra de progresso */
+    #reading-progress,
+    .progress-bar,
+
+    /* Botões e controles */
+    button,
+    .button,
+    .btn,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    #back-to-top,
+
+    /* Ícones e elementos decorativos */
+    .fa,
+    .fas,
+    .far,
+    .fab,
+    i[class^="fa-"],
+    i[class*=" fa-"],
+    .icon,
+    .icons,
+    svg:not(.print-keep),
+
+    /* Compartilhamento e social */
+    .share,
+    .share-buttons,
+    .social,
+    .social-share,
+    aside[aria-label="Ações do artigo"],
+    [data-share],
+
+    /* Formulários e busca */
+    form,
+    input,
+    textarea,
+    select,
+    .search-form,
+    .search,
+
+    /* Posts relacionados e recomendados */
+    .related-posts,
+    .recommended,
+    .suggested,
+    section[aria-labelledby="related-heading"],
+
+    /* Comentários */
+    .comments,
+    .comment-form,
+    #comments,
+
+    /* Elementos interativos */
+    .modal,
+    .popup,
+    .overlay,
+    .tooltip,
+    .dropdown,
+
+    /* Anúncios */
+    .ad,
+    .ads,
+    .advertisement,
+    .banner,
+
+    /* Elementos de acessibilidade visual */
+    .skip-link,
+    .screen-reader-text,
+
+    /* Meta informações não essenciais */
+    .post-meta time::before,
+    .post-meta span::before,
+    .author-avatar,
+    .author-bio,
+    .post-tags,
+    .categories,
+
+    /* Vídeos e iframes */
+    iframe,
+    video,
+    audio,
+    embed,
+    object {
+        display: none !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* ==========================================
+       CABEÇALHO DO DOCUMENTO
+       ========================================== */
+
+    /* Container do artigo */
+    article {
+        page-break-before: auto;
+        page-break-after: auto;
+        page-break-inside: avoid;
+    }
+
+    /* Cabeçalho do artigo */
+    article header {
+        display: block !important;
+        margin-bottom: 2cm;
+        padding-bottom: 0.5cm;
+        border-bottom: 2pt solid #000;
+    }
+
+    /* Título principal */
+    h1,
+    article h1,
+    .entry-title,
+    [itemprop="headline"] {
+        font-size: 28pt !important;
+        line-height: 1.2 !important;
+        font-weight: 700 !important;
+        color: #000 !important;
+        margin: 0 0 0.5cm 0 !important;
+        page-break-after: avoid !important;
+        font-family: 'Helvetica Neue', Georgia, Arial, sans-serif !important;
+        letter-spacing: -0.03em;
+    }
+
+    /* Subtítulo/Lead/Excerpt */
+    .entry-excerpt,
+    [itemprop="description"],
+    article header p,
+    article header div[class*="excerpt"],
+    article header div[class*="lead"] {
+        font-size: 14pt !important;
+        line-height: 1.5 !important;
+        color: #333 !important;
+        margin: 0.5cm 0 !important;
+        font-weight: 400 !important;
+        border-left: none !important;
+        padding-left: 0 !important;
+    }
+
+    /* Metadados do autor e data */
+    .post-meta,
+    .entry-meta,
+    article header .flex {
+        font-size: 10pt !important;
+        color: #666 !important;
+        margin: 0.5cm 0 0 0 !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Nome do autor */
+    .author-name,
+    [itemprop="author"],
+    .post-meta a {
+        color: #000 !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+    }
+
+    /* Data de publicação */
+    time,
+    [datetime] {
+        color: #666 !important;
+        font-weight: 400 !important;
+    }
+
+    /* ==========================================
+       TIPOGRAFIA DO CONTEÚDO
+       ========================================== */
+
+    /* Container principal do conteúdo */
+    .prose,
+    .entry-content,
+    [itemprop="articleBody"],
+    article>div,
+    .post-content,
+    main article>div:not(header):not(footer) {
+        font-family: Georgia, 'Times New Roman', serif !important;
+        font-size: 11pt !important;
+        line-height: 1.7 !important;
+        color: #000 !important;
+        text-align: justify !important;
+        hyphens: auto !important;
+        -webkit-hyphens: auto !important;
+        -moz-hyphens: auto !important;
+    }
+
+    /* Parágrafos */
+    p {
+        font-size: 11pt !important;
+        line-height: 1.7 !important;
+        margin: 0 0 0.4cm 0 !important;
+        text-indent: 0 !important;
+        orphans: 3 !important;
+        widows: 3 !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Primeiro parágrafo (drop cap opcional) */
+    article p:first-of-type::first-letter {
+        font-size: 3.5em;
+        line-height: 0.9;
+        float: left;
+        margin: 0.1em 0.1em 0 0;
+        font-weight: 700;
+    }
+
+    /* ==========================================
+       HIERARQUIA DE TÍTULOS
+       ========================================== */
+
+    h2,
+    .prose h2 {
+        font-size: 18pt !important;
+        line-height: 1.3 !important;
+        font-weight: 700 !important;
+        color: #000 !important;
+        margin: 0.8cm 0 0.4cm 0 !important;
+        page-break-after: avoid !important;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        letter-spacing: -0.02em;
+    }
+
+    h3,
+    .prose h3 {
+        font-size: 14pt !important;
+        line-height: 1.4 !important;
+        font-weight: 700 !important;
+        color: #000 !important;
+        margin: 0.6cm 0 0.3cm 0 !important;
+        page-break-after: avoid !important;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    }
+
+    h4,
+    .prose h4 {
+        font-size: 12pt !important;
+        line-height: 1.4 !important;
+        font-weight: 700 !important;
+        color: #000 !important;
+        margin: 0.5cm 0 0.3cm 0 !important;
+        page-break-after: avoid !important;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    }
+
+    h5,
+    h6,
+    .prose h5,
+    .prose h6 {
+        font-size: 11pt !important;
+        line-height: 1.4 !important;
+        font-weight: 700 !important;
+        color: #000 !important;
+        margin: 0.4cm 0 0.2cm 0 !important;
+        page-break-after: avoid !important;
+    }
+
+    /* ==========================================
+       CITAÇÕES E BLOCOS ESPECIAIS
+       ========================================== */
+
+    blockquote,
+    .prose blockquote {
+        font-size: 12pt !important;
+        line-height: 1.6 !important;
+        font-style: italic !important;
+        margin: 0.6cm 1cm !important;
+        padding: 0 0 0 0.5cm !important;
+        border-left: 3pt solid #000 !important;
+        page-break-inside: avoid !important;
+        color: #333 !important;
+    }
+
+    blockquote::before,
+    blockquote::after {
+        content: none !important;
+    }
+
+    blockquote p {
+        margin: 0 0 0.3cm 0 !important;
+    }
+
+    /* Citações de autor */
+    blockquote cite,
+    blockquote footer {
+        display: block !important;
+        font-size: 10pt !important;
+        font-style: normal !important;
+        margin-top: 0.3cm !important;
+        color: #666 !important;
+    }
+
+    blockquote cite::before {
+        content: "— " !important;
+    }
+
+    /* ==========================================
+       LISTAS
+       ========================================== */
+
+    ul,
+    ol,
+    .prose ul,
+    .prose ol {
+        margin: 0.4cm 0 0.4cm 1cm !important;
+        padding: 0 !important;
+    }
+
+    li {
+        font-size: 11pt !important;
+        line-height: 1.6 !important;
+        margin-bottom: 0.2cm !important;
+        page-break-inside: avoid !important;
+    }
+
+    ul>li::marker {
+        color: #000 !important;
+    }
+
+    ol>li::marker {
+        font-weight: 700 !important;
+        color: #000 !important;
+    }
+
+    /* Listas aninhadas */
+    ul ul,
+    ul ol,
+    ol ul,
+    ol ol {
+        margin: 0.2cm 0 0.2cm 0.8cm !important;
+    }
+
+    /* ==========================================
+       LINKS
+       ========================================== */
+
+    a,
+    .prose a {
+        color: #000 !important;
+        text-decoration: none !important;
+        font-weight: inherit !important;
+        border-bottom: none !important;
+    }
+
+    /* Exibe URL após o link */
+    a[href^="http"]::after {
+        content: " (" attr(href) ")" !important;
+        font-size: 9pt !important;
+        color: #666 !important;
+        word-wrap: break-word !important;
+    }
+
+    /* Não mostra URL para links internos ou âncoras */
+    a[href^="#"]::after,
+    a[href^="/"]::after,
+    a[href*="<?php echo home_url(); ?>"]::after {
+        content: "" !important;
+    }
+
+    /* Links em títulos não mostram URL */
+    h1 a::after,
+    h2 a::after,
+    h3 a::after,
+    h4 a::after,
+    h5 a::after,
+    h6 a::after {
+        content: "" !important;
+    }
+
+    /* ==========================================
+       IMAGENS E FIGURAS
+       ========================================== */
+
+    img,
+    .prose img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0.6cm auto !important;
+        page-break-inside: avoid !important;
+        page-break-after: auto !important;
+        border: 1pt solid #ddd !important;
+        padding: 0.2cm !important;
+    }
+
+    figure,
+    .prose figure {
+        margin: 0.8cm 0 !important;
+        page-break-inside: avoid !important;
+    }
+
+    figcaption,
+    .prose figcaption {
+        font-size: 9pt !important;
+        line-height: 1.4 !important;
+        color: #666 !important;
+        font-style: italic !important;
+        text-align: center !important;
+        margin-top: 0.2cm !important;
+        padding: 0 1cm !important;
+    }
+
+    /* ==========================================
+       TABELAS
+       ========================================== */
+
+    table,
+    .prose table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin: 0.6cm 0 !important;
+        font-size: 10pt !important;
+        page-break-inside: avoid !important;
+    }
+
+    thead {
+        display: table-header-group !important;
+        background: #f5f5f5 !important;
+    }
+
+    th {
+        font-weight: 700 !important;
+        text-align: left !important;
+        padding: 0.2cm 0.3cm !important;
+        border: 1pt solid #000 !important;
+        background: #f5f5f5 !important;
+    }
+
+    td {
+        padding: 0.2cm 0.3cm !important;
+        border: 1pt solid #999 !important;
+        vertical-align: top !important;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #fafafa !important;
+    }
+
+    /* Evita quebra de linha em células */
+    table td,
+    table th {
+        page-break-inside: avoid !important;
+    }
+
+    /* ==========================================
+       CÓDIGO
+       ========================================== */
+
+    code,
+    .prose code {
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 10pt !important;
+        background: #f5f5f5 !important;
+        padding: 0.05cm 0.1cm !important;
+        border: 1pt solid #ddd !important;
+        border-radius: 0 !important;
+        color: #000 !important;
+    }
+
+    pre,
+    .prose pre {
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 9pt !important;
+        line-height: 1.4 !important;
+        background: #f9f9f9 !important;
+        border: 1pt solid #ddd !important;
+        padding: 0.3cm !important;
+        margin: 0.5cm 0 !important;
+        overflow: visible !important;
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        page-break-inside: avoid !important;
+    }
+
+    pre code {
+        background: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    /* ==========================================
+       ELEMENTOS INLINE
+       ========================================== */
+
+    strong,
+    b,
+    .prose strong,
+    .prose b {
+        font-weight: 700 !important;
+        color: #000 !important;
+    }
+
+    em,
+    i,
+    .prose em,
+    .prose i {
+        font-style: italic !important;
+    }
+
+    mark,
+    .prose mark {
+        background: #fff !important;
+        color: #000 !important;
+        border-bottom: 2pt solid #000 !important;
+        padding: 0 !important;
+    }
+
+    del,
+    .prose del {
+        text-decoration: line-through !important;
+        color: #999 !important;
+    }
+
+    ins,
+    .prose ins {
+        text-decoration: none !important;
+        border-bottom: 1pt solid #000 !important;
+    }
+
+    sup,
+    sub {
+        font-size: 75% !important;
+        line-height: 0 !important;
+    }
+
+    abbr[title]::after {
+        content: " (" attr(title) ")" !important;
+        font-size: 9pt !important;
+        color: #666 !important;
+    }
+
+    /* ==========================================
+       REGRAS HORIZONTAIS
+       ========================================== */
+
+    hr,
+    .prose hr {
+        border: none !important;
+        border-top: 2pt solid #000 !important;
+        margin: 0.8cm 20% !important;
+        page-break-after: avoid !important;
+    }
+
+    /* ==========================================
+       PAGINAÇÃO E QUEBRAS
+       ========================================== */
+
+    /* Evita quebras inadequadas */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        page-break-after: avoid !important;
+    }
+
+    p,
+    blockquote,
+    pre,
+    ul,
+    ol,
+    dl,
+    figure,
+    table {
+        page-break-inside: avoid !important;
+    }
+
+    img,
+    figure,
+    table {
+        page-break-before: auto !important;
+        page-break-after: auto !important;
+    }
+
+    /* Força quebra de página antes de novos capítulos */
+    .page-break,
+    .chapter-break {
+        page-break-before: always !important;
+    }
+
+    /* ==========================================
+       NOTAS DE RODAPÉ E REFERÊNCIAS
+       ========================================== */
+
+    .footnotes,
+    .references,
+    [role="doc-endnotes"] {
+        margin-top: 1cm !important;
+        padding-top: 0.5cm !important;
+        border-top: 1pt solid #999 !important;
+        font-size: 9pt !important;
+        line-height: 1.4 !important;
+    }
+
+    .footnote,
+    [role="doc-endnote"] {
+        margin-bottom: 0.3cm !important;
+    }
+
+    .footnote-ref,
+    a[role="doc-noteref"] {
+        font-size: 75% !important;
+        vertical-align: super !important;
+        text-decoration: none !important;
+    }
+
+    /* ==========================================
+       FORMATAÇÃO ESPECIAL
+       ========================================== */
+
+    /* Letra capitular (drop cap) */
+    .drop-cap::first-letter,
+    .prose>p:first-of-type::first-letter {
+        font-size: 4em !important;
+        line-height: 0.8 !important;
+        float: left !important;
+        margin: 0.05em 0.1em 0 0 !important;
+        font-weight: 700 !important;
+        font-family: Georgia, serif !important;
+    }
+
+    /* Citações em destaque */
+    .pullquote {
+        font-size: 14pt !important;
+        line-height: 1.4 !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        margin: 0.8cm 0 !important;
+        padding: 0.4cm 2cm !important;
+        border-top: 2pt solid #000 !important;
+        border-bottom: 2pt solid #000 !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Caixas de destaque */
+    .highlight-box,
+    .callout {
+        background: #f9f9f9 !important;
+        border: 2pt solid #000 !important;
+        padding: 0.4cm !important;
+        margin: 0.6cm 0 !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* ==========================================
+       ACESSIBILIDADE NA IMPRESSÃO
+       ========================================== */
+
+    /* Garante que texto oculto não apareça */
+    .sr-only,
+    .visually-hidden,
+    .screen-reader-text {
+        display: none !important;
+    }
+
+    /* ==========================================
+       RODAPÉ DO DOCUMENTO
+       ========================================== */
+
+    /* Informações de impressão */
+    .print-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 8pt;
+        color: #999;
+        text-align: center;
+        padding: 0.3cm 0;
+    }
+
+    /* ==========================================
+       OTIMIZAÇÕES DE QUALIDADE
+       ========================================== */
+
+    /* Garante qualidade máxima de impressão */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    /* Remove transformações que podem afetar a impressão */
+    * {
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+    }
+
+    /* ==========================================
+       CLASSES UTILITÁRIAS
+       ========================================== */
+
+    /* Oculta na impressão */
+    .no-print {
+        display: none !important;
+    }
+
+    /* Mostra apenas na impressão */
+    .print-only {
+        display: block !important;
+    }
+
+    .print-only-inline {
+        display: block !important;
+    }
+
+    /* Quebra de página */
+    .page-break-before {
+        page-break-before: always !important;
+    }
+
+    .page-break-after {
+        page-break-after: always !important;
+    }
+
+    .avoid-page-break {
+        page-break-inside: avoid !important;
+    }
+
+    /* ==========================================
+       MARCA D'ÁGUA (Opcional)
+       ========================================== */
+
+    .watermark::after {
+        content: "CCHLA - UFRN";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 72pt;
+        color: rgba(0, 0, 0, 0.05);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+}
+
+/* Fim do @media print */

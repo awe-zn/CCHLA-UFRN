@@ -108,7 +108,7 @@ if (is_singular() && has_post_thumbnail()) {
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/noticias.css">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -132,7 +132,7 @@ if (is_singular() && has_post_thumbnail()) {
     </a>
 
     <header id="site-header" class="bg-gradient-to-r from-[#002047] from-50% to-[#004499] text-white py-2" role="banner">
-        <div class="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4 lg:py-0">
+        <div class="max-w-screen-xl mx-auto flex items-center justify-between px-6 lg:py-0">
             <!-- Logo -->
             <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-2" aria-label="<?php echo esc_attr(get_bloginfo('name')); ?>">
                 <?php
@@ -188,7 +188,7 @@ if (is_singular() && has_post_thumbnail()) {
                 ?>
                                 <div class="relative group">
                                     <button
-                                        class="flex py-5 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
+                                        class="flex items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
                                         aria-expanded="false"
                                         aria-controls="<?php echo esc_attr($menu_id); ?>"
                                         aria-haspopup="true">
@@ -212,58 +212,10 @@ if (is_singular() && has_post_thumbnail()) {
                                 <a href="<?php echo esc_url($parent['item']->url); ?>" class="font-semibold hover:text-blue-200 transition-colors">
                                     <?php echo esc_html(strtoupper($parent['item']->title)); ?>
                                 </a>
-                    <?php
+                <?php
                             endif;
                         }
                     }
-                } else {
-                    // Menu fallback
-                    ?>
-                    <div class="relative group">
-                        <button
-                            class="flex py-5 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
-                            aria-expanded="false" aria-controls="menu-inst">
-                            INSTITUCIONAL
-                            <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180" aria-hidden="true"></i>
-                        </button>
-                        <ul id="menu-inst"
-                            class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Administração</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Consec</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Orçamentos</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="relative group">
-                        <button
-                            class="flex py-5 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
-                            aria-expanded="false" aria-controls="menu-acad">
-                            ACADÊMICO
-                            <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180" aria-hidden="true"></i>
-                        </button>
-                        <ul id="menu-acad"
-                            class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Ensino</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">CAs</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Pesquisas</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="relative group">
-                        <button
-                            class="flex py-5 items-center gap-1 font-semibold focus:outline-none hover:text-blue-200 transition-colors"
-                            aria-expanded="false" aria-controls="menu-imp">
-                            IMPRENSA
-                            <i class="fa-solid fa-chevron-down text-xs transition-transform group-hover:rotate-180" aria-hidden="true"></i>
-                        </button>
-                        <ul id="menu-imp"
-                            class="absolute hidden group-hover:flex flex-col bg-white text-[#313135] top-full -mt-3 shadow-lg rounded-md overflow-hidden w-48 focus-within:flex transition-all duration-200">
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Documentos</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Obras</a></li>
-                        </ul>
-                    </div>
-
-                <?php
                 }
                 ?>
             </nav>

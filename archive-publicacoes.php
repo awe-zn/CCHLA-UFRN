@@ -10,8 +10,9 @@
 get_header();
 ?>
 
+
 <!-- Breadcrumb -->
-<?php get_template_part('parts/extra/template-parts/breadcrumb'); ?>
+<?php cchla_breadcrumb(); ?>
 
 <main class="bg-[#F4F6F9]">
 

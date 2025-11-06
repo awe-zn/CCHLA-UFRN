@@ -59,7 +59,6 @@ CCHLA UFRN is distributed under the terms of the GNU GPL.
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color);
-    #f1f1f1;
 }
 
 /* Para Firefox não há width animável, mas podemos dar leve contraste no hover */
@@ -293,4 +292,241 @@ mark {
         font-size: 16px;
         /* Previne zoom no iOS */
     }
+}
+
+/* ==========================================
+   PAGINAÇÃO CCHLA - CORES OFICIAIS
+   ========================================== */
+
+/* Container da paginação */
+.pagination-item {
+    display: inline-block;
+}
+
+/* Todos os links e spans */
+.pagination-item a,
+.pagination-item span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    /* Área de toque mínima recomendada */
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    /* 10px 16px */
+    font-size: 0.9375rem;
+    /* 15px */
+    font-weight: 600;
+    line-height: 1;
+    border-radius: 0.5rem;
+    /* 8px */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Links padrão (não ativos) */
+.pagination-item a {
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.pagination-item a:hover {
+    background: #1B4D9E;
+    /* Azul CCHLA */
+    border-color: #1B4D9E;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(27, 77, 158, 0.3);
+}
+
+.pagination-item a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(27, 77, 158, 0.2);
+}
+
+/* Página atual (span.current) */
+.pagination-item .current {
+    background: #1B4D9E;
+    /* Azul CCHLA */
+    border: 2px solid #1B4D9E;
+    color: #ffffff;
+    cursor: default;
+    box-shadow: 0 4px 12px rgba(27, 77, 158, 0.25);
+}
+
+/* Reticências (dots) */
+.pagination-item .dots {
+    background: transparent;
+    border: 2px solid transparent;
+    color: #9ca3af;
+    cursor: default;
+    pointer-events: none;
+    padding: 0.625rem 0.5rem;
+    min-width: 32px;
+}
+
+/* Botões Anterior/Próxima */
+.pagination-item a:first-child,
+.pagination-item a:last-child {
+    font-weight: 700;
+}
+
+/* Estados de foco (acessibilidade) */
+.pagination-item a:focus-visible {
+    outline: 3px solid #1B4D9E;
+    outline-offset: 3px;
+    z-index: 1;
+}
+
+/* Desabilitado */
+.pagination-item .disabled {
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+    color: #d1d5db;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+
+/* Mobile: Botões maiores */
+@media (max-width: 640px) {
+
+    .pagination-item a,
+    .pagination-item span {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+
+    /* Oculta alguns números no mobile */
+    .pagination-item:not(:first-child):not(:last-child):not(.active-item) {
+        display: none;
+    }
+
+    /* Sempre mostra: Anterior, Próxima, Atual, e adjacentes */
+    .pagination-item:nth-child(-n+2),
+    .pagination-item:nth-last-child(-n+2),
+    .pagination-item.active-item,
+    .pagination-item.active-item+.pagination-item,
+    .pagination-item:has(+ .active-item) {
+        display: inline-block;
+    }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1024px) {
+
+    .pagination-item a,
+    .pagination-item span {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.625rem 0.875rem;
+    }
+}
+
+/* Desktop grande: Números mais espaçados */
+@media (min-width: 1280px) {
+    .pagination-item {
+        margin: 0 0.125rem;
+    }
+}
+
+/* ==========================================
+   ANIMAÇÕES
+   ========================================== */
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Loading state (opcional) */
+.pagination-loading .pagination-item a {
+    pointer-events: none;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ==========================================
+   MODO ESCURO (Opcional)
+   ========================================== */
+
+@media (prefers-color-scheme: dark) {
+    .pagination-item a {
+        background: #1f2937;
+        border-color: #374151;
+        color: #e5e7eb;
+    }
+
+    .pagination-item a:hover {
+        background: #1B4D9E;
+        border-color: #1B4D9E;
+        color: #ffffff;
+    }
+
+    .pagination-item .current {
+        background: #1B4D9E;
+        border-color: #1B4D9E;
+    }
+
+    .pagination-item .dots {
+        color: #6b7280;
+    }
+}
+
+/* ==========================================
+   MELHORIAS DE ACESSIBILIDADE
+   ========================================== */
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+    .pagination-item a {
+        border-width: 3px;
+    }
+
+    .pagination-item .current {
+        border: 3px solid #000000;
+    }
+}
+
+/* Redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+
+    .pagination-item a,
+    .pagination-item span {
+        transition: none;
+    }
+
+    .pagination-item a:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================
+   SR-ONLY (Screen Reader Only)
+   ========================================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }

@@ -17,8 +17,6 @@ $post_type = get_post_type();
 $queried_object = get_queried_object();
 ?>
 
-<h1>Arquivo - archive.php</h1>
-
 <!-- Breadcrumb -->
 <?php cchla_breadcrumb(); ?>
 
@@ -278,7 +276,7 @@ $queried_object = get_queried_object();
                     </div>
 
                     <!-- Botão Limpar Filtros -->
-                    <?php if (get_search_query() || is_filtered()) : ?>
+                    <?php if (get_search_query() || cchla_is_filtered()) : ?>
                         <a href="<?php echo esc_url(get_post_type_archive_link(get_post_type())); ?>"
                             class="px-4 py-2 text-sm text-gray-600 hover:text-blue-600 transition-colors">
                             <i class="fa-solid fa-times-circle"></i>
@@ -294,86 +292,115 @@ $queried_object = get_queried_object();
     </section>
 
     <!-- JavaScript para Filtros -->
+    <!-- JavaScript para Filtros - CORRIGIDO -->
     <script>
         (function() {
+            'use strict';
+
             const filterCategory = document.getElementById('filter-category');
             const filterTag = document.getElementById('filter-tag');
             const filterCustomTax = document.getElementById('filter-custom-tax');
             const filterYear = document.getElementById('filter-year');
             const filterOrder = document.getElementById('filter-order');
 
+            /**
+             * Constrói URL com os filtros selecionados
+             */
             function buildUrl() {
-                const url = new URL(window.location.href);
-                const params = new URLSearchParams(url.search);
+                // Pega a URL base do archive
+                let baseUrl = '<?php echo esc_url(get_post_type_archive_link(get_post_type()) ?: home_url("/")); ?>';
+
+                // Se estiver em taxonomia, mantém a URL da taxonomia
+                <?php if (is_tax()) : ?>
+                    baseUrl = '<?php echo esc_url(get_term_link(get_queried_object())); ?>';
+                <?php endif; ?>
+
+                const params = new URLSearchParams();
+
+                // Mantém post_type se for archive de CPT
+                <?php if (is_post_type_archive()) : ?>
+                    params.set('post_type', '<?php echo esc_js(get_query_var("post_type")); ?>');
+                <?php endif; ?>
+
+                // Mantém busca se existir
+                <?php if (get_search_query()) : ?>
+                    params.set('s', '<?php echo esc_js(get_search_query()); ?>');
+                <?php endif; ?>
 
                 // Categoria
-                if (filterCategory) {
-                    const catValue = filterCategory.value;
-                    if (catValue) {
-                        params.set('cat', catValue);
-                    } else {
-                        params.delete('cat');
-                    }
+                if (filterCategory && filterCategory.value) {
+                    params.set('cat', filterCategory.value);
                 }
 
                 // Tag
-                if (filterTag) {
-                    const tagValue = filterTag.value;
-                    if (tagValue) {
-                        params.set('tag', tagValue);
-                    } else {
-                        params.delete('tag');
-                    }
+                if (filterTag && filterTag.value) {
+                    params.set('tag', filterTag.value);
                 }
 
                 // Taxonomia Customizada
-                if (filterCustomTax) {
-                    const taxonomy = filterCustomTax.dataset.taxonomy || '<?php echo esc_js($custom_taxonomy); ?>';
-                    const termValue = filterCustomTax.value;
-                    if (termValue) {
-                        params.set('tax', taxonomy);
-                        params.set('term', termValue);
-                    } else {
-                        params.delete('tax');
-                        params.delete('term');
-                    }
+                if (filterCustomTax && filterCustomTax.value) {
+                    const taxonomy = '<?php echo esc_js($custom_taxonomy); ?>';
+                    params.set('tax', taxonomy);
+                    params.set('term', filterCustomTax.value);
                 }
 
                 // Ano
-                if (filterYear) {
-                    const yearValue = filterYear.value;
-                    if (yearValue) {
-                        params.set('year', yearValue);
-                    } else {
-                        params.delete('year');
-                    }
+                if (filterYear && filterYear.value) {
+                    params.set('year', filterYear.value);
                 }
 
                 // Ordenação
-                if (filterOrder) {
+                if (filterOrder && filterOrder.value) {
                     const orderValue = filterOrder.value.split('-');
-                    if (orderValue[0] && orderValue[1]) {
+                    if (orderValue.length === 2) {
                         params.set('orderby', orderValue[0]);
-                        params.set('order', orderValue[1]);
-                    } else {
-                        params.delete('orderby');
-                        params.delete('order');
+                        params.set('order', orderValue[1].toUpperCase());
                     }
                 }
 
-                // Remove página se existir
-                params.delete('paged');
+                // Constrói URL final
+                const queryString = params.toString();
+                const finalUrl = queryString ? baseUrl + '?' + queryString : baseUrl;
 
-                url.search = params.toString();
-                window.location.href = url.toString();
+                // Debug (remover em produção)
+                console.log('Navegando para:', finalUrl);
+
+                // Redireciona
+                window.location.href = finalUrl;
             }
 
-            // Event Listeners
-            if (filterCategory) filterCategory.addEventListener('change', buildUrl);
-            if (filterTag) filterTag.addEventListener('change', buildUrl);
-            if (filterCustomTax) filterCustomTax.addEventListener('change', buildUrl);
-            if (filterYear) filterYear.addEventListener('change', buildUrl);
-            if (filterOrder) filterOrder.addEventListener('change', buildUrl);
+            /**
+             * Adiciona event listeners
+             */
+            function initFilters() {
+                if (filterCategory) {
+                    filterCategory.addEventListener('change', buildUrl);
+                }
+
+                if (filterTag) {
+                    filterTag.addEventListener('change', buildUrl);
+                }
+
+                if (filterCustomTax) {
+                    filterCustomTax.addEventListener('change', buildUrl);
+                }
+
+                if (filterYear) {
+                    filterYear.addEventListener('change', buildUrl);
+                }
+
+                if (filterOrder) {
+                    filterOrder.addEventListener('change', buildUrl);
+                }
+            }
+
+            // Inicializa quando DOM estiver pronto
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initFilters);
+            } else {
+                initFilters();
+            }
+
         })();
     </script>
 

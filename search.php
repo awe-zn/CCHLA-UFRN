@@ -6,20 +6,22 @@
  * Busca em todos os tipos de conteúdo:
  * - Posts (Notícias)
  * - Páginas
+ * - Departamentos
+ * - Cursos
  * - Publicações
  * - Especiais
  * - Serviços
  * - Acesso Rápido
  *
  * @package CCHLA_UFRN
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 get_header();
 
 // Termo de busca
 $search_query = get_search_query();
-$search_query_display = !empty($search_query) ? $search_query : 'todos os termos';
+$search_query_display = !empty($search_query) ? $search_query : __('todos os termos', 'cchla-ufrn');
 
 // Estatísticas da busca
 global $wp_query;
@@ -86,13 +88,13 @@ $current_page = max(1, get_query_var('paged'));
 
                     <?php
                     // Conta resultados por tipo
-                    $counts_by_type = cchla_get_search_counts_by_type($search_query);
+                    $counts_by_type = cchla_get_search_results_count_by_type($search_query);
                     $current_post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : '';
                     ?>
 
                     <nav class="space-y-2">
                         <!-- Todos -->
-                        <a href="<?php echo esc_url(get_search_link($search_query)); ?>"
+                        <a href="<?php echo esc_url(add_query_arg('s', $search_query, home_url('/'))); ?>"
                             class="flex items-center justify-between p-3 rounded-lg transition-all duration-200 <?php echo empty($current_post_type) ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-gray-50 text-gray-700'; ?>">
                             <span class="flex items-center gap-2">
                                 <i class="fa-solid fa-globe w-5"></i>
@@ -105,34 +107,44 @@ $current_page = max(1, get_query_var('paged'));
                         <?php
                         $post_type_filters = array(
                             'post' => array(
-                                'label' => 'Notícias',
+                                'label' => __('Notícias', 'cchla-ufrn'),
                                 'icon' => 'fa-newspaper',
                                 'color' => 'blue',
                             ),
                             'page' => array(
-                                'label' => 'Páginas',
+                                'label' => __('Páginas', 'cchla-ufrn'),
                                 'icon' => 'fa-file',
                                 'color' => 'gray',
                             ),
-                            'publicacoes' => array(
-                                'label' => 'Publicações',
-                                'icon' => 'fa-book',
+                            'departamentos' => array(
+                                'label' => __('Departamentos', 'cchla-ufrn'),
+                                'icon' => 'fa-building',
+                                'color' => 'indigo',
+                            ),
+                            'cursos' => array(
+                                'label' => __('Cursos', 'cchla-ufrn'),
+                                'icon' => 'fa-graduation-cap',
                                 'color' => 'green',
                             ),
+                            'publicacoes' => array(
+                                'label' => __('Publicações', 'cchla-ufrn'),
+                                'icon' => 'fa-book',
+                                'color' => 'purple',
+                            ),
                             'especiais' => array(
-                                'label' => 'Especiais',
+                                'label' => __('Especiais', 'cchla-ufrn'),
                                 'icon' => 'fa-video',
                                 'color' => 'red',
                             ),
                             'servicos' => array(
-                                'label' => 'Serviços',
+                                'label' => __('Serviços', 'cchla-ufrn'),
                                 'icon' => 'fa-hand-holding-heart',
                                 'color' => 'yellow',
                             ),
                             'acesso_rapido' => array(
-                                'label' => 'Sistemas',
+                                'label' => __('Sistemas', 'cchla-ufrn'),
                                 'icon' => 'fa-link',
-                                'color' => 'purple',
+                                'color' => 'pink',
                             ),
                         );
 
@@ -161,7 +173,8 @@ $current_page = max(1, get_query_var('paged'));
                     <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
                         <p class="text-sm text-blue-800">
                             <i class="fa-solid fa-lightbulb mr-1"></i>
-                            <strong>Dica:</strong> Use aspas para buscar frases exatas. Ex: "inteligência artificial"
+                            <strong><?php _e('Dica:', 'cchla-ufrn'); ?></strong>
+                            <?php _e('Use aspas para buscar frases exatas. Ex: "inteligência artificial"', 'cchla-ufrn'); ?>
                         </p>
                     </div>
                 </div>
@@ -175,7 +188,7 @@ $current_page = max(1, get_query_var('paged'));
                     <div class="mb-6 flex items-center justify-between text-sm text-gray-600">
                         <span>
                             <?php
-                            $results_per_page = $wp_query->query_vars['posts_per_page'];
+                            $results_per_page = get_option('posts_per_page', 10);
                             $showing_start = (($current_page - 1) * $results_per_page) + 1;
                             $showing_end = min($total_results, $current_page * $results_per_page);
 
@@ -193,7 +206,15 @@ $current_page = max(1, get_query_var('paged'));
                     <div class="space-y-4">
                         <?php
                         while (have_posts()) : the_post();
-                            get_template_part('template-parts/search/result', get_post_type());
+                            // Tenta carregar template específico, se não existir, usa fallback
+                            $template = locate_template('template-parts/search/result-' . get_post_type() . '.php');
+
+                            if ($template) {
+                                get_template_part('template-parts/search/result', get_post_type());
+                            } else {
+                                // Fallback: template genérico
+                                cchla_display_search_result_fallback();
+                            }
                         endwhile;
                         ?>
                     </div>
@@ -262,15 +283,20 @@ $current_page = max(1, get_query_var('paged'));
                                 <?php esc_html_e('Ou navegue pelas seções:', 'cchla-ufrn'); ?>
                             </p>
                             <div class="flex flex-wrap justify-center gap-3">
+                                <a href="<?php echo esc_url(get_post_type_archive_link('departamentos')); ?>"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i class="fa-solid fa-building"></i>
+                                    <?php esc_html_e('Departamentos', 'cchla-ufrn'); ?>
+                                </a>
+                                <a href="<?php echo esc_url(get_post_type_archive_link('cursos')); ?>"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                    <?php esc_html_e('Cursos', 'cchla-ufrn'); ?>
+                                </a>
                                 <a href="<?php echo esc_url(get_post_type_archive_link('publicacoes')); ?>"
                                     class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                                     <i class="fa-solid fa-book"></i>
                                     <?php esc_html_e('Publicações', 'cchla-ufrn'); ?>
-                                </a>
-                                <a href="<?php echo esc_url(get_post_type_archive_link('especiais')); ?>"
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                                    <i class="fa-solid fa-video"></i>
-                                    <?php esc_html_e('Especiais', 'cchla-ufrn'); ?>
                                 </a>
                                 <a href="<?php echo esc_url(get_post_type_archive_link('servicos')); ?>"
                                     class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">

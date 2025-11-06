@@ -1,5 +1,6 @@
 <?php get_header(); ?>
-
+<!-- Breadcrumb -->
+<?php cchla_breadcrumb();     ?>
 <main class="bg-white py-8 lg:py-10">
     <div class="max-w-screen-xl mx-auto px-4 lg:px-6">
 

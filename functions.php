@@ -2394,20 +2394,40 @@ add_action('pre_get_posts', 'cchla_archive_query_modifications');
  */
 function cchla_archive_body_class($classes)
 {
+    // A função body_class sempre espera um array de strings
+    if (!is_array($classes)) {
+        // Se por algum motivo o valor inicial não for um array, retorna o valor original.
+        return $classes;
+    }
+
     if (is_post_type_archive()) {
         $post_type = get_query_var('post_type');
-        $classes[] = 'archive-' . $post_type;
+        // Garantindo que $post_type é string e não está vazio
+        if (is_string($post_type) && !empty($post_type)) {
+            $classes[] = 'archive-' . $post_type;
+        }
     }
 
     if (is_tax()) {
         $term = get_queried_object();
-        $classes[] = 'taxonomy-' . $term->taxonomy;
-        $classes[] = 'term-' . $term->slug;
+        if ($term && is_object($term)) {
+            $classes[] = 'taxonomy-' . $term->taxonomy;
+            $classes[] = 'term-' . $term->slug;
+        }
     }
 
+    // Se is_filtered() retornar um array por engano, ele deve ser corrigido ANTES de ser usado.
+    // Presumindo que is_filtered() está correta e retorna booleano:
     if (is_filtered()) {
         $classes[] = 'has-filters';
     }
+
+    // A chave final para resolver o problema de forma geral é garantir que todas as classes
+    // sejam strings. Se houver algum Array não resolvido dentro do $classes,
+    // o PHP tentará convertê-lo e falhará, gerando o Warning.
+
+    // Filtramos o array para remover qualquer elemento que NÃO seja uma string válida
+    $classes = array_filter($classes, 'is_string');
 
     return $classes;
 }
@@ -5741,7 +5761,7 @@ class CCHLA_Advanced_Search_Widget extends WP_Widget
                 <?php esc_html_e('Mostrar estatísticas', 'cchla-ufrn'); ?>
             </label>
         </p>
-<?php
+    <?php
     }
 
     public function update($new_instance, $old_instance)
@@ -5833,3 +5853,2529 @@ function cchla_enqueue_search_autocomplete()
     ));
 }
 add_action('wp_enqueue_scripts', 'cchla_enqueue_search_autocomplete');
+
+
+
+/**
+ * ==========================================
+ * FUNÇÕES PARA SINGLE POST
+ * ==========================================
+ */
+
+/**
+ * Calcula tempo estimado de leitura
+ * 
+ * @param string $content Conteúdo do post
+ * @return int Minutos de leitura
+ */
+function cchla_calculate_reading_time($content)
+{
+    $word_count = str_word_count(strip_tags($content));
+    $reading_time = ceil($word_count / 200); // 200 palavras por minuto
+
+    return max(1, $reading_time); // Mínimo 1 minuto
+}
+
+/**
+ * Gera keywords meta tag baseado em tags e categorias
+ * 
+ * @return string Keywords separadas por vírgula
+ */
+function cchla_get_meta_keywords()
+{
+    if (!is_single()) {
+        return '';
+    }
+
+    $keywords = array();
+
+    // Adiciona categorias
+    $categories = get_the_category();
+    if ($categories) {
+        foreach ($categories as $category) {
+            $keywords[] = $category->name;
+        }
+    }
+
+    // Adiciona tags
+    $tags = get_the_tags();
+    if ($tags) {
+        foreach ($tags as $tag) {
+            $keywords[] = $tag->name;
+        }
+    }
+
+    return implode(', ', array_slice($keywords, 0, 10));
+}
+
+/**
+ * Conta visualizações do post (opcional)
+ * 
+ * @param int $post_id ID do post
+ * @return int Número de visualizações
+ */
+function cchla_get_post_views($post_id)
+{
+    $count_key = 'post_views_count';
+    $count = get_post_meta($post_id, $count_key, true);
+
+    return $count ? intval($count) : 0;
+}
+
+/**
+ * Incrementa contador de visualizações
+ */
+function cchla_set_post_views()
+{
+    if (is_single()) {
+        global $post;
+        $post_id = $post->ID;
+        $count_key = 'post_views_count';
+        $count = get_post_meta($post_id, $count_key, true);
+
+        if ($count == '') {
+            delete_post_meta($post_id, $count_key);
+            add_post_meta($post_id, $count_key, '1');
+        } else {
+            $count++;
+            update_post_meta($post_id, $count_key, $count);
+        }
+    }
+}
+add_action('wp_head', 'cchla_set_post_views');
+
+/**
+ * Remove contador de visualizações das queries
+ */
+function cchla_exclude_post_views($query)
+{
+    $query->query_vars['update_post_meta_cache'] = false;
+}
+add_action('pre_get_posts', 'cchla_exclude_post_views');
+
+/**
+ * Enfileira CSS de impressão
+ */
+function cchla_enqueue_print_styles()
+{
+    wp_enqueue_style(
+        'cchla-print-styles',
+        get_template_directory_uri() . '/assets/css/print.css',
+        array(),
+        filemtime(get_template_directory() . '/assets/css/print.css'),
+        'print' // ← IMPORTANTE: Carrega apenas para impressão
+    );
+}
+add_action('wp_enqueue_scripts', 'cchla_enqueue_print_styles');
+
+
+/**
+ * ==========================================
+ * SISTEMA DE DEPARTAMENTOS E CURSOS - CCHLA
+ * ==========================================
+ * 
+ * Estrutura:
+ * - CPT: Departamentos
+ * - CPT: Cursos
+ * - Taxonomia: Tipo de Curso (Graduação, Pós-Graduação, Extensão)
+ * - Taxonomia: Área de Conhecimento
+ * - Relacionamento: Departamento → Cursos
+ * 
+ * @package CCHLA_UFRN
+ * @version 1.0.0
+ */
+
+/**
+ * ==========================================
+ * 1. CUSTOM POST TYPE: DEPARTAMENTOS
+ * ==========================================
+ */
+function cchla_register_departamentos_cpt()
+{
+    $labels = array(
+        'name'                  => _x('Departamentos', 'Post Type General Name', 'cchla-ufrn'),
+        'singular_name'         => _x('Departamento', 'Post Type Singular Name', 'cchla-ufrn'),
+        'menu_name'             => __('Departamentos', 'cchla-ufrn'),
+        'name_admin_bar'        => __('Departamento', 'cchla-ufrn'),
+        'archives'              => __('Arquivo de Departamentos', 'cchla-ufrn'),
+        'attributes'            => __('Atributos do Departamento', 'cchla-ufrn'),
+        'parent_item_colon'     => __('Departamento Pai:', 'cchla-ufrn'),
+        'all_items'             => __('Todos os Departamentos', 'cchla-ufrn'),
+        'add_new_item'          => __('Adicionar Novo Departamento', 'cchla-ufrn'),
+        'add_new'               => __('Adicionar Novo', 'cchla-ufrn'),
+        'new_item'              => __('Novo Departamento', 'cchla-ufrn'),
+        'edit_item'             => __('Editar Departamento', 'cchla-ufrn'),
+        'update_item'           => __('Atualizar Departamento', 'cchla-ufrn'),
+        'view_item'             => __('Ver Departamento', 'cchla-ufrn'),
+        'view_items'            => __('Ver Departamentos', 'cchla-ufrn'),
+        'search_items'          => __('Buscar Departamento', 'cchla-ufrn'),
+        'not_found'             => __('Nenhum departamento encontrado', 'cchla-ufrn'),
+        'not_found_in_trash'    => __('Nenhum departamento encontrado na lixeira', 'cchla-ufrn'),
+        'featured_image'        => __('Imagem do Departamento', 'cchla-ufrn'),
+        'set_featured_image'    => __('Definir imagem do departamento', 'cchla-ufrn'),
+        'remove_featured_image' => __('Remover imagem do departamento', 'cchla-ufrn'),
+        'use_featured_image'    => __('Usar como imagem do departamento', 'cchla-ufrn'),
+        'insert_into_item'      => __('Inserir no departamento', 'cchla-ufrn'),
+        'uploaded_to_this_item' => __('Enviado para este departamento', 'cchla-ufrn'),
+        'items_list'            => __('Lista de departamentos', 'cchla-ufrn'),
+        'items_list_navigation' => __('Navegação da lista de departamentos', 'cchla-ufrn'),
+        'filter_items_list'     => __('Filtrar lista de departamentos', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'label'                 => __('Departamento', 'cchla-ufrn'),
+        'description'           => __('Departamentos do CCHLA', 'cchla-ufrn'),
+        'labels'                => $labels,
+        'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'page-attributes'),
+        'taxonomies'            => array('area_conhecimento'),
+        'hierarchical'          => true,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 20,
+        'menu_icon'             => 'dashicons-building',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => 'departamentos',
+        'rewrite'               => array(
+            'slug'       => 'departamento',
+            'with_front' => false,
+            'pages'      => true,
+            'feeds'      => true,
+        ),
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'page',
+        'show_in_rest'          => true,
+    );
+
+    register_post_type('departamentos', $args);
+}
+add_action('init', 'cchla_register_departamentos_cpt', 0);
+
+/**
+ * ==========================================
+ * 2. CUSTOM POST TYPE: CURSOS
+ * ==========================================
+ */
+function cchla_register_cursos_cpt()
+{
+    $labels = array(
+        'name'                  => _x('Cursos', 'Post Type General Name', 'cchla-ufrn'),
+        'singular_name'         => _x('Curso', 'Post Type Singular Name', 'cchla-ufrn'),
+        'menu_name'             => __('Cursos', 'cchla-ufrn'),
+        'name_admin_bar'        => __('Curso', 'cchla-ufrn'),
+        'archives'              => __('Arquivo de Cursos', 'cchla-ufrn'),
+        'attributes'            => __('Atributos do Curso', 'cchla-ufrn'),
+        'parent_item_colon'     => __('Curso Pai:', 'cchla-ufrn'),
+        'all_items'             => __('Todos os Cursos', 'cchla-ufrn'),
+        'add_new_item'          => __('Adicionar Novo Curso', 'cchla-ufrn'),
+        'add_new'               => __('Adicionar Novo', 'cchla-ufrn'),
+        'new_item'              => __('Novo Curso', 'cchla-ufrn'),
+        'edit_item'             => __('Editar Curso', 'cchla-ufrn'),
+        'update_item'           => __('Atualizar Curso', 'cchla-ufrn'),
+        'view_item'             => __('Ver Curso', 'cchla-ufrn'),
+        'view_items'            => __('Ver Cursos', 'cchla-ufrn'),
+        'search_items'          => __('Buscar Curso', 'cchla-ufrn'),
+        'not_found'             => __('Nenhum curso encontrado', 'cchla-ufrn'),
+        'not_found_in_trash'    => __('Nenhum curso encontrado na lixeira', 'cchla-ufrn'),
+        'featured_image'        => __('Imagem do Curso', 'cchla-ufrn'),
+        'set_featured_image'    => __('Definir imagem do curso', 'cchla-ufrn'),
+        'remove_featured_image' => __('Remover imagem do curso', 'cchla-ufrn'),
+        'use_featured_image'    => __('Usar como imagem do curso', 'cchla-ufrn'),
+        'insert_into_item'      => __('Inserir no curso', 'cchla-ufrn'),
+        'uploaded_to_this_item' => __('Enviado para este curso', 'cchla-ufrn'),
+        'items_list'            => __('Lista de cursos', 'cchla-ufrn'),
+        'items_list_navigation' => __('Navegação da lista de cursos', 'cchla-ufrn'),
+        'filter_items_list'     => __('Filtrar lista de cursos', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'label'                 => __('Curso', 'cchla-ufrn'),
+        'description'           => __('Cursos oferecidos pelos departamentos', 'cchla-ufrn'),
+        'labels'                => $labels,
+        'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'revisions'),
+        'taxonomies'            => array('tipo_curso', 'area_conhecimento'),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 21,
+        'menu_icon'             => 'dashicons-welcome-learn-more',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => 'cursos',
+        'rewrite'               => array(
+            'slug'       => 'curso',
+            'with_front' => false,
+            'pages'      => true,
+            'feeds'      => true,
+        ),
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+        'show_in_rest'          => true,
+    );
+
+    register_post_type('cursos', $args);
+}
+add_action('init', 'cchla_register_cursos_cpt', 0);
+
+/**
+ * ==========================================
+ * 3. TAXONOMIA: TIPO DE CURSO
+ * ==========================================
+ */
+function cchla_register_tipo_curso_taxonomy()
+{
+    $labels = array(
+        'name'                       => _x('Tipos de Curso', 'Taxonomy General Name', 'cchla-ufrn'),
+        'singular_name'              => _x('Tipo de Curso', 'Taxonomy Singular Name', 'cchla-ufrn'),
+        'menu_name'                  => __('Tipos de Curso', 'cchla-ufrn'),
+        'all_items'                  => __('Todos os Tipos', 'cchla-ufrn'),
+        'parent_item'                => __('Tipo Pai', 'cchla-ufrn'),
+        'parent_item_colon'          => __('Tipo Pai:', 'cchla-ufrn'),
+        'new_item_name'              => __('Nome do Novo Tipo', 'cchla-ufrn'),
+        'add_new_item'               => __('Adicionar Novo Tipo', 'cchla-ufrn'),
+        'edit_item'                  => __('Editar Tipo', 'cchla-ufrn'),
+        'update_item'                => __('Atualizar Tipo', 'cchla-ufrn'),
+        'view_item'                  => __('Ver Tipo', 'cchla-ufrn'),
+        'separate_items_with_commas' => __('Separar tipos com vírgulas', 'cchla-ufrn'),
+        'add_or_remove_items'        => __('Adicionar ou remover tipos', 'cchla-ufrn'),
+        'choose_from_most_used'      => __('Escolher entre os mais usados', 'cchla-ufrn'),
+        'popular_items'              => __('Tipos Populares', 'cchla-ufrn'),
+        'search_items'               => __('Buscar Tipos', 'cchla-ufrn'),
+        'not_found'                  => __('Não Encontrado', 'cchla-ufrn'),
+        'no_terms'                   => __('Nenhum tipo', 'cchla-ufrn'),
+        'items_list'                 => __('Lista de tipos', 'cchla-ufrn'),
+        'items_list_navigation'      => __('Navegação da lista de tipos', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => false,
+        'rewrite'                    => array('slug' => 'tipo-curso'),
+        'show_in_rest'               => true,
+    );
+
+    register_taxonomy('tipo_curso', array('cursos'), $args);
+}
+add_action('init', 'cchla_register_tipo_curso_taxonomy', 0);
+
+/**
+ * ==========================================
+ * 4. TAXONOMIA: ÁREA DE CONHECIMENTO
+ * ==========================================
+ */
+function cchla_register_area_conhecimento_taxonomy()
+{
+    $labels = array(
+        'name'                       => _x('Áreas de Conhecimento', 'Taxonomy General Name', 'cchla-ufrn'),
+        'singular_name'              => _x('Área de Conhecimento', 'Taxonomy Singular Name', 'cchla-ufrn'),
+        'menu_name'                  => __('Áreas de Conhecimento', 'cchla-ufrn'),
+        'all_items'                  => __('Todas as Áreas', 'cchla-ufrn'),
+        'parent_item'                => __('Área Pai', 'cchla-ufrn'),
+        'parent_item_colon'          => __('Área Pai:', 'cchla-ufrn'),
+        'new_item_name'              => __('Nome da Nova Área', 'cchla-ufrn'),
+        'add_new_item'               => __('Adicionar Nova Área', 'cchla-ufrn'),
+        'edit_item'                  => __('Editar Área', 'cchla-ufrn'),
+        'update_item'                => __('Atualizar Área', 'cchla-ufrn'),
+        'view_item'                  => __('Ver Área', 'cchla-ufrn'),
+        'separate_items_with_commas' => __('Separar áreas com vírgulas', 'cchla-ufrn'),
+        'add_or_remove_items'        => __('Adicionar ou remover áreas', 'cchla-ufrn'),
+        'choose_from_most_used'      => __('Escolher entre as mais usadas', 'cchla-ufrn'),
+        'popular_items'              => __('Áreas Populares', 'cchla-ufrn'),
+        'search_items'               => __('Buscar Áreas', 'cchla-ufrn'),
+        'not_found'                  => __('Não Encontrado', 'cchla-ufrn'),
+        'no_terms'                   => __('Nenhuma área', 'cchla-ufrn'),
+        'items_list'                 => __('Lista de áreas', 'cchla-ufrn'),
+        'items_list_navigation'      => __('Navegação da lista de áreas', 'cchla-ufrn'),
+    );
+
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'rewrite'                    => array('slug' => 'area'),
+        'show_in_rest'               => true,
+    );
+
+    register_taxonomy('area_conhecimento', array('departamentos', 'cursos'), $args);
+}
+add_action('init', 'cchla_register_area_conhecimento_taxonomy', 0);
+
+/**
+ * ==========================================
+ * 5. META BOXES - INFORMAÇÕES DO DEPARTAMENTO
+ * ==========================================
+ */
+function cchla_add_departamento_meta_boxes()
+{
+    add_meta_box(
+        'cchla_departamento_info',
+        __('Informações do Departamento', 'cchla-ufrn'),
+        'cchla_departamento_info_callback',
+        'departamentos',
+        'normal',
+        'high'
+    );
+
+    add_meta_box(
+        'cchla_departamento_contato',
+        __('Contatos do Departamento', 'cchla-ufrn'),
+        'cchla_departamento_contato_callback',
+        'departamentos',
+        'normal',
+        'high'
+    );
+
+    add_meta_box(
+        'cchla_departamento_responsaveis',
+        __('Responsáveis e Coordenação', 'cchla-ufrn'),
+        'cchla_departamento_responsaveis_callback',
+        'departamentos',
+        'normal',
+        'high'
+    );
+
+    add_meta_box(
+        'cchla_departamento_links',
+        __('Links e Recursos', 'cchla-ufrn'),
+        'cchla_departamento_links_callback',
+        'departamentos',
+        'side',
+        'default'
+    );
+}
+add_action('add_meta_boxes', 'cchla_add_departamento_meta_boxes');
+
+/**
+ * Callback: Informações do Departamento
+ */
+function cchla_departamento_info_callback($post)
+{
+    wp_nonce_field('cchla_save_departamento_info', 'cchla_departamento_info_nonce');
+
+    $sigla = get_post_meta($post->ID, '_departamento_sigla', true);
+    $codigo = get_post_meta($post->ID, '_departamento_codigo', true);
+    $fundacao = get_post_meta($post->ID, '_departamento_fundacao', true);
+    $localizacao = get_post_meta($post->ID, '_departamento_localizacao', true);
+    $sala = get_post_meta($post->ID, '_departamento_sala', true);
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="departamento_sigla"><?php _e('Sigla', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="departamento_sigla"
+                    name="departamento_sigla"
+                    value="<?php echo esc_attr($sigla); ?>"
+                    class="regular-text"
+                    placeholder="Ex: DGEO">
+                <p class="description"><?php _e('Sigla oficial do departamento', 'cchla-ufrn'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_codigo"><?php _e('Código', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="departamento_codigo"
+                    name="departamento_codigo"
+                    value="<?php echo esc_attr($codigo); ?>"
+                    class="regular-text"
+                    placeholder="Ex: 1234">
+                <p class="description"><?php _e('Código institucional do departamento', 'cchla-ufrn'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_fundacao"><?php _e('Data de Fundação', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="date"
+                    id="departamento_fundacao"
+                    name="departamento_fundacao"
+                    value="<?php echo esc_attr($fundacao); ?>"
+                    class="regular-text">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_localizacao"><?php _e('Localização', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="departamento_localizacao"
+                    name="departamento_localizacao"
+                    value="<?php echo esc_attr($localizacao); ?>"
+                    class="large-text"
+                    placeholder="Ex: Prédio do CCHLA, 2º andar">
+                <p class="description"><?php _e('Localização física do departamento', 'cchla-ufrn'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_sala"><?php _e('Sala', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="departamento_sala"
+                    name="departamento_sala"
+                    value="<?php echo esc_attr($sala); ?>"
+                    class="regular-text"
+                    placeholder="Ex: Sala 201">
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+/**
+ * Callback: Contatos do Departamento
+ */
+function cchla_departamento_contato_callback($post)
+{
+    wp_nonce_field('cchla_save_departamento_contato', 'cchla_departamento_contato_nonce');
+
+    $telefone = get_post_meta($post->ID, '_departamento_telefone', true);
+    $telefone_2 = get_post_meta($post->ID, '_departamento_telefone_2', true);
+    $email = get_post_meta($post->ID, '_departamento_email', true);
+    $email_secretaria = get_post_meta($post->ID, '_departamento_email_secretaria', true);
+    $horario_atendimento = get_post_meta($post->ID, '_departamento_horario_atendimento', true);
+?>
+    <table class="form-table">
+        <tr>
+            <th><label for="departamento_telefone"><?php _e('Telefone Principal', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="tel"
+                    id="departamento_telefone"
+                    name="departamento_telefone"
+                    value="<?php echo esc_attr($telefone); ?>"
+                    class="regular-text"
+                    placeholder="(84) 3342-2234">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_telefone_2"><?php _e('Telefone Secundário', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="tel"
+                    id="departamento_telefone_2"
+                    name="departamento_telefone_2"
+                    value="<?php echo esc_attr($telefone_2); ?>"
+                    class="regular-text"
+                    placeholder="(84) 3342-2235">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_email"><?php _e('E-mail Principal', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="email"
+                    id="departamento_email"
+                    name="departamento_email"
+                    value="<?php echo esc_attr($email); ?>"
+                    class="large-text"
+                    placeholder="departamento@cchla.ufrn.br">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_email_secretaria"><?php _e('E-mail da Secretaria', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="email"
+                    id="departamento_email_secretaria"
+                    name="departamento_email_secretaria"
+                    value="<?php echo esc_attr($email_secretaria); ?>"
+                    class="large-text"
+                    placeholder="secretaria@cchla.ufrn.br">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_horario_atendimento"><?php _e('Horário de Atendimento', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <textarea id="departamento_horario_atendimento"
+                    name="departamento_horario_atendimento"
+                    rows="3"
+                    class="large-text"
+                    placeholder="Segunda a Sexta: 8h às 12h e 14h às 18h"><?php echo esc_textarea($horario_atendimento); ?></textarea>
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+/**
+ * Callback: Responsáveis e Coordenação
+ */
+function cchla_departamento_responsaveis_callback($post)
+{
+    wp_nonce_field('cchla_save_departamento_responsaveis', 'cchla_departamento_responsaveis_nonce');
+
+    $chefe = get_post_meta($post->ID, '_departamento_chefe', true);
+    $chefe_email = get_post_meta($post->ID, '_departamento_chefe_email', true);
+    $subchefe = get_post_meta($post->ID, '_departamento_subchefe', true);
+    $subchefe_email = get_post_meta($post->ID, '_departamento_subchefe_email', true);
+    $coordenador = get_post_meta($post->ID, '_departamento_coordenador', true);
+    $coordenador_email = get_post_meta($post->ID, '_departamento_coordenador_email', true);
+?>
+    <table class="form-table">
+        <tr>
+            <th colspan="2">
+                <h3><?php _e('Chefia do Departamento', 'cchla-ufrn'); ?></h3>
+            </th>
+        </tr>
+        <tr>
+            <th><label for="departamento_chefe"><?php _e('Chefe', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="departamento_chefe"
+                    name="departamento_chefe"
+                    value="<?php echo esc_attr($chefe); ?>"
+                    class="large-text"
+                    placeholder="Prof. Dr. Nome Completo">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_chefe_email"><?php _e('E-mail do Chefe', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="email"
+                    id="departamento_chefe_email"
+                    name="departamento_chefe_email"
+                    value="<?php echo esc_attr($chefe_email); ?>"
+                    class="large-text">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_subchefe"><?php _e('Subchefe', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="departamento_subchefe"
+                    name="departamento_subchefe"
+                    value="<?php echo esc_attr($subchefe); ?>"
+                    class="large-text"
+                    placeholder="Prof. Dr. Nome Completo">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_subchefe_email"><?php _e('E-mail do Subchefe', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="email"
+                    id="departamento_subchefe_email"
+                    name="departamento_subchefe_email"
+                    value="<?php echo esc_attr($subchefe_email); ?>"
+                    class="large-text">
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <h3><?php _e('Coordenação Acadêmica', 'cchla-ufrn'); ?></h3>
+            </th>
+        </tr>
+        <tr>
+            <th><label for="departamento_coordenador"><?php _e('Coordenador(a)', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="departamento_coordenador"
+                    name="departamento_coordenador"
+                    value="<?php echo esc_attr($coordenador); ?>"
+                    class="large-text"
+                    placeholder="Prof. Dr. Nome Completo">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="departamento_coordenador_email"><?php _e('E-mail do Coordenador', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="email"
+                    id="departamento_coordenador_email"
+                    name="departamento_coordenador_email"
+                    value="<?php echo esc_attr($coordenador_email); ?>"
+                    class="large-text">
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+/**
+ * Callback: Links e Recursos
+ */
+function cchla_departamento_links_callback($post)
+{
+    wp_nonce_field('cchla_save_departamento_links', 'cchla_departamento_links_nonce');
+
+    $site = get_post_meta($post->ID, '_departamento_site', true);
+    $lattes = get_post_meta($post->ID, '_departamento_lattes', true);
+    $instagram = get_post_meta($post->ID, '_departamento_instagram', true);
+    $facebook = get_post_meta($post->ID, '_departamento_facebook', true);
+    $youtube = get_post_meta($post->ID, '_departamento_youtube', true);
+?>
+    <p>
+        <label for="departamento_site"><strong><?php _e('Site Oficial', 'cchla-ufrn'); ?></strong></label>
+        <input type="url"
+            id="departamento_site"
+            name="departamento_site"
+            value="<?php echo esc_url($site); ?>"
+            class="widefat"
+            placeholder="https://exemplo.cchla.ufrn.br">
+    </p>
+    <p>
+        <label for="departamento_lattes"><strong><?php _e('Grupo Lattes/CNPq', 'cchla-ufrn'); ?></strong></label>
+        <input type="url"
+            id="departamento_lattes"
+            name="departamento_lattes"
+            value="<?php echo esc_url($lattes); ?>"
+            class="widefat"
+            placeholder="http://dgp.cnpq.br/...">
+    </p>
+
+    <p>
+        <label for="departamento_instagram"><strong><?php _e('Instagram', 'cchla-ufrn'); ?></strong></label>
+        <input type="url"
+            id="departamento_instagram"
+            name="departamento_instagram"
+            value="<?php echo esc_url($instagram); ?>"
+            class="widefat"
+            placeholder="https://instagram.com/...">
+    </p>
+
+    <p>
+        <label for="departamento_facebook"><strong><?php _e('Facebook', 'cchla-ufrn'); ?></strong></label>
+        <input type="url"
+            id="departamento_facebook"
+            name="departamento_facebook"
+            value="<?php echo esc_url($facebook); ?>"
+            class="widefat"
+            placeholder="https://facebook.com/...">
+    </p>
+
+    <p>
+        <label for="departamento_youtube"><strong><?php _e('YouTube', 'cchla-ufrn'); ?></strong></label>
+        <input type="url"
+            id="departamento_youtube"
+            name="departamento_youtube"
+            value="<?php echo esc_url($youtube); ?>"
+            class="widefat"
+            placeholder="https://youtube.com/@...">
+    </p>
+<?php
+}
+
+/**
+ * ==========================================
+ * 6. META BOXES - INFORMAÇÕES DO CURSO
+ * ==========================================
+ */
+function cchla_add_curso_meta_boxes()
+{
+    add_meta_box(
+        'cchla_curso_info',
+        __('Informações do Curso', 'cchla-ufrn'),
+        'cchla_curso_info_callback',
+        'cursos',
+        'normal',
+        'high'
+    );
+
+    add_meta_box(
+        'cchla_curso_departamento',
+        __('Departamento Responsável', 'cchla-ufrn'),
+        'cchla_curso_departamento_callback',
+        'cursos',
+        'side',
+        'high'
+    );
+
+    add_meta_box(
+        'cchla_curso_coordenacao',
+        __('Coordenação do Curso', 'cchla-ufrn'),
+        'cchla_curso_coordenacao_callback',
+        'cursos',
+        'normal',
+        'high'
+    );
+
+    add_meta_box(
+        'cchla_curso_detalhes',
+        __('Detalhes Acadêmicos', 'cchla-ufrn'),
+        'cchla_curso_detalhes_callback',
+        'cursos',
+        'normal',
+        'default'
+    );
+}
+add_action('add_meta_boxes', 'cchla_add_curso_meta_boxes');
+
+/**
+ * Callback: Informações do Curso
+ */
+function cchla_curso_info_callback($post)
+{
+    wp_nonce_field('cchla_save_curso_info', 'cchla_curso_info_nonce');
+
+    $codigo = get_post_meta($post->ID, '_curso_codigo', true);
+    $modalidade = get_post_meta($post->ID, '_curso_modalidade', true);
+    $turno = get_post_meta($post->ID, '_curso_turno', true);
+    $duracao = get_post_meta($post->ID, '_curso_duracao', true);
+    $vagas = get_post_meta($post->ID, '_curso_vagas', true);
+?>
+    <table class="form-table">
+        <tr>
+            <th><label for="curso_codigo"><?php _e('Código do Curso', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="curso_codigo"
+                    name="curso_codigo"
+                    value="<?php echo esc_attr($codigo); ?>"
+                    class="regular-text"
+                    placeholder="Ex: 1234567">
+                <p class="description"><?php _e('Código oficial do curso no sistema acadêmico', 'cchla-ufrn'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_modalidade"><?php _e('Modalidade', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <select id="curso_modalidade" name="curso_modalidade" class="regular-text">
+                    <option value=""><?php _e('Selecione...', 'cchla-ufrn'); ?></option>
+                    <option value="presencial" <?php selected($modalidade, 'presencial'); ?>><?php _e('Presencial', 'cchla-ufrn'); ?></option>
+                    <option value="ead" <?php selected($modalidade, 'ead'); ?>><?php _e('EaD', 'cchla-ufrn'); ?></option>
+                    <option value="hibrido" <?php selected($modalidade, 'hibrido'); ?>><?php _e('Híbrido', 'cchla-ufrn'); ?></option>
+                    <option value="semipresencial" <?php selected($modalidade, 'semipresencial'); ?>><?php _e('Semipresencial', 'cchla-ufrn'); ?></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_turno"><?php _e('Turno', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <select id="curso_turno" name="curso_turno" class="regular-text">
+                    <option value=""><?php _e('Selecione...', 'cchla-ufrn'); ?></option>
+                    <option value="matutino" <?php selected($turno, 'matutino'); ?>><?php _e('Matutino', 'cchla-ufrn'); ?></option>
+                    <option value="vespertino" <?php selected($turno, 'vespertino'); ?>><?php _e('Vespertino', 'cchla-ufrn'); ?></option>
+                    <option value="noturno" <?php selected($turno, 'noturno'); ?>><?php _e('Noturno', 'cchla-ufrn'); ?></option>
+                    <option value="integral" <?php selected($turno, 'integral'); ?>><?php _e('Integral', 'cchla-ufrn'); ?></option>
+                    <option value="variado" <?php selected($turno, 'variado'); ?>><?php _e('Variado', 'cchla-ufrn'); ?></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_duracao"><?php _e('Duração', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="curso_duracao"
+                    name="curso_duracao"
+                    value="<?php echo esc_attr($duracao); ?>"
+                    class="regular-text"
+                    placeholder="Ex: 4 anos / 8 semestres">
+                <p class="description"><?php _e('Duração mínima do curso', 'cchla-ufrn'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_vagas"><?php _e('Vagas Anuais', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="number"
+                    id="curso_vagas"
+                    name="curso_vagas"
+                    value="<?php echo esc_attr($vagas); ?>"
+                    class="small-text"
+                    min="0"
+                    placeholder="50">
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+/**
+ * Callback: Departamento Responsável
+ */
+function cchla_curso_departamento_callback($post)
+{
+    wp_nonce_field('cchla_save_curso_departamento', 'cchla_curso_departamento_nonce');
+
+    $departamento_id = get_post_meta($post->ID, '_curso_departamento', true);
+
+    $departamentos = get_posts(array(
+        'post_type' => 'departamentos',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+    ));
+?>
+    <p>
+        <label for="curso_departamento"><strong><?php _e('Selecione o Departamento', 'cchla-ufrn'); ?></strong></label>
+        <select id="curso_departamento" name="curso_departamento" class="widefat">
+            <option value=""><?php _e('-- Selecione --', 'cchla-ufrn'); ?></option>
+            <?php foreach ($departamentos as $dept) : ?>
+                <option value="<?php echo $dept->ID; ?>" <?php selected($departamento_id, $dept->ID); ?>>
+                    <?php echo esc_html($dept->post_title); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </p>
+
+    <?php if ($departamento_id) : ?>
+        <p class="description">
+            <a href="<?php echo get_edit_post_link($departamento_id); ?>" target="_blank">
+                <?php _e('Editar Departamento', 'cchla-ufrn'); ?> ↗
+            </a>
+        </p>
+    <?php endif; ?>
+<?php
+}
+
+/**
+ * Callback: Coordenação do Curso
+ */
+function cchla_curso_coordenacao_callback($post)
+{
+    wp_nonce_field('cchla_save_curso_coordenacao', 'cchla_curso_coordenacao_nonce');
+
+    $coordenador = get_post_meta($post->ID, '_curso_coordenador', true);
+    $coordenador_email = get_post_meta($post->ID, '_curso_coordenador_email', true);
+    $coordenador_telefone = get_post_meta($post->ID, '_curso_coordenador_telefone', true);
+    $vice_coordenador = get_post_meta($post->ID, '_curso_vice_coordenador', true);
+    $vice_coordenador_email = get_post_meta($post->ID, '_curso_vice_coordenador_email', true);
+?>
+    <table class="form-table">
+        <tr>
+            <th><label for="curso_coordenador"><?php _e('Coordenador(a)', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="curso_coordenador"
+                    name="curso_coordenador"
+                    value="<?php echo esc_attr($coordenador); ?>"
+                    class="large-text"
+                    placeholder="Prof. Dr. Nome Completo">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_coordenador_email"><?php _e('E-mail do Coordenador', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="email"
+                    id="curso_coordenador_email"
+                    name="curso_coordenador_email"
+                    value="<?php echo esc_attr($coordenador_email); ?>"
+                    class="large-text">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_coordenador_telefone"><?php _e('Telefone do Coordenador', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="tel"
+                    id="curso_coordenador_telefone"
+                    name="curso_coordenador_telefone"
+                    value="<?php echo esc_attr($coordenador_telefone); ?>"
+                    class="regular-text"
+                    placeholder="(84) 3342-2234">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_vice_coordenador"><?php _e('Vice-Coordenador(a)', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="curso_vice_coordenador"
+                    name="curso_vice_coordenador"
+                    value="<?php echo esc_attr($vice_coordenador); ?>"
+                    class="large-text"
+                    placeholder="Prof. Dr. Nome Completo">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_vice_coordenador_email"><?php _e('E-mail do Vice-Coordenador', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="email"
+                    id="curso_vice_coordenador_email"
+                    name="curso_vice_coordenador_email"
+                    value="<?php echo esc_attr($vice_coordenador_email); ?>"
+                    class="large-text">
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+/**
+ * Callback: Detalhes Acadêmicos
+ */
+function cchla_curso_detalhes_callback($post)
+{
+    wp_nonce_field('cchla_save_curso_detalhes', 'cchla_curso_detalhes_nonce');
+
+    $carga_horaria = get_post_meta($post->ID, '_curso_carga_horaria', true);
+    $nota_mec = get_post_meta($post->ID, '_curso_nota_mec', true);
+    $reconhecimento = get_post_meta($post->ID, '_curso_reconhecimento', true);
+    $matriz_curricular = get_post_meta($post->ID, '_curso_matriz_curricular', true);
+    $ppc = get_post_meta($post->ID, '_curso_ppc', true);
+?>
+    <table class="form-table">
+        <tr>
+            <th><label for="curso_carga_horaria"><?php _e('Carga Horária Total', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="curso_carga_horaria"
+                    name="curso_carga_horaria"
+                    value="<?php echo esc_attr($carga_horaria); ?>"
+                    class="regular-text"
+                    placeholder="Ex: 2800 horas">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_nota_mec"><?php _e('Nota MEC/ENADE', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="curso_nota_mec"
+                    name="curso_nota_mec"
+                    value="<?php echo esc_attr($nota_mec); ?>"
+                    class="small-text"
+                    placeholder="5">
+                <p class="description"><?php _e('Nota de avaliação do MEC (1 a 5)', 'cchla-ufrn'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_reconhecimento"><?php _e('Reconhecimento/Portaria', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="text"
+                    id="curso_reconhecimento"
+                    name="curso_reconhecimento"
+                    value="<?php echo esc_attr($reconhecimento); ?>"
+                    class="large-text"
+                    placeholder="Portaria MEC nº 123/2020">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_matriz_curricular"><?php _e('Link da Matriz Curricular', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="url"
+                    id="curso_matriz_curricular"
+                    name="curso_matriz_curricular"
+                    value="<?php echo esc_url($matriz_curricular); ?>"
+                    class="large-text"
+                    placeholder="https://...">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="curso_ppc"><?php _e('Link do PPC (Projeto Pedagógico)', 'cchla-ufrn'); ?></label></th>
+            <td>
+                <input type="url"
+                    id="curso_ppc"
+                    name="curso_ppc"
+                    value="<?php echo esc_url($ppc); ?>"
+                    class="large-text"
+                    placeholder="https://...">
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+/**
+ * ==========================================
+ * 7. SALVAR META BOXES - DEPARTAMENTO
+ * ==========================================
+ */
+function cchla_save_departamento_meta($post_id)
+{
+    // Verifica autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Verifica permissões
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Salvar Informações
+    if (isset($_POST['cchla_departamento_info_nonce']) && wp_verify_nonce($_POST['cchla_departamento_info_nonce'], 'cchla_save_departamento_info')) {
+        $fields = array('sigla', 'codigo', 'fundacao', 'localizacao', 'sala');
+        foreach ($fields as $field) {
+            if (isset($_POST["departamento_$field"])) {
+                update_post_meta($post_id, "_departamento_$field", sanitize_text_field($_POST["departamento_$field"]));
+            }
+        }
+    }
+
+    // Salvar Contatos
+    if (isset($_POST['cchla_departamento_contato_nonce']) && wp_verify_nonce($_POST['cchla_departamento_contato_nonce'], 'cchla_save_departamento_contato')) {
+        $fields = array('telefone', 'telefone_2', 'email', 'email_secretaria');
+        foreach ($fields as $field) {
+            if (isset($_POST["departamento_$field"])) {
+                if (strpos($field, 'email') !== false) {
+                    update_post_meta($post_id, "_departamento_$field", sanitize_email($_POST["departamento_$field"]));
+                } else {
+                    update_post_meta($post_id, "_departamento_$field", sanitize_text_field($_POST["departamento_$field"]));
+                }
+            }
+        }
+        if (isset($_POST['departamento_horario_atendimento'])) {
+            update_post_meta($post_id, '_departamento_horario_atendimento', sanitize_textarea_field($_POST['departamento_horario_atendimento']));
+        }
+    }
+
+    // Salvar Responsáveis
+    if (isset($_POST['cchla_departamento_responsaveis_nonce']) && wp_verify_nonce($_POST['cchla_departamento_responsaveis_nonce'], 'cchla_save_departamento_responsaveis')) {
+        $fields = array('chefe', 'chefe_email', 'subchefe', 'subchefe_email', 'coordenador', 'coordenador_email');
+        foreach ($fields as $field) {
+            if (isset($_POST["departamento_$field"])) {
+                if (strpos($field, 'email') !== false) {
+                    update_post_meta($post_id, "_departamento_$field", sanitize_email($_POST["departamento_$field"]));
+                } else {
+                    update_post_meta($post_id, "_departamento_$field", sanitize_text_field($_POST["departamento_$field"]));
+                }
+            }
+        }
+    }
+
+    // Salvar Links
+    if (isset($_POST['cchla_departamento_links_nonce']) && wp_verify_nonce($_POST['cchla_departamento_links_nonce'], 'cchla_save_departamento_links')) {
+        $fields = array('site', 'lattes', 'instagram', 'facebook', 'youtube');
+        foreach ($fields as $field) {
+            if (isset($_POST["departamento_$field"])) {
+                update_post_meta($post_id, "_departamento_$field", esc_url_raw($_POST["departamento_$field"]));
+            }
+        }
+    }
+}
+add_action('save_post_departamentos', 'cchla_save_departamento_meta');
+
+/**
+ * ==========================================
+ * 8. SALVAR META BOXES - CURSO
+ * ==========================================
+ */
+function cchla_save_curso_meta($post_id)
+{
+    // Verifica autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Verifica permissões
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Salvar Informações
+    if (isset($_POST['cchla_curso_info_nonce']) && wp_verify_nonce($_POST['cchla_curso_info_nonce'], 'cchla_save_curso_info')) {
+        $fields = array('codigo', 'modalidade', 'turno', 'duracao', 'vagas');
+        foreach ($fields as $field) {
+            if (isset($_POST["curso_$field"])) {
+                update_post_meta($post_id, "_curso_$field", sanitize_text_field($_POST["curso_$field"]));
+            }
+        }
+    }
+
+    // Salvar Departamento
+    if (isset($_POST['cchla_curso_departamento_nonce']) && wp_verify_nonce($_POST['cchla_curso_departamento_nonce'], 'cchla_save_curso_departamento')) {
+        if (isset($_POST['curso_departamento'])) {
+            update_post_meta($post_id, '_curso_departamento', intval($_POST['curso_departamento']));
+        }
+    }
+
+    // Salvar Coordenação
+    if (isset($_POST['cchla_curso_coordenacao_nonce']) && wp_verify_nonce($_POST['cchla_curso_coordenacao_nonce'], 'cchla_save_curso_coordenacao')) {
+        $fields = array('coordenador', 'coordenador_email', 'coordenador_telefone', 'vice_coordenador', 'vice_coordenador_email');
+        foreach ($fields as $field) {
+            if (isset($_POST["curso_$field"])) {
+                if (strpos($field, 'email') !== false) {
+                    update_post_meta($post_id, "_curso_$field", sanitize_email($_POST["curso_$field"]));
+                } else {
+                    update_post_meta($post_id, "_curso_$field", sanitize_text_field($_POST["curso_$field"]));
+                }
+            }
+        }
+    }
+
+    // Salvar Detalhes
+    if (isset($_POST['cchla_curso_detalhes_nonce']) && wp_verify_nonce($_POST['cchla_curso_detalhes_nonce'], 'cchla_save_curso_detalhes')) {
+        $text_fields = array('carga_horaria', 'nota_mec', 'reconhecimento');
+        foreach ($text_fields as $field) {
+            if (isset($_POST["curso_$field"])) {
+                update_post_meta($post_id, "_curso_$field", sanitize_text_field($_POST["curso_$field"]));
+            }
+        }
+
+        $url_fields = array('matriz_curricular', 'ppc');
+        foreach ($url_fields as $field) {
+            if (isset($_POST["curso_$field"])) {
+                update_post_meta($post_id, "_curso_$field", esc_url_raw($_POST["curso_$field"]));
+            }
+        }
+    }
+}
+add_action('save_post_cursos', 'cchla_save_curso_meta');
+
+/**
+ * ==========================================
+ * 9. COLUNAS CUSTOMIZADAS - ADMIN
+ * ==========================================
+ */
+
+// Colunas Departamentos
+function cchla_departamentos_columns($columns)
+{
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['title'] = __('Departamento', 'cchla-ufrn');
+    $new_columns['sigla'] = __('Sigla', 'cchla-ufrn');
+    $new_columns['area'] = __('Área', 'cchla-ufrn');
+    $new_columns['chefe'] = __('Chefe', 'cchla-ufrn');
+    $new_columns['contato'] = __('Contato', 'cchla-ufrn');
+    $new_columns['cursos'] = __('Cursos', 'cchla-ufrn');
+    $new_columns['date'] = $columns['date'];
+    return $new_columns;
+}
+add_filter('manage_departamentos_posts_columns', 'cchla_departamentos_columns');
+
+function cchla_departamentos_column_content($column, $post_id)
+{
+    switch ($column) {
+        case 'sigla':
+            $sigla = get_post_meta($post_id, '_departamento_sigla', true);
+            echo $sigla ? '<strong>' . esc_html($sigla) . '</strong>' : '—';
+            break;
+
+        case 'area':
+            $terms = get_the_terms($post_id, 'area_conhecimento');
+            if ($terms && !is_wp_error($terms)) {
+                $areas = array();
+                foreach ($terms as $term) {
+                    $areas[] = $term->name;
+                }
+                echo implode(', ', $areas);
+            } else {
+                echo '—';
+            }
+            break;
+
+        case 'chefe':
+            $chefe = get_post_meta($post_id, '_departamento_chefe', true);
+            echo $chefe ? esc_html($chefe) : '—';
+            break;
+
+        case 'contato':
+            $email = get_post_meta($post_id, '_departamento_email', true);
+            $telefone = get_post_meta($post_id, '_departamento_telefone', true);
+            if ($email) {
+                echo '<a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a><br>';
+            }
+            if ($telefone) {
+                echo '<a href="tel:' . esc_attr($telefone) . '">' . esc_html($telefone) . '</a>';
+            }
+            if (!$email && !$telefone) {
+                echo '—';
+            }
+            break;
+
+        case 'cursos':
+            $cursos = get_posts(array(
+                'post_type' => 'cursos',
+                'posts_per_page' => -1,
+                'meta_query' => array(
+                    array(
+                        'key' => '_curso_departamento',
+                        'value' => $post_id,
+                    )
+                )
+            ));
+            echo '<strong>' . count($cursos) . '</strong> ' . _n('curso', 'cursos', count($cursos), 'cchla-ufrn');
+            break;
+    }
+}
+add_action('manage_departamentos_posts_custom_column', 'cchla_departamentos_column_content', 10, 2);
+
+// Colunas Cursos
+function cchla_cursos_columns($columns)
+{
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['title'] = __('Curso', 'cchla-ufrn');
+    $new_columns['tipo'] = __('Tipo', 'cchla-ufrn');
+    $new_columns['departamento'] = __('Departamento', 'cchla-ufrn');
+    $new_columns['modalidade'] = __('Modalidade', 'cchla-ufrn');
+    $new_columns['coordenador'] = __('Coordenador', 'cchla-ufrn');
+    $new_columns['vagas'] = __('Vagas', 'cchla-ufrn');
+    $new_columns['date'] = $columns['date'];
+    return $new_columns;
+}
+add_filter('manage_cursos_posts_columns', 'cchla_cursos_columns');
+
+function cchla_cursos_column_content($column, $post_id)
+{
+    switch ($column) {
+        case 'tipo':
+            $terms = get_the_terms($post_id, 'tipo_curso');
+            if ($terms && !is_wp_error($terms)) {
+                echo '<span class="curso-tipo-badge">' . esc_html($terms[0]->name) . '</span>';
+            } else {
+                echo '—';
+            }
+            break;
+
+        case 'departamento':
+            $dept_id = get_post_meta($post_id, '_curso_departamento', true);
+            if ($dept_id) {
+                $dept = get_post($dept_id);
+                if ($dept) {
+                    echo '<a href="' . get_edit_post_link($dept_id) . '">' . esc_html($dept->post_title) . '</a>';
+                } else {
+                    echo '—';
+                }
+            } else {
+                echo '—';
+            }
+            break;
+
+        case 'modalidade':
+            $modalidade = get_post_meta($post_id, '_curso_modalidade', true);
+            if ($modalidade) {
+                $modalidades = array(
+                    'presencial' => 'Presencial',
+                    'ead' => 'EaD',
+                    'hibrido' => 'Híbrido',
+                    'semipresencial' => 'Semipresencial'
+                );
+                echo isset($modalidades[$modalidade]) ? $modalidades[$modalidade] : ucfirst($modalidade);
+            } else {
+                echo '—';
+            }
+            break;
+
+        case 'coordenador':
+            $coordenador = get_post_meta($post_id, '_curso_coordenador', true);
+            echo $coordenador ? esc_html($coordenador) : '—';
+            break;
+
+        case 'vagas':
+            $vagas = get_post_meta($post_id, '_curso_vagas', true);
+            echo $vagas ? '<strong>' . esc_html($vagas) . '</strong>' : '—';
+            break;
+    }
+}
+add_action('manage_cursos_posts_custom_column', 'cchla_cursos_column_content', 10, 2);
+
+/**
+ * ==========================================
+ * 10. FILTROS NO ADMIN
+ * ==========================================
+ */
+
+// Filtro por Área de Conhecimento - Departamentos
+function cchla_departamentos_filters()
+{
+    global $typenow;
+
+    if ($typenow == 'departamentos') {
+        $taxonomy = 'area_conhecimento';
+        $selected = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
+
+        $info = get_taxonomy($taxonomy);
+        wp_dropdown_categories(array(
+            'show_option_all' => sprintf(__('Todas as %s', 'cchla-ufrn'), $info->label),
+            'taxonomy'        => $taxonomy,
+            'name'            => $taxonomy,
+            'orderby'         => 'name',
+            'selected'        => $selected,
+            'show_count'      => true,
+            'hide_empty'      => true,
+            'value_field'     => 'slug',
+        ));
+    }
+}
+add_action('restrict_manage_posts', 'cchla_departamentos_filters');
+
+// Filtro por Tipo e Departamento - Cursos
+function cchla_cursos_filters()
+{
+    global $typenow;
+
+    if ($typenow == 'cursos') {
+        // Filtro por Tipo de Curso
+        $taxonomy = 'tipo_curso';
+        $selected = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
+
+        $info = get_taxonomy($taxonomy);
+        wp_dropdown_categories(array(
+            'show_option_all' => sprintf(__('Todos os %s', 'cchla-ufrn'), $info->label),
+            'taxonomy'        => $taxonomy,
+            'name'            => $taxonomy,
+            'orderby'         => 'name',
+            'selected'        => $selected,
+            'show_count'      => true,
+            'hide_empty'      => true,
+            'value_field'     => 'slug',
+        ));
+
+        // Filtro por Departamento
+        $departamentos = get_posts(array(
+            'post_type' => 'departamentos',
+            'posts_per_page' => -1,
+            'orderby' => 'title',
+            'order' => 'ASC',
+        ));
+
+        $selected_dept = isset($_GET['departamento_filter']) ? $_GET['departamento_filter'] : '';
+
+        echo '<select name="departamento_filter">';
+        echo '<option value="">' . __('Todos os Departamentos', 'cchla-ufrn') . '</option>';
+        foreach ($departamentos as $dept) {
+            printf(
+                '<option value="%s"%s>%s</option>',
+                $dept->ID,
+                $dept->ID == $selected_dept ? ' selected="selected"' : '',
+                esc_html($dept->post_title)
+            );
+        }
+        echo '</select>';
+    }
+}
+add_action('restrict_manage_posts', 'cchla_cursos_filters');
+
+// Aplica o filtro de departamento
+function cchla_cursos_filter_query($query)
+{
+    global $pagenow;
+    $type = 'cursos';
+
+    if (isset($_GET['post_type'])) {
+        $type = $_GET['post_type'];
+    }
+
+    if ('cursos' == $type && is_admin() && $pagenow == 'edit.php' && isset($_GET['departamento_filter']) && $_GET['departamento_filter'] != '') {
+        $query->set('meta_key', '_curso_departamento');
+        $query->set('meta_value', $_GET['departamento_filter']);
+    }
+}
+add_filter('parse_query', 'cchla_cursos_filter_query');
+
+/**
+ * ==========================================
+ * 11. WIDGET DE DASHBOARD - ESTATÍSTICAS
+ * ==========================================
+ */
+function cchla_dashboard_widget()
+{
+    wp_add_dashboard_widget(
+        'cchla_stats_widget',
+        __('Estatísticas - Departamentos e Cursos', 'cchla-ufrn'),
+        'cchla_dashboard_widget_display'
+    );
+}
+add_action('wp_dashboard_setup', 'cchla_dashboard_widget');
+
+function cchla_dashboard_widget_display()
+{
+    $total_departamentos = wp_count_posts('departamentos')->publish;
+    $total_cursos = wp_count_posts('cursos')->publish;
+
+    // Cursos por tipo
+    $graduacao = get_posts(array(
+        'post_type' => 'cursos',
+        'posts_per_page' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'tipo_curso',
+                'field' => 'slug',
+                'terms' => 'graduacao'
+            )
+        ),
+        'fields' => 'ids'
+    ));
+
+    $pos_graduacao = get_posts(array(
+        'post_type' => 'cursos',
+        'posts_per_page' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'tipo_curso',
+                'field' => 'slug',
+                'terms' => 'pos-graduacao'
+            )
+        ),
+        'fields' => 'ids'
+    ));
+?>
+    <div class="cchla-dashboard-stats">
+        <style>
+            .cchla-dashboard-stats {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            .cchla-stat-box {
+                background: #f0f6fc;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: center;
+                border-left: 4px solid #2271b1;
+            }
+
+            .cchla-stat-box h3 {
+                margin: 0 0 10px 0;
+                font-size: 32px;
+                font-weight: 700;
+                color: #2271b1;
+            }
+
+            .cchla-stat-box p {
+                margin: 0;
+                color: #50575e;
+                font-size: 14px;
+            }
+
+            .cchla-quick-links {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-top: 15px;
+            }
+
+            .cchla-quick-links a {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 8px 12px;
+                background: #2271b1;
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                font-size: 13px;
+            }
+
+            .cchla-quick-links a:hover {
+                background: #135e96;
+            }
+        </style>
+
+        <div class="cchla-stat-box">
+            <h3><?php echo $total_departamentos; ?></h3>
+            <p><?php _e('Departamentos', 'cchla-ufrn'); ?></p>
+        </div>
+
+        <div class="cchla-stat-box">
+            <h3><?php echo $total_cursos; ?></h3>
+            <p><?php _e('Cursos Total', 'cchla-ufrn'); ?></p>
+        </div>
+
+        <div class="cchla-stat-box">
+            <h3><?php echo count($graduacao); ?></h3>
+            <p><?php _e('Graduação', 'cchla-ufrn'); ?></p>
+        </div>
+
+        <div class="cchla-stat-box">
+            <h3><?php echo count($pos_graduacao); ?></h3>
+            <p><?php _e('Pós-Graduação', 'cchla-ufrn'); ?></p>
+        </div>
+    </div>
+
+    <div class="cchla-quick-links">
+        <a href="<?php echo admin_url('post-new.php?post_type=departamentos'); ?>">
+            <span class="dashicons dashicons-plus-alt"></span>
+            <?php _e('Novo Departamento', 'cchla-ufrn'); ?>
+        </a>
+        <a href="<?php echo admin_url('post-new.php?post_type=cursos'); ?>">
+            <span class="dashicons dashicons-plus-alt"></span>
+            <?php _e('Novo Curso', 'cchla-ufrn'); ?>
+        </a>
+        <a href="<?php echo admin_url('edit.php?post_type=departamentos'); ?>">
+            <span class="dashicons dashicons-list-view"></span>
+            <?php _e('Ver Todos', 'cchla-ufrn'); ?>
+        </a>
+    </div>
+<?php
+}
+
+/**
+ * ==========================================
+ * 12. FLUSH REWRITE RULES
+ * ==========================================
+ */
+function cchla_rewrite_flush()
+{
+    cchla_register_departamentos_cpt();
+    cchla_register_cursos_cpt();
+    cchla_register_tipo_curso_taxonomy();
+    cchla_register_area_conhecimento_taxonomy();
+    flush_rewrite_rules();
+}
+register_activation_hook(__FILE__, 'cchla_rewrite_flush');
+
+/**
+ * ==========================================
+ * 13. POPULAR TAXONOMIAS PADRÃO (Primeira Vez)
+ * ==========================================
+ */
+function cchla_populate_taxonomies()
+{
+    // Verifica se já foi populado
+    if (get_option('cchla_taxonomies_populated')) {
+        return;
+    }
+
+    // Tipos de Curso
+    $tipos_curso = array(
+        'Graduação',
+        'Pós-Graduação - Mestrado',
+        'Pós-Graduação - Doutorado',
+        'Especialização',
+        'Extensão',
+        'Aperfeiçoamento'
+    );
+
+    foreach ($tipos_curso as $tipo) {
+        if (!term_exists($tipo, 'tipo_curso')) {
+            wp_insert_term($tipo, 'tipo_curso');
+        }
+    }
+
+    // Áreas de Conhecimento
+    $areas = array(
+        'Ciências Humanas',
+        'Linguística, Letras e Artes',
+        'Geografia',
+        'História',
+        'Filosofia',
+        'Sociologia',
+        'Antropologia',
+        'Ciência Política',
+        'Psicologia',
+        'Educação',
+        'Artes',
+        'Música',
+        'Teatro',
+        'Letras'
+    );
+
+    foreach ($areas as $area) {
+        if (!term_exists($area, 'area_conhecimento')) {
+            wp_insert_term($area, 'area_conhecimento');
+        }
+    }
+
+    update_option('cchla_taxonomies_populated', true);
+}
+add_action('init', 'cchla_populate_taxonomies', 999);
+
+
+/**
+ * ==========================================
+ * BUSCA UNIFICADA - TODOS OS POST TYPES
+ * ==========================================
+ * Inclui: posts, pages, departamentos, cursos, publicacoes, especiais, servicos, acesso_rapido
+ */
+
+/**
+ * Modifica query principal de busca para incluir todos os CPTs
+ */
+function cchla_unified_search_filter($query)
+{
+    // Só executa no frontend, em buscas, na query principal
+    if (is_admin() || !$query->is_search() || !$query->is_main_query()) {
+        return;
+    }
+
+    // Lista completa de post types pesquisáveis
+    $searchable_post_types = array(
+        'post',              // Posts (Notícias)
+        'page',              // Páginas
+        'departamentos',     // Departamentos
+        'cursos',            // Cursos
+        'publicacoes',       // Publicações acadêmicas
+        'especiais',         // Especiais (vídeos/projetos)
+        'servicos',          // Serviços de extensão
+        'acesso_rapido'      // Acesso rápido (sistemas externos)
+    );
+
+    // Se houver filtro específico via GET
+    if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
+        $requested_type = sanitize_key($_GET['post_type']);
+
+        // Valida se o tipo solicitado é permitido
+        if (in_array($requested_type, $searchable_post_types)) {
+            $query->set('post_type', $requested_type);
+        } else {
+            // Se tipo inválido, busca em todos
+            $query->set('post_type', $searchable_post_types);
+        }
+    } else {
+        // Sem filtro = busca em todos os tipos
+        $query->set('post_type', $searchable_post_types);
+    }
+
+    // Define número de resultados por página
+    $query->set('posts_per_page', 10);
+}
+add_action('pre_get_posts', 'cchla_unified_search_filter');
+
+/**
+ * ==========================================
+ * BUSCA EM META FIELDS
+ * ==========================================
+ * Expande busca para incluir campos customizados
+ */
+
+/**
+ * Busca em meta fields de DEPARTAMENTOS
+ */
+function cchla_search_departamentos_meta_fields($search, $wp_query)
+{
+    global $wpdb;
+
+    // Validações
+    if (empty($search) || !$wp_query->is_search() || empty($wp_query->get('s'))) {
+        return $search;
+    }
+
+    $search_term = $wp_query->get('s');
+    $post_types = $wp_query->get('post_type');
+
+    // Converte para array se for string
+    if (!is_array($post_types)) {
+        $post_types = array($post_types);
+    }
+
+    // Só aplica se departamentos estiver incluído na busca
+    if (!in_array('departamentos', $post_types)) {
+        return $search;
+    }
+
+    // Meta keys pesquisáveis para departamentos
+    $dept_meta_keys = array(
+        '_departamento_sigla',
+        '_departamento_codigo',
+        '_departamento_chefe',
+        '_departamento_subchefe',
+        '_departamento_coordenador',
+        '_departamento_email',
+        '_departamento_email_secretaria',
+        '_departamento_telefone',
+        '_departamento_telefone_2',
+        '_departamento_localizacao'
+    );
+
+    $meta_conditions = array();
+    foreach ($dept_meta_keys as $key) {
+        $meta_conditions[] = $wpdb->prepare(
+            "({$wpdb->postmeta}.meta_key = %s AND {$wpdb->postmeta}.meta_value LIKE %s)",
+            $key,
+            '%' . $wpdb->esc_like($search_term) . '%'
+        );
+    }
+
+    // Adiciona condição de meta fields à busca
+    if (!empty($meta_conditions)) {
+        $search .= " OR ({$wpdb->posts}.ID IN (
+            SELECT DISTINCT post_id FROM {$wpdb->postmeta}
+            WHERE " . implode(' OR ', $meta_conditions) . "
+        ))";
+    }
+
+    return $search;
+}
+add_filter('posts_search', 'cchla_search_departamentos_meta_fields', 10, 2);
+
+/**
+ * Busca em meta fields de CURSOS
+ */
+function cchla_search_cursos_meta_fields($search, $wp_query)
+{
+    global $wpdb;
+
+    // Validações
+    if (empty($search) || !$wp_query->is_search() || empty($wp_query->get('s'))) {
+        return $search;
+    }
+
+    $search_term = $wp_query->get('s');
+    $post_types = $wp_query->get('post_type');
+
+    // Converte para array se for string
+    if (!is_array($post_types)) {
+        $post_types = array($post_types);
+    }
+
+    // Só aplica se cursos estiver incluído na busca
+    if (!in_array('cursos', $post_types)) {
+        return $search;
+    }
+
+    // Meta keys pesquisáveis para cursos
+    $curso_meta_keys = array(
+        '_curso_codigo',
+        '_curso_coordenador',
+        '_curso_vice_coordenador',
+        '_curso_coordenador_email',
+        '_curso_modalidade',
+        '_curso_turno',
+        '_curso_reconhecimento'
+    );
+
+    $meta_conditions = array();
+    foreach ($curso_meta_keys as $key) {
+        $meta_conditions[] = $wpdb->prepare(
+            "({$wpdb->postmeta}.meta_key = %s AND {$wpdb->postmeta}.meta_value LIKE %s)",
+            $key,
+            '%' . $wpdb->esc_like($search_term) . '%'
+        );
+    }
+
+    // Adiciona condição de meta fields à busca
+    if (!empty($meta_conditions)) {
+        $search .= " OR ({$wpdb->posts}.ID IN (
+            SELECT DISTINCT post_id FROM {$wpdb->postmeta}
+            WHERE " . implode(' OR ', $meta_conditions) . "
+        ))";
+    }
+
+    return $search;
+}
+add_filter('posts_search', 'cchla_search_cursos_meta_fields', 11, 2);
+
+/**
+ * ==========================================
+ * CONTADORES POR TIPO (PARA FILTROS)
+ * ==========================================
+ */
+
+/**
+ * Obtém contagem de resultados por post type
+ * CORRIGIDO: Nome diferente da função anterior
+ */
+function cchla_get_search_results_count_by_type($search_query)
+{
+    $post_types = array(
+        'post',
+        'page',
+        'departamentos',
+        'cursos',
+        'publicacoes',
+        'especiais',
+        'servicos',
+        'acesso_rapido'
+    );
+
+    $counts = array();
+
+    foreach ($post_types as $post_type) {
+        // Tenta buscar do cache
+        $cache_key = 'search_count_' . md5($search_query . '_' . $post_type);
+        $count = wp_cache_get($cache_key, 'cchla_search');
+
+        if (false === $count) {
+            // Cache miss - executa query
+            $args = array(
+                'post_type' => $post_type,
+                'post_status' => 'publish',
+                's' => $search_query,
+                'posts_per_page' => 1, // Otimização: só precisamos da contagem
+                'fields' => 'ids',
+                'no_found_rows' => false,
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+            );
+
+            $query = new WP_Query($args);
+            $count = $query->found_posts;
+
+            // Armazena em cache por 15 minutos
+            wp_cache_set($cache_key, $count, 'cchla_search', 900);
+
+            wp_reset_postdata();
+        }
+
+        $counts[$post_type] = $count;
+    }
+
+    return $counts;
+}
+
+/**
+ * ==========================================
+ * LABELS AMIGÁVEIS PARA POST TYPES
+ * ==========================================
+ */
+
+/**
+ * Retorna label traduzido para post type
+ */
+function cchla_get_post_type_label($post_type, $plural = true)
+{
+    $labels = array(
+        'post' => array(
+            'singular' => __('Notícia', 'cchla-ufrn'),
+            'plural' => __('Notícias', 'cchla-ufrn')
+        ),
+        'page' => array(
+            'singular' => __('Página', 'cchla-ufrn'),
+            'plural' => __('Páginas', 'cchla-ufrn')
+        ),
+        'departamentos' => array(
+            'singular' => __('Departamento', 'cchla-ufrn'),
+            'plural' => __('Departamentos', 'cchla-ufrn')
+        ),
+        'cursos' => array(
+            'singular' => __('Curso', 'cchla-ufrn'),
+            'plural' => __('Cursos', 'cchla-ufrn')
+        ),
+        'publicacoes' => array(
+            'singular' => __('Publicação', 'cchla-ufrn'),
+            'plural' => __('Publicações', 'cchla-ufrn')
+        ),
+        'especiais' => array(
+            'singular' => __('Especial', 'cchla-ufrn'),
+            'plural' => __('Especiais', 'cchla-ufrn')
+        ),
+        'servicos' => array(
+            'singular' => __('Serviço', 'cchla-ufrn'),
+            'plural' => __('Serviços', 'cchla-ufrn')
+        ),
+        'acesso_rapido' => array(
+            'singular' => __('Sistema', 'cchla-ufrn'),
+            'plural' => __('Sistemas', 'cchla-ufrn')
+        ),
+    );
+
+    if (!isset($labels[$post_type])) {
+        return $post_type;
+    }
+
+    return $plural ? $labels[$post_type]['plural'] : $labels[$post_type]['singular'];
+}
+
+/**
+ * ==========================================
+ * ÍCONES PARA POST TYPES
+ * ==========================================
+ */
+
+/**
+ * Retorna classe de ícone Font Awesome para post type
+ */
+function cchla_get_post_type_icon($post_type)
+{
+    $icons = array(
+        'post' => 'fa-newspaper',
+        'page' => 'fa-file',
+        'departamentos' => 'fa-building',
+        'cursos' => 'fa-graduation-cap',
+        'publicacoes' => 'fa-book',
+        'especiais' => 'fa-video',
+        'servicos' => 'fa-hand-holding-heart',
+        'acesso_rapido' => 'fa-link',
+    );
+
+    return isset($icons[$post_type]) ? $icons[$post_type] : 'fa-file';
+}
+
+/**
+ * Retorna cor do badge para post type
+ */
+function cchla_get_post_type_color($post_type)
+{
+    $colors = array(
+        'post' => 'blue',
+        'page' => 'gray',
+        'departamentos' => 'indigo',
+        'cursos' => 'green',
+        'publicacoes' => 'purple',
+        'especiais' => 'red',
+        'servicos' => 'yellow',
+        'acesso_rapido' => 'pink',
+    );
+
+    return isset($colors[$post_type]) ? $colors[$post_type] : 'gray';
+}
+
+/**
+ * ==========================================
+ * LIMPA CACHE AO PUBLICAR/ATUALIZAR
+ * ==========================================
+ */
+
+/**
+ * Limpa cache de busca quando posts são publicados
+ */
+function cchla_clear_search_cache_on_save($post_id)
+{
+    // Limpa todo o cache de busca
+    wp_cache_flush_group('cchla_search');
+
+    // Também limpa transients antigos
+    global $wpdb;
+    $wpdb->query(
+        "DELETE FROM $wpdb->options 
+         WHERE option_name LIKE '_transient_search_count_%' 
+         OR option_name LIKE '_transient_timeout_search_count_%'"
+    );
+}
+add_action('save_post', 'cchla_clear_search_cache_on_save');
+add_action('delete_post', 'cchla_clear_search_cache_on_save');
+
+/**
+ * ==========================================
+ * DESTAQUE DE TERMOS NOS RESULTADOS
+ * ==========================================
+ */
+
+/**
+ * Destaca termo de busca no texto (já existe, mas garantindo)
+ */
+if (!function_exists('cchla_highlight_search_term')) {
+    function cchla_highlight_search_term($text, $search_term)
+    {
+        if (empty($search_term) || empty($text)) {
+            return $text;
+        }
+
+        return preg_replace(
+            '/(' . preg_quote($search_term, '/') . ')/iu',
+            '<mark class="bg-yellow-200 font-semibold px-1 rounded">$1</mark>',
+            $text
+        );
+    }
+}
+
+/**
+ * Shortcode para listar departamentos
+ * Uso: [lista_departamentos area="geografia" limite="5"]
+ */
+function cchla_lista_departamentos_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'area' => '',
+        'limite' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+    ), $atts);
+
+    $args = array(
+        'post_type' => 'departamentos',
+        'posts_per_page' => intval($atts['limite']),
+        'orderby' => $atts['orderby'],
+        'order' => $atts['order'],
+    );
+
+    if (!empty($atts['area'])) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'area_conhecimento',
+                'field' => 'slug',
+                'terms' => $atts['area']
+            )
+        );
+    }
+
+    $query = new WP_Query($args);
+
+    if (!$query->have_posts()) {
+        return '<p>' . __('Nenhum departamento encontrado.', 'cchla-ufrn') . '</p>';
+    }
+
+    ob_start();
+?>
+    <div class="cchla-departamentos-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php while ($query->have_posts()) : $query->the_post();
+            $sigla = get_post_meta(get_the_ID(), '_departamento_sigla', true);
+        ?>
+            <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-shadow">
+                <?php if ($sigla) : ?>
+                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
+                        <?php echo esc_html($sigla); ?>
+                    </span>
+                <?php endif; ?>
+
+                <h3 class="text-xl font-bold text-gray-900 mb-2">
+                    <a href="<?php the_permalink(); ?>" class="hover:text-blue-600">
+                        <?php the_title(); ?>
+                    </a>
+                </h3>
+
+                <?php if (has_excerpt()) : ?>
+                    <p class="text-gray-600 text-sm mb-4">
+                        <?php echo wp_trim_words(get_the_excerpt(), 20); ?>
+                    </p>
+                <?php endif; ?>
+
+                <a href="<?php the_permalink(); ?>"
+                    class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm">
+                    <?php _e('Ver detalhes', 'cchla-ufrn'); ?>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        <?php endwhile; ?>
+    </div>
+<?php
+    wp_reset_postdata();
+    return ob_get_clean();
+}
+add_shortcode('lista_departamentos', 'cchla_lista_departamentos_shortcode');
+
+/**
+ * Shortcode para listar cursos
+ * Uso: [lista_cursos tipo="graduacao" departamento="5" limite="10"]
+ */
+function cchla_lista_cursos_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'tipo' => '',
+        'departamento' => '',
+        'limite' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+    ), $atts);
+
+    $args = array(
+        'post_type' => 'cursos',
+        'posts_per_page' => intval($atts['limite']),
+        'orderby' => $atts['orderby'],
+        'order' => $atts['order'],
+    );
+
+    if (!empty($atts['tipo'])) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'tipo_curso',
+                'field' => 'slug',
+                'terms' => $atts['tipo']
+            )
+        );
+    }
+
+    if (!empty($atts['departamento'])) {
+        $args['meta_query'] = array(
+            array(
+                'key' => '_curso_departamento',
+                'value' => intval($atts['departamento'])
+            )
+        );
+    }
+
+    $query = new WP_Query($args);
+
+    if (!$query->have_posts()) {
+        return '<p>' . __('Nenhum curso encontrado.', 'cchla-ufrn') . '</p>';
+    }
+
+    ob_start();
+?>
+    <div class="cchla-cursos-list space-y-4">
+        <?php while ($query->have_posts()) : $query->the_post();
+            $tipo_terms = get_the_terms(get_the_ID(), 'tipo_curso');
+            $tipo = $tipo_terms && !is_wp_error($tipo_terms) ? $tipo_terms[0]->name : '';
+        ?>
+            <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-shadow">
+                <div class="flex justify-between items-start gap-4">
+                    <div class="flex-1">
+                        <?php if ($tipo) : ?>
+                            <span class="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold mb-2">
+                                <?php echo esc_html($tipo); ?>
+                            </span>
+                        <?php endif; ?>
+
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">
+                            <a href="<?php the_permalink(); ?>" class="hover:text-green-600">
+                                <?php the_title(); ?>
+                            </a>
+                        </h3>
+
+                        <?php if (has_excerpt()) : ?>
+                            <p class="text-gray-600 text-sm">
+                                <?php echo wp_trim_words(get_the_excerpt(), 25); ?>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+
+                    <a href="<?php the_permalink(); ?>"
+                        class="flex-shrink-0 text-green-600 hover:text-green-800">
+                        <i class="fa-solid fa-arrow-right text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    </div>
+<?php
+    wp_reset_postdata();
+    return ob_get_clean();
+}
+add_shortcode('lista_cursos', 'cchla_lista_cursos_shortcode');
+
+
+/**
+ * ==========================================
+ * FILTROS CUSTOMIZADOS PARA ARCHIVE
+ * ==========================================
+ * Interpreta parâmetros personalizados da URL e modifica a query
+ */
+
+/**
+ * Modifica query do archive para interpretar filtros customizados
+ */
+function cchla_archive_custom_filters($query)
+{
+    // Só executa no frontend, em archives, na query principal
+    if (is_admin() || !$query->is_main_query() || !$query->is_archive()) {
+        return;
+    }
+
+    // ==========================================
+    // FILTRO POR TAXONOMIA CUSTOMIZADA
+    // ==========================================
+    // URL: ?tax=tipo_publicacao&term=artigo
+    if (isset($_GET['tax']) && isset($_GET['term'])) {
+        $taxonomy = sanitize_key($_GET['tax']);
+        $term = sanitize_text_field($_GET['term']);
+
+        // Valida se a taxonomia existe
+        if (taxonomy_exists($taxonomy)) {
+            $tax_query = $query->get('tax_query') ?: array();
+
+            $tax_query[] = array(
+                'taxonomy' => $taxonomy,
+                'field'    => 'slug',
+                'terms'    => $term,
+            );
+
+            $query->set('tax_query', $tax_query);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR CATEGORIA (via ID)
+    // ==========================================
+    // URL: ?cat=5
+    if (isset($_GET['cat']) && !is_category()) {
+        $cat_id = intval($_GET['cat']);
+        if ($cat_id > 0) {
+            $query->set('cat', $cat_id);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR TAG (via slug)
+    // ==========================================
+    // URL: ?tag=wordpress
+    if (isset($_GET['tag']) && !is_tag()) {
+        $tag_slug = sanitize_title($_GET['tag']);
+        if (!empty($tag_slug)) {
+            $query->set('tag', $tag_slug);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR ANO
+    // ==========================================
+    // URL: ?year=2024
+    if (isset($_GET['year']) && !is_date()) {
+        $year = intval($_GET['year']);
+        if ($year > 1900 && $year <= date('Y') + 1) {
+            $query->set('year', $year);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR MÊS
+    // ==========================================
+    // URL: ?year=2024&month=12
+    if (isset($_GET['month']) && isset($_GET['year']) && !is_date()) {
+        $month = intval($_GET['month']);
+        $year = intval($_GET['year']);
+
+        if ($month >= 1 && $month <= 12) {
+            $query->set('year', $year);
+            $query->set('monthnum', $month);
+        }
+    }
+
+    // ==========================================
+    // ORDENAÇÃO CUSTOMIZADA
+    // ==========================================
+    // URL: ?orderby=title&order=asc
+    if (isset($_GET['orderby'])) {
+        $orderby = sanitize_key($_GET['orderby']);
+        $order = isset($_GET['order']) ? strtoupper(sanitize_key($_GET['order'])) : 'DESC';
+
+        // Valida ordem
+        if (!in_array($order, array('ASC', 'DESC'))) {
+            $order = 'DESC';
+        }
+
+        // Valida orderby
+        $allowed_orderby = array(
+            'date',
+            'title',
+            'name',
+            'modified',
+            'author',
+            'comment_count',
+            'rand',
+            'menu_order'
+        );
+
+        if (in_array($orderby, $allowed_orderby)) {
+            $query->set('orderby', $orderby);
+            $query->set('order', $order);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR AUTOR
+    // ==========================================
+    // URL: ?author_name=joao-silva
+    if (isset($_GET['author_name']) && !is_author()) {
+        $author_name = sanitize_user($_GET['author_name']);
+        if (!empty($author_name)) {
+            $query->set('author_name', $author_name);
+        }
+    }
+
+    // URL: ?author=5
+    if (isset($_GET['author']) && !is_author()) {
+        $author_id = intval($_GET['author']);
+        if ($author_id > 0) {
+            $query->set('author', $author_id);
+        }
+    }
+}
+add_action('pre_get_posts', 'cchla_archive_custom_filters', 20);
+
+/**
+ * Função auxiliar: verifica se há filtros ativos
+ */
+function cchla_is_filtered()
+{
+    $filters = array('cat', 'tag', 'tax', 'term', 'year', 'month', 'author', 'author_name', 's');
+
+    foreach ($filters as $filter) {
+        if (isset($_GET[$filter]) && !empty($_GET[$filter])) {
+            return true;
+        }
+    }
+
+    return false;
+}
+/**
+ * Suporte para filtros em tags
+ */
+function cchla_tag_archive_filters($query)
+{
+    if (is_admin() || !$query->is_main_query() || !$query->is_tag()) {
+        return;
+    }
+
+    // Filtro por categoria
+    if (isset($_GET['cat']) && !empty($_GET['cat'])) {
+        $cat_id = intval($_GET['cat']);
+        if ($cat_id > 0) {
+            $query->set('cat', $cat_id);
+        }
+    }
+
+    // Filtro por ano
+    if (isset($_GET['year']) && !empty($_GET['year'])) {
+        $year = intval($_GET['year']);
+        if ($year > 1900 && $year <= date('Y') + 1) {
+            $query->set('year', $year);
+        }
+    }
+
+    // Ordenação
+    if (isset($_GET['orderby'])) {
+        $orderby = sanitize_key($_GET['orderby']);
+        $order = isset($_GET['order']) ? strtoupper(sanitize_key($_GET['order'])) : 'DESC';
+
+        if (!in_array($order, array('ASC', 'DESC'))) {
+            $order = 'DESC';
+        }
+
+        $allowed_orderby = array('date', 'title', 'comment_count', 'rand');
+
+        if (in_array($orderby, $allowed_orderby)) {
+            $query->set('orderby', $orderby);
+            $query->set('order', $order);
+        }
+    }
+}
+add_action('pre_get_posts', 'cchla_tag_archive_filters', 20);
+
+
+
+/**
+ * Aplica filtros personalizados no blog/home
+ */
+function cchla_blog_custom_filters($query)
+{
+    // Só executa no frontend, na query principal, em home/archive de posts
+    if (is_admin() || !$query->is_main_query() || (!$query->is_home() && !$query->is_archive())) {
+        return;
+    }
+
+    // Apenas para posts
+    if ($query->get('post_type') != 'post' && !$query->is_home() && !$query->is_category() && !$query->is_tag() && !$query->is_author()) {
+        return;
+    }
+
+    // ==========================================
+    // FILTRO POR CATEGORIA (via GET)
+    // ==========================================
+    if (isset($_GET['cat']) && !empty($_GET['cat']) && !is_category()) {
+        $cat_id = intval($_GET['cat']);
+        if ($cat_id > 0) {
+            $query->set('cat', $cat_id);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR TAG (via GET)
+    // ==========================================
+    if (isset($_GET['tag']) && !empty($_GET['tag']) && !is_tag()) {
+        $tag_slug = sanitize_title($_GET['tag']);
+        if (!empty($tag_slug)) {
+            $query->set('tag', $tag_slug);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR AUTOR (via GET)
+    // ==========================================
+    if (isset($_GET['author']) && !empty($_GET['author']) && !is_author()) {
+        $author_id = intval($_GET['author']);
+        if ($author_id > 0) {
+            $query->set('author', $author_id);
+        }
+    }
+
+    // ==========================================
+    // FILTRO POR ANO
+    // ==========================================
+    if (isset($_GET['year']) && !empty($_GET['year']) && !is_date()) {
+        $year = intval($_GET['year']);
+        if ($year > 1900 && $year <= date('Y') + 1) {
+            $query->set('year', $year);
+        }
+    }
+
+    // ==========================================
+    // ORDENAÇÃO
+    // ==========================================
+    if (isset($_GET['orderby'])) {
+        $orderby = sanitize_key($_GET['orderby']);
+        $order = isset($_GET['order']) ? strtoupper(sanitize_key($_GET['order'])) : 'DESC';
+
+        // Valida ordem
+        if (!in_array($order, array('ASC', 'DESC'))) {
+            $order = 'DESC';
+        }
+
+        // Valida orderby
+        $allowed_orderby = array('date', 'title', 'comment_count', 'rand', 'modified');
+
+        if (in_array($orderby, $allowed_orderby)) {
+            $query->set('orderby', $orderby);
+            $query->set('order', $order);
+        }
+    }
+}
+add_action('pre_get_posts', 'cchla_blog_custom_filters', 20);
+
+
+/**
+ * Template fallback para resultados de busca
+ * Usado quando não existe template específico para o post type
+ */
+function cchla_display_search_result_fallback()
+{
+    $post_type = get_post_type();
+    $post_type_object = get_post_type_object($post_type);
+    $type_label = $post_type_object ? $post_type_object->labels->singular_name : ucfirst($post_type);
+
+    // Ícone baseado no post type
+    $icons = array(
+        'post' => 'fa-newspaper',
+        'page' => 'fa-file',
+        'departamentos' => 'fa-building',
+        'cursos' => 'fa-graduation-cap',
+        'publicacoes' => 'fa-book',
+        'especiais' => 'fa-video',
+        'servicos' => 'fa-hand-holding-heart',
+        'acesso_rapido' => 'fa-link',
+    );
+
+    $icon = isset($icons[$post_type]) ? $icons[$post_type] : 'fa-file';
+
+    // Badge de cor
+    $colors = array(
+        'post' => 'blue',
+        'page' => 'gray',
+        'departamentos' => 'indigo',
+        'cursos' => 'green',
+        'publicacoes' => 'purple',
+        'especiais' => 'red',
+        'servicos' => 'yellow',
+        'acesso_rapido' => 'pink',
+    );
+
+    $color = isset($colors[$post_type]) ? $colors[$post_type] : 'gray';
+
+    // Busca termo para destacar
+    $search_term = get_search_query();
+?>
+
+    <article class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+
+        <!-- Badge do Tipo -->
+        <div class="flex items-center gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-<?php echo $color; ?>-50 text-<?php echo $color; ?>-700 rounded-full text-xs font-semibold">
+                <i class="fa-solid <?php echo $icon; ?>"></i>
+                <?php echo esc_html($type_label); ?>
+            </span>
+
+            <?php if (get_post_type() === 'post') : ?>
+                <time datetime="<?php echo get_the_date('c'); ?>" class="text-xs text-gray-500">
+                    <?php echo get_the_date(); ?>
+                </time>
+            <?php endif; ?>
+        </div>
+
+        <!-- Título -->
+        <h3 class="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+            <a href="<?php the_permalink(); ?>">
+                <?php
+                $title = get_the_title();
+                if ($search_term) {
+                    echo cchla_highlight_search_term($title, $search_term);
+                } else {
+                    echo esc_html($title);
+                }
+                ?>
+            </a>
+        </h3>
+
+        <!-- Excerpt -->
+        <?php if (has_excerpt() || get_the_content()) : ?>
+            <div class="text-gray-600 mb-4 line-clamp-3">
+                <?php
+                $excerpt = has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 30);
+                if ($search_term) {
+                    echo cchla_highlight_search_term($excerpt, $search_term);
+                } else {
+                    echo wp_kses_post($excerpt);
+                }
+                ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Link -->
+        <a href="<?php the_permalink(); ?>"
+            class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm">
+            <?php _e('Ver detalhes', 'cchla-ufrn'); ?>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+
+    </article>
+
+<?php
+}

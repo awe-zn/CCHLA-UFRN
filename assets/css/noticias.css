@@ -207,3 +207,505 @@
 ::-webkit-scrollbar-thumb:hover {
     background-color: #1E3AFF;
 }
+
+/**
+ * Single Post Styles - Optimized for Reading
+ * 
+ * @package CCHLA_UFRN
+ * @version 2.0.0
+ */
+
+/* ==========================================
+   TIPOGRAFIA OTIMIZADA PARA LEITURA
+   ========================================== */
+
+.page-noticia .prose {
+    font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
+}
+
+.prose p {
+    font-size: 1.125rem;
+    /* 18px */
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+    margin-bottom: 1.5rem;
+    color: #374151;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.02em;
+    scroll-margin-top: 6rem;
+}
+
+.prose h2 {
+    font-size: 1.875rem;
+    /* 30px */
+    line-height: 1.3;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.prose h3 {
+    font-size: 1.5rem;
+    /* 24px */
+    line-height: 1.4;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+/* ==========================================
+   DESTAQUE DE CITAÇÕES
+   ========================================== */
+
+.prose blockquote {
+    position: relative;
+    padding-left: 2rem;
+    border-left: 4px solid #2563eb;
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #4b5563;
+    margin: 2rem 0;
+}
+
+.prose blockquote::before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: -10px;
+    font-size: 3rem;
+    color: #2563eb;
+    opacity: 0.3;
+    font-family: Georgia, serif;
+}
+
+/* ==========================================
+   LISTAS ESTILIZADAS
+   ========================================== */
+
+.prose ul,
+.prose ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.prose li {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+}
+
+.prose ul>li::marker {
+    color: #2563eb;
+    font-size: 1.2em;
+}
+
+.prose ol>li::marker {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+/* ==========================================
+   IMAGENS RESPONSIVAS
+   ========================================== */
+
+.prose img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    display: block;
+}
+
+.prose figure {
+    margin: 2.5rem 0;
+}
+
+.prose figcaption {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 0.75rem;
+}
+
+/* ==========================================
+   TABELAS RESPONSIVAS
+   ========================================== */
+
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.9375rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.prose thead {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+}
+
+.prose th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.prose td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.prose tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.prose tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Scroll horizontal em mobile */
+@media (max-width: 640px) {
+    .prose table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* ==========================================
+   CÓDIGO E PRE
+   ========================================== */
+
+.prose code {
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    font-size: 0.875em;
+    padding: 0.2em 0.4em;
+    background-color: #fce7f3;
+    color: #be185d;
+    border-radius: 0.25rem;
+}
+
+.prose pre {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    background: #1f2937;
+    margin: 2rem 0;
+}
+
+.prose pre code {
+    background: transparent;
+    color: #e5e7eb;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+/* ==========================================
+   LINKS COM HOVER EFFECTS
+   ========================================== */
+
+.prose a {
+    color: #2563eb;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.prose a:hover {
+    color: #1d4ed8;
+}
+
+.prose a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #2563eb;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.prose a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* ==========================================
+   DESTACAR TEXTO SELECIONADO
+   ========================================== */
+
+::selection {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+::-moz-selection {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+/* ==========================================
+   SCROLLBAR CUSTOMIZADA
+   ========================================== */
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ==========================================
+   STICKY TOOLBAR
+   ========================================== */
+
+aside[aria-label="Ações do artigo"] {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================
+   ANIMAÇÕES SUAVES
+   ========================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.prose>* {
+    animation: fadeIn 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.prose>*:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.prose>*:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.prose>*:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+/* ==========================================
+   MODO IMPRESSÃO
+   ========================================== */
+
+@media print {
+
+    /* Oculta elementos não necessários */
+    header,
+    nav,
+    aside[aria-label="Ações do artigo"],
+    #reading-progress,
+    #back-to-top,
+    footer,
+    .related-posts {
+        display: none !important;
+    }
+
+    /* Otimiza tipografia para impressão */
+    body {
+        font-size: 12pt;
+        line-height: 1.6;
+        color: #000;
+    }
+
+    .prose {
+        max-width: 100%;
+    }
+
+    .prose p {
+        font-size: 11pt;
+        orphans: 3;
+        widows: 3;
+    }
+
+    .prose h2,
+    .prose h3 {
+        page-break-after: avoid;
+    }
+
+    .prose img {
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .prose p {
+        font-size: 1.0625rem;
+        /* 17px */
+    }
+
+    .prose h2 {
+        font-size: 1.75rem;
+        /* 28px */
+    }
+}
+
+@media (max-width: 640px) {
+    .prose {
+        font-size: 1rem;
+    }
+
+    .prose p {
+        font-size: 1rem;
+        /* 16px */
+        line-height: 1.7;
+    }
+
+    .prose h2 {
+        font-size: 1.5rem;
+        /* 24px */
+        margin-top: 2rem;
+    }
+
+    .prose h3 {
+        font-size: 1.25rem;
+        /* 20px */
+    }
+
+    .prose blockquote {
+        font-size: 1.125rem;
+        padding-left: 1.5rem;
+    }
+}
+
+/* ==========================================
+   DARK MODE (Experimental)
+   ========================================== */
+
+@media (prefers-color-scheme: dark) {
+    .prose {
+        color: #e5e7eb;
+    }
+
+    .prose p {
+        color: #d1d5db;
+    }
+
+    .prose h2,
+    .prose h3,
+    .prose h4 {
+        color: #f9fafb;
+    }
+
+    .prose a {
+        color: #60a5fa;
+    }
+
+    .prose code {
+        background-color: #1f2937;
+        color: #fbbf24;
+    }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+   ========================================== */
+
+/* Focus visível para teclado */
+*:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+/* Reduz movimento para usuários com preferência */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Aumenta contraste para baixa visão */
+@media (prefers-contrast: high) {
+    .prose {
+        color: #000;
+    }
+
+    .prose a {
+        color: #0000ee;
+        text-decoration: underline;
+    }
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px 12px;
+    z-index: 100;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Loading skeleton */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}

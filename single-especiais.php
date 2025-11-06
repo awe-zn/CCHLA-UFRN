@@ -22,13 +22,13 @@ get_header();
 ?>
 
     <!-- Breadcrumb -->
-    <?php get_template_part('template-parts/breadcrumb'); ?>
+    <?php cchla_breadcrumb();     ?>
 
     <main class="bg-white">
 
         <!-- Hero Section -->
-        <section class="bg-gradient-to-r from-[#183AB3] to-[#1E47C7] text-white py-16">
-            <div class="container mx-auto px-4 max-w-5xl">
+        <section class="bg-gradient-to-r from-[#183AB3] to-[#1E47C7] text-white py-16 bg-[url('<?php echo get_template_directory_uri(); ?>/assets/img/bg-textura.png')] bg-cover bg-center">
+            <div class=" container mx-auto px-4 max-w-5xl">
 
                 <?php if ($categorias && !is_wp_error($categorias)) : ?>
                     <div class="mb-4">
@@ -108,7 +108,7 @@ get_header();
                 <?php endif; ?>
 
                 <!-- Compartilhamento -->
-                <div class="border-t border-gray-200 pt-8">
+                <div class="border-t border-gray-200 pt-8 no-print">
                     <h3 class="text-sm font-semibold text-gray-700 mb-4">
                         <?php esc_html_e('Compartilhar:', 'cchla-ufrn'); ?>
                     </h3>

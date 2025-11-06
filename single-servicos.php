@@ -23,13 +23,7 @@ get_header();
 ?>
 
     <!-- Breadcrumb -->
-    <?php
-    cchla_breadcrumb(array(
-        'home_text' => 'Home',
-        'separator' => '/',
-        'show_current' => true
-    ));
-    ?>
+    <?php cchla_breadcrumb();     ?>
 
     <main class="bg-white" style="min-height: 50vh;">
 
