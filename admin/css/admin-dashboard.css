@@ -104,8 +104,8 @@
 
 /* ===== BOTÕES ===== */
 .wp-core-ui .button-primary {
-    background: var(--cchla-primary-dark) !important;
-    border-color: var(--cchla-primary) !important;
+    background: var(--cchla-primary-dark);
+    border-color: var(--cchla-primary);
     box-shadow: none !important;
     text-shadow: none !important;
     border-radius: var(--cchla-radius-md) !important;
