@@ -837,9 +837,6 @@ $encoded_title = urlencode($post_title);
                 facebookAppId: '<?php echo get_theme_mod("cchla_facebook_app_id", ""); ?>'
             };
 
-            // ==========================================
-            // 1. PROGRESS BAR DE LEITURA
-            // ==========================================
             const progressBar = document.getElementById('reading-progress');
             let ticking = false;
 
@@ -867,9 +864,6 @@ $encoded_title = urlencode($post_title);
                 passive: true
             });
 
-            // ==========================================
-            // 2. COMPARTILHAMENTO SOCIAL
-            // ==========================================
             const shareButtons = {
                 facebook: document.querySelector('[data-share="facebook"]'),
                 whatsapp: document.querySelector('[data-share="whatsapp"]'),
@@ -969,9 +963,6 @@ $encoded_title = urlencode($post_title);
                 console.log('Compartilhado via:', network);
             }
 
-            // ==========================================
-            // 3. CONTROLE DE FONTE
-            // ==========================================
             const increaseFontBtn = document.getElementById('increase-font');
             let currentFontSize = 1; // Multiplicador
             const fontSizes = [1, 1.125, 1.25]; // 100%, 112.5%, 125%
@@ -1008,9 +999,6 @@ $encoded_title = urlencode($post_title);
                 }
             }
 
-            // ==========================================
-            // 4. BOTÃO VOLTAR AO TOPO
-            // ==========================================
             const backToTopBtn = document.getElementById('back-to-top');
 
             if (backToTopBtn) {
@@ -1034,9 +1022,6 @@ $encoded_title = urlencode($post_title);
                 });
             }
 
-            // ==========================================
-            // 5. LAZY LOADING DE IMAGENS (Fallback)
-            // ==========================================
             if ('loading' in HTMLImageElement.prototype === false) {
                 // Polyfill para navegadores antigos
                 const images = document.querySelectorAll('img[loading="lazy"]');
@@ -1045,9 +1030,6 @@ $encoded_title = urlencode($post_title);
                 });
             }
 
-            // ==========================================
-            // 6. ÂNCORAS SUAVES (Smooth Scroll)
-            // ==========================================
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     const href = this.getAttribute('href');
@@ -1069,9 +1051,6 @@ $encoded_title = urlencode($post_title);
                 });
             });
 
-            // ==========================================
-            // 7. TRACKING DE LEITURA
-            // ==========================================
             let readingTime = 0;
             let readingInterval;
 
@@ -1111,10 +1090,6 @@ $encoded_title = urlencode($post_title);
                 }
             });
 
-            // ==========================================
-            // 8. OTIMIZAÇÕES DE PERFORMANCE
-            // ==========================================
-
             // Prefetch de links relacionados
             const relatedLinks = document.querySelectorAll('article a[href^="<?php echo esc_url(home_url('/')); ?>"]');
             const observer = new IntersectionObserver(function(entries) {
@@ -1134,9 +1109,6 @@ $encoded_title = urlencode($post_title);
 
             relatedLinks.forEach(link => observer.observe(link));
 
-            // ==========================================
-            // 9. ACESSIBILIDADE - DETECÇÃO DE MODO ESCURO
-            // ==========================================
             const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
             function handleDarkMode(e) {
@@ -1150,9 +1122,6 @@ $encoded_title = urlencode($post_title);
             darkModeQuery.addListener(handleDarkMode);
             handleDarkMode(darkModeQuery);
 
-            // ==========================================
-            // 10. SERVICE WORKER (PWA) - Opcional
-            // ==========================================
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                     navigator.serviceWorker.register('<?php echo get_template_directory_uri(); ?>/sw.js')

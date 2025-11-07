@@ -4794,6 +4794,7 @@ function cchla_redes_sociais_shortcode()
     return ob_get_clean();
 }
 add_shortcode('redes_sociais', 'cchla_redes_sociais_shortcode');
+
 /**
  * Widget de Informações de Contato
  */
@@ -4953,18 +4954,6 @@ function cchla_register_contato_widget()
     register_widget('CCHLA_Contato_Widget');
 }
 add_action('widgets_init', 'cchla_register_contato_widget');
-/**
- * Registra menus do rodapé
- */
-function cchla_register_footer_menus()
-{
-    register_nav_menus(array(
-        'footer-institucional' => __('Rodapé - Institucional', 'cchla-ufrn'),
-        'footer-academico' => __('Rodapé - Acadêmico', 'cchla-ufrn'),
-        'footer-imprensa' => __('Rodapé - Imprensa', 'cchla-ufrn'),
-    ));
-}
-add_action('after_setup_theme', 'cchla_register_footer_menus');
 
 
 /**
@@ -5841,7 +5830,7 @@ function cchla_enqueue_search_autocomplete()
 {
     wp_enqueue_script(
         'cchla-search-autocomplete',
-        get_template_directory_uri() . '/assets/js/search-autocomplete.js',
+        get_template_directory_uri() . '/assets/scripts/search-autocomplete.js',
         array('jquery'),
         '1.0.0',
         true
@@ -8384,3 +8373,158 @@ function cchla_display_search_result_fallback()
 
 <?php
 }
+
+
+
+/**
+ * Constrói árvore hierárquica do menu
+ * 
+ * @param array $items Array de itens do menu
+ * @return array Árvore hierárquica
+ */
+function cchla_build_menu_tree($items)
+{
+    if (empty($items)) {
+        return array();
+    }
+
+    $tree = array();
+    $children = array();
+
+    // Separa pais e filhos
+    foreach ($items as $item) {
+        if ($item->menu_item_parent == 0) {
+            // Item pai
+            $item->children = array();
+            $tree[$item->ID] = $item;
+        } else {
+            // Item filho
+            if (!isset($children[$item->menu_item_parent])) {
+                $children[$item->menu_item_parent] = array();
+            }
+            $children[$item->menu_item_parent][] = $item;
+        }
+    }
+
+    // Anexa filhos aos pais
+    foreach ($tree as $parent_id => $parent) {
+        if (isset($children[$parent_id])) {
+            $tree[$parent_id]->children = $children[$parent_id];
+        }
+    }
+
+    return $tree;
+}
+
+/**
+ * Registra menus do footer
+ */
+function cchla_register_footer_menus()
+{
+    register_nav_menus(array(
+        'footer-institucional' => __('Footer - Institucional', 'cchla-ufrn'),
+        'footer-academico'     => __('Footer - Acadêmico', 'cchla-ufrn'),
+        'footer-imprensa'      => __('Footer - Imprensa', 'cchla-ufrn'),
+    ));
+}
+add_action('after_setup_theme', 'cchla_register_footer_menus');
+
+
+
+/**
+ * Adiciona configurações do footer no Customizer
+ */
+function cchla_customize_footer($wp_customize)
+{
+
+    // Seção Footer
+    $wp_customize->add_section('cchla_footer_section', array(
+        'title'    => __('Footer - CCHLA', 'cchla-ufrn'),
+        'priority' => 130,
+    ));
+
+    // Sigla
+    $wp_customize->add_setting('cchla_sigla', array(
+        'default'           => 'CCHLA',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_sigla', array(
+        'label'    => __('Sigla', 'cchla-ufrn'),
+        'section'  => 'cchla_footer_section',
+        'type'     => 'text',
+    ));
+
+    // Texto Rodapé
+    $wp_customize->add_setting('cchla_rodape_texto', array(
+        'default'           => 'Centro de Ciências Humanas,<br>Letras e Artes',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+
+    $wp_customize->add_control('cchla_rodape_texto', array(
+        'label'       => __('Texto do Rodapé', 'cchla-ufrn'),
+        'section'     => 'cchla_footer_section',
+        'type'        => 'textarea',
+        'description' => __('Use <br> para quebras de linha', 'cchla-ufrn'),
+    ));
+
+    // Nome Completo
+    $wp_customize->add_setting('cchla_nome_completo', array(
+        'default'           => 'UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_nome_completo', array(
+        'label'   => __('Nome Completo da Instituição', 'cchla-ufrn'),
+        'section' => 'cchla_footer_section',
+        'type'    => 'text',
+    ));
+
+    // Subtítulo Footer
+    $wp_customize->add_setting('cchla_subtitulo_footer', array(
+        'default'           => 'Centro de Ciências Humanas, Letras e Artes',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_subtitulo_footer', array(
+        'label'   => __('Subtítulo (abaixo do nome)', 'cchla-ufrn'),
+        'section' => 'cchla_footer_section',
+        'type'    => 'text',
+    ));
+
+    // Créditos - Link
+    $wp_customize->add_setting('cchla_creditos_link', array(
+        'default'           => 'https://agenciaweb.ifrn.edu.br',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('cchla_creditos_link', array(
+        'label'   => __('Link dos Créditos', 'cchla-ufrn'),
+        'section' => 'cchla_footer_section',
+        'type'    => 'url',
+    ));
+
+    // Créditos - Texto
+    $wp_customize->add_setting('cchla_creditos', array(
+        'default'           => 'Desenvolvido pela Agência Web do IFRN',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('cchla_creditos', array(
+        'label'   => __('Texto dos Créditos', 'cchla-ufrn'),
+        'section' => 'cchla_footer_section',
+        'type'    => 'text',
+    ));
+
+    // Créditos - Logo
+    $wp_customize->add_setting('cchla_creditos_logo', array(
+        'default'           => get_template_directory_uri() . '/assets/img/logo-awe.svg',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'cchla_creditos_logo', array(
+        'label'   => __('Logo dos Créditos', 'cchla-ufrn'),
+        'section' => 'cchla_footer_section',
+    )));
+}
+add_action('customize_register', 'cchla_customize_footer');
