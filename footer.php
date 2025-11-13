@@ -12,8 +12,11 @@
 <footer class="bg-[#2E3CB9] text-white pt-16 pb-0" role="contentinfo">
     <div class="max-w-screen-xl mx-auto px-6 pb-8">
 
-        <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-16 mb-12 justify-between">
+        <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-16 mb-12">
 
+            <!-- ==========================================
+         COLUNA ESQUERDA - LOGO + REDES
+         ========================================== -->
             <div class="flex flex-col gap-6">
 
                 <!-- Logo/Sigla -->
@@ -41,7 +44,7 @@
                 if (!empty($redes_validas)) :
                 ?>
                     <nav aria-label="<?php esc_attr_e('Redes sociais do CCHLA', 'cchla-ufrn'); ?>">
-                        <ul class="flex gap-3">
+                        <ul class="flex gap-3 flex-wrap">
                             <?php
                             foreach ($redes_validas as $key => $rede) {
                                 $url = $rede['url'];
@@ -54,15 +57,15 @@
 
                                 printf(
                                     '<li>
-                                    <a href="%s" 
-                                       aria-label="%s" 
-                                       target="_blank" 
-                                       rel="noopener noreferrer"
-                                       class="flex text-[18px] items-center justify-center w-10 h-10 bg-white text-[#3f47cc] rounded-full transition-all duration-400 hover:border-white/90 hover:text-white/90 hover:bg-[#3f47cc] hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#3f47cc]">
-                                        <i class="%s" aria-hidden="true"></i>
-                                        <span class="sr-only">%s</span>
-                                    </a>
-                                </li>',
+                            <a href="%s" 
+                               aria-label="%s" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="flex items-center justify-center w-10 h-10 bg-white text-[#3f47cc] rounded-full transition-all duration-300 hover:bg-[#3f47cc] hover:text-white hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#3f47cc]">
+                                <i class="%s text-[18px]" aria-hidden="true"></i>
+                                <span class="sr-only">%s</span>
+                            </a>
+                        </li>',
                                     esc_url($url),
                                     esc_attr($rede['label']),
                                     esc_attr($rede['icon']),
@@ -75,65 +78,65 @@
                 <?php endif; ?>
             </div>
 
+            <!-- ==========================================
+         COLUNA DIREITA - MAPA DO SITE
+         ========================================== -->
             <?php
-            // Localizações de menu do footer
-            $footer_menus = array(
-                'footer-institucional' => __('INSTITUCIONAL', 'cchla-ufrn'),
-                'footer-academico'     => __('ACADÊMICO', 'cchla-ufrn'),
-                'footer-imprensa'      => __('IMPRENSA', 'cchla-ufrn'),
-            );
+            // Verifica se o menu "Mapa do Site" está configurado
+            if (has_nav_menu('mapa-do-site')) :
+                $menu_items = wp_get_nav_menu_items(get_nav_menu_locations()['mapa-do-site']);
 
-            // Verifica quantos menus estão configurados
-            $menus_configurados = array();
-            foreach ($footer_menus as $location => $title) {
-                if (has_nav_menu($location)) {
-                    $menu_items = wp_get_nav_menu_items(get_nav_menu_locations()[$location]);
-                    if ($menu_items) {
-                        $menus_configurados[$location] = array(
-                            'title' => $title,
-                            'items' => cchla_build_menu_tree($menu_items)
-                        );
-                    }
-                }
-            }
+                if ($menu_items) :
+                    // Organiza menu em hierarquia (pais e filhos)
+                    $menu_tree = cchla_build_menu_tree($menu_items);
 
-            // Só mostra a grid de menus se houver pelo menos 1 menu configurado
-            if (!empty($menus_configurados)) :
+                    // Só renderiza se houver itens pais
+                    if (!empty($menu_tree)) :
             ?>
-                <nav aria-label="<?php esc_attr_e('Navegação do rodapé', 'cchla-ufrn'); ?>"
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+                        <nav aria-label="<?php esc_attr_e('Mapa do site', 'cchla-ufrn'); ?>"
+                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
 
-                    <?php foreach ($menus_configurados as $location => $menu_data) : ?>
-                        <?php foreach ($menu_data['items'] as $parent_item) : ?>
+                            <?php foreach ($menu_tree as $parent_item) : ?>
 
-                            <!-- Coluna de Menu -->
-                            <div>
-                                <!-- Título do Menu (Pai) -->
-                                <h3 class="text-[16px] font-bold uppercase tracking-[0.08em] mb-4 text-white">
-                                    <?php echo esc_html($parent_item->title); ?>
-                                </h3>
+                                <!-- Coluna do Menu -->
+                                <div class="footer-menu-column">
+                                    <!-- Título da Seção (Item Pai) -->
+                                    <h3 class="text-[16px] font-bold uppercase tracking-[0.08em] mb-4 text-white">
+                                        <?php echo esc_html($parent_item->title); ?>
+                                    </h3>
 
-                                <!-- Submenu -->
-                                <?php if (!empty($parent_item->children)) : ?>
-                                    <ul class="space-y-2.5">
-                                        <?php foreach ($parent_item->children as $child_item) : ?>
-                                            <li>
-                                                <a href="<?php echo esc_url($child_item->url); ?>"
-                                                    class="text-[15px] text-white/90 hover:text-white hover:underline focus:text-white focus:underline focus:outline-none transition-colors inline-block leading-relaxed"
-                                                    <?php echo ($child_item->target === '_blank') ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
-                                                    <?php echo esc_html($child_item->title); ?>
-                                                </a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                <?php endif; ?>
-                            </div>
+                                    <!-- Links da Seção (Itens Filhos) -->
+                                    <?php if (!empty($parent_item->children)) : ?>
+                                        <ul class="space-y-2.5" role="list">
+                                            <?php foreach ($parent_item->children as $child_item) : ?>
+                                                <li>
+                                                    <a href="<?php echo esc_url($child_item->url); ?>"
+                                                        class="text-[15px] text-white/90 hover:text-white hover:underline focus:text-white focus:underline focus:outline-none transition-colors inline-block leading-relaxed"
+                                                        <?php echo ($child_item->target === '_blank') ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
+                                                        <?php echo esc_html($child_item->title); ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php else : ?>
+                                        <!-- Caso não tenha filhos, mostra aviso apenas para admins -->
+                                        <?php if (current_user_can('manage_options')) : ?>
+                                            <p class="text-sm text-white/60 italic">
+                                                <?php _e('Adicione subitens a este menu', 'cchla-ufrn'); ?>
+                                            </p>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
 
-                        <?php endforeach; ?>
-                    <?php endforeach; ?>
+                            <?php endforeach; ?>
 
-                </nav>
-            <?php endif; ?>
+                        </nav>
+            <?php
+                    endif; // fim: !empty($menu_tree)
+                endif; // fim: $menu_items
+            endif; // fim: has_nav_menu
+            ?>
+
         </div>
 
         <div class="border-t border-white/20 mb-10" role="presentation"></div>

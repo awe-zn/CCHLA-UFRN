@@ -8378,6 +8378,7 @@ function cchla_display_search_result_fallback()
 
 /**
  * Constrói árvore hierárquica do menu
+ * Organiza itens em pais (colunas) e filhos (links)
  * 
  * @param array $items Array de itens do menu
  * @return array Árvore hierárquica
@@ -8394,11 +8395,11 @@ function cchla_build_menu_tree($items)
     // Separa pais e filhos
     foreach ($items as $item) {
         if ($item->menu_item_parent == 0) {
-            // Item pai
+            // Item pai (será título da coluna)
             $item->children = array();
             $tree[$item->ID] = $item;
         } else {
-            // Item filho
+            // Item filho (será link na coluna)
             if (!isset($children[$item->menu_item_parent])) {
                 $children[$item->menu_item_parent] = array();
             }
@@ -8422,9 +8423,7 @@ function cchla_build_menu_tree($items)
 function cchla_register_footer_menus()
 {
     register_nav_menus(array(
-        'footer-institucional' => __('Footer - Institucional', 'cchla-ufrn'),
-        'footer-academico'     => __('Footer - Acadêmico', 'cchla-ufrn'),
-        'footer-imprensa'      => __('Footer - Imprensa', 'cchla-ufrn'),
+        'mapa-do-site' => __('Mapa do Site (Rodapé)', 'cchla-ufrn'),
     ));
 }
 add_action('after_setup_theme', 'cchla_register_footer_menus');
