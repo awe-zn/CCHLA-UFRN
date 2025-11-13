@@ -58,9 +58,13 @@ Acesse: `https://cchla.ufrn.br/info.php`
 **⚠️ IMPORTANTE:** Delete este arquivo após verificar!
 
 
-## 📦 Instalação do WordPress
+## Instalação do WordPress
+
+Comece por aqui se você ainda não tem uma instalação do Wordpress. Neste caso, vamos apresentar um processo de instalação manual.
 
 ### **Opção 1: Instalação Manual**
+
+Primeira opção é que você irá configurar tudo manualmente.
 
 #### **1. Baixar WordPress**
 
@@ -126,9 +130,24 @@ Preencha:
 
 Clique em **"Instalar WordPress"**
 
+### **Opção 2: Instalação Guiada**
 
 
-## 🎨 Instalação do Tema CCHLA
+#### **1. Baixar WordPress**
+Para isto, baixar seguir o passo 1.1
+
+#### **2. Criar Banco de Dados**
+Siga o passo 1.2. Sim, você precisará criar um banco de dados para o seu site.
+
+#### **3. Instalar WordPress**
+
+Acesse o link do seu site: `https://cchla.ufrn.br/` e basta seguir o passo a passo.
+
+
+
+## Instalação do Tema CCHLA
+
+Comece daqui se a etapa um já está completa. Você pode ter começado de uma instalação pronta, então o passo anterior não é mais necessário. Se esse é o seu caso, comece por esta seção.
 
 ### **1. Upload do Tema**
 
