@@ -305,6 +305,34 @@ Na coluna esquerda, adicione páginas/links:
 📄 Contato
 ```
 
+### Menu do Footer (Mapa do Site)
+
+O footer utiliza um **único menu hierárquico** para organizar o mapa do site.
+
+**Como configurar:**
+
+1. Acesse: `Aparência → Menus`
+2. Crie um menu chamado "Mapa do Site"
+3. Estrutura:
+   - **Itens Pais** (em MAIÚSCULAS) = Títulos das colunas
+   - **Itens Filhos** (identados) = Links dentro da coluna
+4. Atribua à localização: "Mapa do Site (Footer)"
+5. Salve
+
+**Exemplo:**
+```
+INSTITUCIONAL (Link: #)
+  ├─ Administração
+  ├─ Documentos
+  └─ CONSEC
+
+ACADÊMICO (Link: #)
+  ├─ Ensino
+  └─ Pesquisa
+```
+
+**Resultado:** Cada item pai vira uma coluna no footer.
+
 #### **Configurar localização:**
 
 Marque: `☑ Menu Principal`
