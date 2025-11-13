@@ -372,10 +372,10 @@ add_action('after_setup_theme', 'cchla_enable_post_thumbnails');
 function cchla_register_menus()
 {
     register_nav_menus(array(
-        'primary'     => esc_html__('Menu Principal', 'cchla-ufrn'),
-        'footer-menu' => esc_html__('Menu do Rodapé', 'cchla-ufrn'),
-        'legal-menu'  => esc_html__('Menu Legal (Privacidade, Termos)', 'cchla-ufrn'),
-        'mobile-menu' => esc_html__('Menu Mobile (Opcional)', 'cchla-ufrn'),
+        'primary'     => esc_html__('Menu - Topo do Site', 'cchla-ufrn'),
+        //'footer-menu' => esc_html__('Menu do Rodapé', 'cchla-ufrn'),
+        //'legal-menu'  => esc_html__('Menu Legal (Privacidade, Termos)', 'cchla-ufrn'),
+        //'mobile-menu' => esc_html__('Menu Mobile (Opcional)', 'cchla-ufrn'),
     ));
 }
 add_action('after_setup_theme', 'cchla_register_menus');
