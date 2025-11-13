@@ -305,7 +305,7 @@ Na coluna esquerda, adicione páginas/links:
 📄 Contato
 ```
 
-### Menu do Footer (Mapa do Site)
+### 2. Menu do Footer (Mapa do Site)
 
 O footer utiliza um **único menu hierárquico** para organizar o mapa do site.
 
@@ -338,56 +338,6 @@ ACADÊMICO (Link: #)
 Marque: `☑ Menu Principal`
 
 Clique em **"Salvar Menu"**
-
----
-
-### **2. Menus do Footer**
-
-Crie **3 menus separados:**
-
-#### **A) Footer - Institucional**
-
-```
-Nome do Menu: Footer Institucional
-Localização: ☑ Footer - Institucional
-
-Estrutura:
-📁 INSTITUCIONAL (Link Personalizado: #)
-  └── Administração
-  └── Documentos
-  └── CONSEC
-  └── Departamentos
-```
-
-#### **B) Footer - Acadêmico**
-
-```
-Nome do Menu: Footer Acadêmico
-Localização: ☑ Footer - Acadêmico
-
-Estrutura:
-📁 ACADÊMICO (Link Personalizado: #)
-  └── Ensino
-  └── Pesquisa
-  └── Extensão
-  └── Publicações
-```
-
-#### **C) Footer - Imprensa**
-
-```
-Nome do Menu: Footer Imprensa
-Localização: ☑ Footer - Imprensa
-
-Estrutura:
-📁 IMPRENSA (Link Personalizado: #)
-  └── Eventos
-  └── Orçamento
-  └── Notícias
-  └── Especiais
-```
-
-**⚠️ IMPORTANTE:** O primeiro item de cada menu (em caixa alta) deve ser um **"Link Personalizado"** com URL **`#`** e serve apenas como título visual (não será clicável).
 
 ---
 
